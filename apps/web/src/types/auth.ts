@@ -14,3 +14,10 @@ export const signUpSchema = z
   });
 
 export type SignUpSchema = z.infer<typeof signUpSchema>;
+
+export const signInSchema = z.object({
+  identity: z.string().min(3),
+  password: z.string().min(4),
+});
+
+export type SignInSchema = z.infer<typeof signInSchema>;

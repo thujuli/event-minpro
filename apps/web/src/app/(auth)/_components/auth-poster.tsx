@@ -14,6 +14,7 @@ const AuthPoster: React.FC<Props> = (props) => {
       <Image
         src={image}
         alt={name}
+        quality={100}
         fill
         placeholder="blur"
         sizes="100vw"

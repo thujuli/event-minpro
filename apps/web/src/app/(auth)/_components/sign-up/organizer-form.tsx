@@ -1,6 +1,7 @@
 "use client";
 
 import InputForm from "../input-form";
+import Spinner from "@/components/shared/spinner";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,8 +14,8 @@ import { SignUpSchema, signUpSchema } from "@/types/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useEffect } from "react";
-import Spinner from "@/components/shared/spinner";
+import React, { useEffect } from "react";
+import { toast } from "sonner";
 
 const OrganizerForm: React.FC = () => {
   const {
@@ -29,11 +30,18 @@ const OrganizerForm: React.FC = () => {
   }, [reset, isSubmitSuccessful]);
 
   const onSubmit = async (values: SignUpSchema) => {
-    // simulation submit form
-    const res = await new Promise((resolve) =>
-      setTimeout(() => resolve("success"), 5000),
-    );
+    const promise = () =>
+      new Promise((resolve) => setTimeout(() => resolve("Sonner"), 2000));
 
+    toast.promise(promise, {
+      loading: "Loading...",
+      success: (data) => {
+        return `${data} toast has been added`;
+      },
+      error: "Error",
+    });
+
+    const res = await promise();
     console.log(res);
   };
 
