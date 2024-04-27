@@ -45,14 +45,14 @@ const ParticipantForm: React.FC = () => {
   return (
     <Card>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <CardHeader className="px-2">
+        <CardHeader className="px-2 md:px-8">
           <CardDescription>
             When you register as a <strong>participant</strong>, you can browse
             available events, purchase tickets for events, and provide feedback
             on events you have attended.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-2 px-2">
+        <CardContent className="space-y-2 px-2 md:px-8">
           <InputForm
             id="username"
             label="Username"
@@ -94,12 +94,12 @@ const ParticipantForm: React.FC = () => {
             error={errors.referralCode}
           />
         </CardContent>
-        <CardFooter className="flex-col gap-4 px-2">
+        <CardFooter className="flex-col gap-4 px-2 md:px-8">
           <Button
             type="submit"
             size="sm"
             disabled={isSubmitting}
-            className="flex w-full items-center justify-center gap-2"
+            className="flex w-full items-center justify-center gap-2 md:h-10 md:px-4 md:py-2"
           >
             {isSubmitting ? (
               <>
@@ -110,7 +110,7 @@ const ParticipantForm: React.FC = () => {
               "Sign Up"
             )}
           </Button>
-          <span className="text-xs">
+          <span className="text-xs md:text-sm">
             Have an account?{" "}
             <Link href="/sign-in" className="font-bold underline">
               Sign In
