@@ -1,7 +1,6 @@
 "use client";
 
 import InputForm from "../input-form";
-import Spinner from "@/components/shared/spinner";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,7 +9,7 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { SignUpSchema, signUpSchema } from "@/types/auth";
+import { SignUpSchema, signUpSchema } from "@/schemas/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
@@ -48,14 +47,14 @@ const OrganizerForm: React.FC = () => {
   return (
     <Card>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <CardHeader className="px-2 md:px-8">
+        <CardHeader>
           <CardDescription>
             When you register as a <strong>organizer</strong>, you can browse
             available events, purchase tickets for events, and provide feedback
             on events you have attended.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-2 px-2 md:px-8">
+        <CardContent className="space-y-2 ">
           <InputForm
             id="username"
             label="Username"
@@ -89,21 +88,14 @@ const OrganizerForm: React.FC = () => {
             error={errors.confirmPassword}
           />
         </CardContent>
-        <CardFooter className="flex-col gap-4 px-2 md:px-8">
+        <CardFooter className="flex-col gap-4 ">
           <Button
             type="submit"
             size="sm"
             disabled={isSubmitting}
-            className="flex w-full items-center justify-center gap-2 md:h-10 md:px-4 md:py-2"
+            className="w-full gap-2 md:h-10 md:px-4 md:py-2"
           >
-            {isSubmitting ? (
-              <>
-                <Spinner />
-                <span>Loading...</span>
-              </>
-            ) : (
-              "Sign Up"
-            )}
+            Sign Up
           </Button>
           <span className="text-xs md:text-sm">
             Have an account?{" "}

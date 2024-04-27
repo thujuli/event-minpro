@@ -1,16 +1,16 @@
 "use client";
 
 import InputForm from "../input-form";
-import Spinner from "@/components/shared/spinner";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { signInSchema, SignInSchema } from "@/types/auth";
+import { signInSchema, SignInSchema } from "@/schemas/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
@@ -52,13 +52,16 @@ const SignInForm: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center px-5 ">
-      <Card className="max-w-[500px] flex-grow">
+    <div className="flex min-h-screen w-full items-center justify-center px-2 ">
+      <Card className="max-w-md flex-grow">
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardHeader>
-            <CardTitle className="text-center">Welcome Back!</CardTitle>
+            <CardTitle>Welcome Back!</CardTitle>
+            <CardDescription>
+              Enter your username or email below to sign up to your account
+            </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-2 px-2 md:px-8">
+          <CardContent className="space-y-2">
             <InputForm
               id="identity"
               label="Username or Email"
@@ -76,21 +79,14 @@ const SignInForm: React.FC = () => {
               error={errors.password}
             />
           </CardContent>
-          <CardFooter className="flex-col gap-4 px-2 md:px-8">
+          <CardFooter className="flex-col gap-4">
             <Button
               type="submit"
               size="sm"
               disabled={isSubmitting}
-              className="flex w-full items-center justify-center gap-2 md:h-10 md:px-4 md:py-2"
+              className="w-full gap-2 md:h-10 md:px-4 md:py-2"
             >
-              {isSubmitting ? (
-                <>
-                  <Spinner />
-                  <span>Loading...</span>
-                </>
-              ) : (
-                "Sign In"
-              )}
+              Sign In
             </Button>
             <span className="text-xs md:text-sm">
               Don&apos;t have an account?{" "}
