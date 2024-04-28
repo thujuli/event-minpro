@@ -35,7 +35,7 @@ model User {
   username     String        @unique
   email        String        @unique
   password     String
-  referralCode String?
+  referralCode String?       @unique
   isAdmin      Boolean
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
@@ -55,7 +55,7 @@ model Point {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   userId     Int
-  User       User     @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
 
   @@map("points")
 }
@@ -78,9 +78,9 @@ model Event {
   feedbacks      Feedback[]
   vouchers       Voucher[]
   transactions   Transaction[]
-  Location       Location      @relation(fields: [locationId], references: [id])
-  Category       Category      @relation(fields: [categoryId], references: [id])
-  User           User          @relation(fields: [userId], references: [id])
+  location       Location      @relation(fields: [locationId], references: [id])
+  category       Category      @relation(fields: [categoryId], references: [id])
+  user           User          @relation(fields: [userId], references: [id])
 
   @@map("events")
 }
@@ -93,8 +93,8 @@ model Feedback {
   updatedAt DateTime @updatedAt
   userId    Int
   eventId   Int
-  Event     Event    @relation(fields: [eventId], references: [id])
-  User      User     @relation(fields: [userId], references: [id])
+  event     Event    @relation(fields: [eventId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 
   @@map("feedbacks")
 }
@@ -111,8 +111,8 @@ model Voucher {
   eventId      Int?
   userId       Int?
   transactions Transaction[]
-  User         User?         @relation(fields: [userId], references: [id])
-  Event        Event?        @relation(fields: [eventId], references: [id])
+  user         User?         @relation(fields: [userId], references: [id])
+  event        Event?        @relation(fields: [eventId], references: [id])
 }
 
 model Transaction {
@@ -125,9 +125,9 @@ model Transaction {
   paymentStatus PaymentStatus
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
-  User          User          @relation(fields: [userId], references: [id])
-  Event         Event         @relation(fields: [eventId], references: [id])
-  Voucher       Voucher?      @relation(fields: [voucherId], references: [id])
+  user          User          @relation(fields: [userId], references: [id])
+  event         Event         @relation(fields: [eventId], references: [id])
+  voucher       Voucher?      @relation(fields: [voucherId], references: [id])
 }
 
 enum PaymentStatus {
