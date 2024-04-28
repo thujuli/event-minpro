@@ -10,12 +10,129 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Sample {
+model Location {
   id        Int      @id @default(autoincrement())
   name      String
-  code      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  events    Event[]
 
-  @@map("samples") // if you want to use snake_case format
+  @@map("locations")
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  events    Event[]
+
+  @@map("categories")
+}
+
+model User {
+  id           Int           @id @default(autoincrement())
+  username     String        @unique
+  email        String        @unique
+  password     String
+  referralCode String?
+  isAdmin      Boolean
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  points       Point[]
+  events       Event[]
+  feedbacks    Feedback[]
+  vouchers     Voucher[]
+  transactions Transaction[]
+
+  @@map("users")
+}
+
+model Point {
+  id         Int      @id @default(autoincrement())
+  saldo      Int
+  expiryDate DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  userId     Int
+  User       User     @relation(fields: [userId], references: [id])
+
+  @@map("points")
+}
+
+model Event {
+  id             Int           @id @default(autoincrement())
+  name           String
+  price          Int
+  description    String?       @db.Text
+  availableSeats Int
+  limitCheckout  Int?
+  startDate      DateTime
+  endDate        DateTime
+  isActive       Boolean
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  userId         Int
+  locationId     Int
+  categoryId     Int
+  feedbacks      Feedback[]
+  vouchers       Voucher[]
+  transactions   Transaction[]
+  Location       Location      @relation(fields: [locationId], references: [id])
+  Category       Category      @relation(fields: [categoryId], references: [id])
+  User           User          @relation(fields: [userId], references: [id])
+
+  @@map("events")
+}
+
+model Feedback {
+  id        Int      @id @default(autoincrement())
+  message   String?  @db.Text
+  rating    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    Int
+  eventId   Int
+  Event     Event    @relation(fields: [eventId], references: [id])
+  User      User     @relation(fields: [userId], references: [id])
+
+  @@map("feedbacks")
+}
+
+model Voucher {
+  id           Int           @id @default(autoincrement())
+  name         String        @unique
+  discount     Int
+  expiryDate   DateTime
+  maxUsage     Int
+  usage        Int
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  eventId      Int?
+  userId       Int?
+  transactions Transaction[]
+  User         User?         @relation(fields: [userId], references: [id])
+  Event        Event?        @relation(fields: [eventId], references: [id])
+}
+
+model Transaction {
+  id            Int           @id @default(autoincrement())
+  price         Int
+  redeemPoints  Int?
+  userId        Int
+  eventId       Int
+  voucherId     Int?
+  paymentStatus PaymentStatus
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  User          User          @relation(fields: [userId], references: [id])
+  Event         Event         @relation(fields: [eventId], references: [id])
+  Voucher       Voucher?      @relation(fields: [voucherId], references: [id])
+}
+
+enum PaymentStatus {
+  waiting
+  paid
+  success
+  failed
 }
