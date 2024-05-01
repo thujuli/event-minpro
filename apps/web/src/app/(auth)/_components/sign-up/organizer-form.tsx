@@ -9,12 +9,14 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { SignUpSchema, signUpSchema } from "@/schemas/auth";
+import { OrganizerSchema, organizerSchema } from "@/schemas/authSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { toast } from "sonner";
+import { registerUser } from "@/data/authData";
+import axios from "axios";
 
 const OrganizerForm: React.FC = () => {
   const {
@@ -22,26 +24,36 @@ const OrganizerForm: React.FC = () => {
     handleSubmit,
     reset,
     formState: { errors, isSubmitting, isSubmitSuccessful },
-  } = useForm<SignUpSchema>({ resolver: zodResolver(signUpSchema) });
+  } = useForm<OrganizerSchema>({ resolver: zodResolver(organizerSchema) });
 
   useEffect(() => {
     if (isSubmitSuccessful) reset();
   }, [reset, isSubmitSuccessful]);
 
-  const onSubmit = async (values: SignUpSchema) => {
-    const promise = () =>
-      new Promise((resolve) => setTimeout(() => resolve("Sonner"), 2000));
+  const onSubmit = async (values: OrganizerSchema) => {
+    const { email, password, username } = values;
 
-    toast.promise(promise, {
-      loading: "Loading...",
-      success: (data) => {
-        return `${data} toast has been added`;
-      },
-      error: "Error",
-    });
+    try {
+      const promise = registerUser({
+        email,
+        password,
+        username,
+        isAdmin: true,
+      });
 
-    const res = await promise();
-    console.log(res);
+      toast.promise(promise, {
+        loading: "Loading...",
+        success: (data) => {
+          return data.message;
+        },
+      });
+
+      await promise;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data.message);
+      }
+    }
   };
 
   return (

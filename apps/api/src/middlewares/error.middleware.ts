@@ -10,15 +10,14 @@ export const ErrorMiddleware = (
   next: NextFunction,
 ) => {
   if (error instanceof ZodError) {
+    let errorsMsg = '';
+    error.errors.forEach((err) => {
+      errorsMsg += `[x] ${err.message}\n`;
+    });
+
     return res
       .status(400)
-      .send(
-        responseWithoutData(
-          400,
-          false,
-          `Validation error: ${JSON.stringify(error)}`,
-        ),
-      );
+      .send(responseWithoutData(400, false, errorsMsg.trim()));
   } else if (error instanceof ErrorResponse) {
     return res
       .status(error.status)
