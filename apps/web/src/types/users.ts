@@ -1,3 +1,5 @@
+// for dummy data
+
 export type User = {
   id: string;
   createdAt: string;
