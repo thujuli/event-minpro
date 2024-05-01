@@ -5,3 +5,10 @@ export type RegisterRequest = {
   isAdmin: boolean;
   referralCode?: string;
 };
+
+export type UniqueUserField = {
+  id?: number;
+  username?: string;
+  email?: string;
+  referralCode?: string;
+};
