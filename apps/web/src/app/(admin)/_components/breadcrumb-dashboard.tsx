@@ -17,7 +17,7 @@ const BreadcrumbDashboard: React.FC = () => {
   const paths = pathname.split("/").filter((segment) => segment.length > 0);
 
   return (
-    <Breadcrumb>
+    <Breadcrumb className="hidden md:flex">
       <BreadcrumbList>
         {paths.slice(0, paths.length - 1).map((segment, index) => (
           <>
