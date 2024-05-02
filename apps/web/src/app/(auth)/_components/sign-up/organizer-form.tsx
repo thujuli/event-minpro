@@ -8,6 +8,7 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import { OrganizerSchema, organizerSchema } from "@/schemas/authSchema";
 import { useForm } from "react-hook-form";
@@ -24,7 +25,15 @@ const OrganizerForm: React.FC = () => {
     handleSubmit,
     reset,
     formState: { errors, isSubmitting, isSubmitSuccessful },
-  } = useForm<OrganizerSchema>({ resolver: zodResolver(organizerSchema) });
+  } = useForm<OrganizerSchema>({
+    resolver: zodResolver(organizerSchema),
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
 
   useEffect(() => {
     if (isSubmitSuccessful) reset();
@@ -60,10 +69,10 @@ const OrganizerForm: React.FC = () => {
     <Card>
       <form onSubmit={handleSubmit(onSubmit)}>
         <CardHeader>
+          <CardTitle>Organizers</CardTitle>
           <CardDescription>
-            When you register as a <strong>organizer</strong>, you can browse
-            available events, purchase tickets for events, and provide feedback
-            on events you have attended.
+            As an event organizer, you have robust capabilities to manage
+            events, transactions, and gather feedback from participants.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-2 ">

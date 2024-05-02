@@ -8,6 +8,7 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import { ParticipantSchema, participantSchema } from "@/schemas/authSchema";
 import { useForm } from "react-hook-form";
@@ -26,6 +27,13 @@ const ParticipantForm: React.FC = () => {
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<ParticipantSchema>({
     resolver: zodResolver(participantSchema),
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      referralCode: "",
+    },
   });
 
   useEffect(() => {
@@ -65,10 +73,11 @@ const ParticipantForm: React.FC = () => {
     <Card>
       <form onSubmit={handleSubmit(onSubmit)}>
         <CardHeader>
+          <CardTitle>Participants</CardTitle>
           <CardDescription>
-            When you register as a <strong>participant</strong>, you can browse
-            available events, purchase tickets for events, and provide feedback
-            on events you have attended.
+            When you register as a participant, you can browse available events,
+            purchase tickets for events, and provide feedback on the events you
+            have attended.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-2 ">
@@ -107,7 +116,6 @@ const ParticipantForm: React.FC = () => {
           <InputForm
             id="referralCode"
             label="Referral Code"
-            placeholder="EXAMPLE123"
             type="text"
             register={register}
             error={errors.referralCode}
