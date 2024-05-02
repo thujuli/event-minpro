@@ -1,8 +1,9 @@
 import {
   ArrowRightLeft,
-  BookOpenText,
+  Calendar,
   Home,
   LineChart,
+  NotebookPen,
   TicketPercent,
 } from "lucide-react";
 
@@ -13,13 +14,18 @@ export const dashboardMenuItems = [
     link: "/dashboard",
   },
   {
+    name: "Events",
+    icon: Calendar,
+    link: "/dashboard/events",
+  },
+  {
     name: "Transactions",
     icon: ArrowRightLeft,
     link: "/dashboard/transactions",
   },
   {
     name: "Registrations",
-    icon: BookOpenText,
+    icon: NotebookPen,
     link: "/dashboard/registrations",
   },
   {
