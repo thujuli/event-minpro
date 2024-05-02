@@ -1,5 +1,5 @@
 import { AuthService } from '@/services/auth.service';
-import { RegisterRequest } from '@/types/auth.type';
+import { RegisterRequest } from '@/types/user.type';
 import { NextFunction, Request, Response } from 'express';
 
 export class AuthController {
