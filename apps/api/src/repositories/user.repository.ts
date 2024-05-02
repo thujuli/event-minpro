@@ -1,8 +1,7 @@
 import prisma from '@/prisma';
-import { RegisterRequest, UniqueUserField } from '@/types/auth.type';
-import { ErrorResponse } from '@/utils/error';
+import { RegisterRequest, UniqueUserField } from '@/types/user.type';
 
-export class AuthRepository {
+export class UserRepository {
   static async findUserByUnique(identifier: UniqueUserField) {
     const { email, id, referralCode, username } = identifier;
 
@@ -17,6 +16,6 @@ export class AuthRepository {
   }
 
   static async createUser(request: RegisterRequest) {
-    await prisma.user.create({ data: request });
+    return await prisma.user.create({ data: request });
   }
 }
