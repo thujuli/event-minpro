@@ -7,7 +7,7 @@ type Props = {
   id: string;
   label: string;
   type: React.HTMLInputTypeAttribute;
-  placeholder: string;
+  placeholder?: string;
   register: (...args: any) => any;
   error?: FieldError;
 };
