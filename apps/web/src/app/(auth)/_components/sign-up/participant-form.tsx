@@ -10,14 +10,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ParticipantSchema, participantSchema } from "@/schemas/authSchema";
+import { ParticipantSchema, participantSchema } from "@/schemas/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import React from "react";
 import { toast } from "sonner";
 import axios from "axios";
-import { registerUser } from "@/data/authData";
+import { registerUser } from "@/data/auth";
 
 const ParticipantForm: React.FC = () => {
   const {

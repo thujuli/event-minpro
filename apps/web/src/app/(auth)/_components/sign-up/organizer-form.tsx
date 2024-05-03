@@ -10,13 +10,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { OrganizerSchema, organizerSchema } from "@/schemas/authSchema";
+import { OrganizerSchema, organizerSchema } from "@/schemas/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import React from "react";
 import { toast } from "sonner";
-import { registerUser } from "@/data/authData";
+import { registerUser } from "@/data/auth";
 import axios from "axios";
 
 const OrganizerForm: React.FC = () => {

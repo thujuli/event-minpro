@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { DataTable } from "@/components/ui/data-table";
-import { PlusCircle } from "lucide-react";
-import Link from "next/link";
+import DashboardTemplate from "../_components/template";
+
 
 // dummy data
 const getData = async () => {
@@ -13,11 +12,8 @@ const getData = async () => {
 };
 
 const DashboardPage: React.FC = async () => {
-  // fetch dummy data
-  const data = await getData();
-
   return (
-    <>
+    <DashboardTemplate>
       <div className="flex flex-1 items-center justify-center">
         <div className="flex flex-col items-center gap-1 text-center">
           <h3 className="text-2xl font-bold tracking-tight">
@@ -29,7 +25,7 @@ const DashboardPage: React.FC = async () => {
           <Button className="mt-4">Add Event</Button>
         </div>
       </div>
-    </>
+    </DashboardTemplate>
   );
 };
 

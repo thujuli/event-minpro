@@ -1,7 +1,12 @@
 import React from "react";
+import DashboardTemplate from "../../_components/template";
 
 const TransactionsPage: React.FC = () => {
-  return <div>TransactionsPage</div>;
+  return (
+    <DashboardTemplate>
+      <div>TransactionsPage</div>
+    </DashboardTemplate>
+  );
 };
 
 export default TransactionsPage;
