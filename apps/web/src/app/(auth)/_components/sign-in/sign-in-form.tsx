@@ -13,42 +13,55 @@ import {
 import { signInSchema, SignInSchema } from "@/schemas/authSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
+import React from "react";
 import Link from "next/link";
 import { toast } from "sonner";
+import { loginUser } from "@/data/authData";
+import axios from "axios";
+import Cookie from "js-cookie";
+import { useRouter } from "next/navigation";
 
 const SignInForm: React.FC = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitting },
   } = useForm<SignInSchema>({
     resolver: zodResolver(signInSchema),
   });
 
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      console.log(isSubmitSuccessful);
-      reset();
-    }
-  }, [isSubmitSuccessful, reset]);
-
   const onSubmit = async (values: SignInSchema) => {
-    // simulation submit form
-    const promise = () =>
-      new Promise((resolve) => setTimeout(() => resolve("Sonner"), 2000));
+    const { identity, password } = values;
 
-    toast.promise(promise, {
-      loading: "Loading...",
-      success: (data) => {
-        return `${data} toast has been added`;
-      },
-      error: "Error",
-    });
+    try {
+      const promise = loginUser({ identity, password });
 
-    const res = await promise();
-    console.log(res);
+      toast.promise(promise, {
+        loading: "Loading...",
+        success: (data) => {
+          return data.message;
+        },
+      });
+
+      const user = await promise;
+      if (user.result.isAdmin) {
+        Cookie.remove("user-tkn");
+        Cookie.set("admin-tkn", user.result.token);
+        router.replace("/dashboard");
+      } else {
+        Cookie.remove("admin-tkn");
+        Cookie.set("user-tkn", user.result.token);
+        router.replace("/");
+      }
+
+      reset();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data.message);
+      }
+    }
   };
 
   return (
