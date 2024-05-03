@@ -1,5 +1,6 @@
 import prisma from '@/prisma';
-import { RegisterRequest, UniqueUserField } from '@/types/user.type';
+import { RegisterRequest } from '@/types/auth.type';
+import { UniqueUserField } from '@/types/user.type';
 
 export class UserRepository {
   static async findUserByUnique(identifier: UniqueUserField) {

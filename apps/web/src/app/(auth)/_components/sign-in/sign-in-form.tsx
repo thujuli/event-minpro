@@ -10,13 +10,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { signInSchema, SignInSchema } from "@/schemas/authSchema";
+import { signInSchema, SignInSchema } from "@/schemas/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import Link from "next/link";
 import { toast } from "sonner";
-import { loginUser } from "@/data/authData";
+import { loginUser } from "@/data/auth";
 import axios from "axios";
 import Cookie from "js-cookie";
 import { useRouter } from "next/navigation";

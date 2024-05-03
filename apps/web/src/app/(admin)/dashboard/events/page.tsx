@@ -3,6 +3,7 @@ import { DataTable } from "@/components/ui/data-table";
 import { PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { eventColumns } from "../../_components/events/event-columns";
+import DashboardTemplate from "../../_components/template";
 
 // dummy data
 const getData = async () => {
@@ -18,7 +19,7 @@ const DashboardPage: React.FC = async () => {
   const data = await getData();
 
   return (
-    <>
+    <DashboardTemplate>
       <div>
         <Button asChild size="sm" className="h-8 gap-1">
           <Link href="/dashboard/events/create">
@@ -44,7 +45,7 @@ const DashboardPage: React.FC = async () => {
           <Button className="mt-4">Add Event</Button>
         </div> */}
       </div>
-    </>
+    </DashboardTemplate>
   );
 };
 

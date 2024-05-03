@@ -1,7 +1,7 @@
 import { PointRepository } from '@/repositories/point.repository';
 import { UserRepository } from '@/repositories/user.repository';
 import { VoucherRepository } from '@/repositories/voucher.repository';
-import { LoginRequest, RegisterRequest } from '@/types/user.type';
+import { Decoded, LoginRequest, RegisterRequest } from '@/types/auth.type';
 import { ErrorResponse } from '@/utils/error';
 import { comparePassword, hashPassword } from '@/utils/hash';
 import { generateJWTToken } from '@/utils/jwt';
@@ -97,6 +97,22 @@ export class AuthService {
 
     const token = generateJWTToken({ id: user.id, isAdmin: user.isAdmin });
     return responseWithData(200, true, 'Login was successful', {
+      username: user.username,
+      isAdmin: user.isAdmin,
+      token,
+    });
+  }
+
+  static async keepLogin(decoded: Decoded) {
+    const token = generateJWTToken({
+      id: decoded.id,
+      isAdmin: decoded.isAdmin,
+    });
+
+    const user = await UserRepository.findUserByUnique({ id: decoded.id });
+    if (!user) throw new ErrorResponse(404, 'User not found!');
+
+    return responseWithData(200, true, 'Keep login was successful', {
       username: user.username,
       isAdmin: user.isAdmin,
       token,

@@ -1,6 +1,7 @@
 import { ErrorResponse } from '@/utils/error';
 import { responseWithoutData } from '@/utils/response';
 import { NextFunction, Request, Response } from 'express';
+import { JsonWebTokenError } from 'jsonwebtoken';
 import { ZodError } from 'zod';
 
 export const ErrorMiddleware = (
@@ -22,6 +23,8 @@ export const ErrorMiddleware = (
     return res
       .status(error.status)
       .send(responseWithoutData(error.status, false, error.message));
+  } else if (error instanceof JsonWebTokenError) {
+    return res.status(401).send(responseWithoutData(401, false, error.message));
   } else {
     return res.status(500).send(responseWithoutData(500, false, error.message));
   }
