@@ -14,7 +14,7 @@ import { OrganizerSchema, organizerSchema } from "@/schemas/authSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React from "react";
 import { toast } from "sonner";
 import { registerUser } from "@/data/authData";
 import axios from "axios";
@@ -24,7 +24,7 @@ const OrganizerForm: React.FC = () => {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitting },
   } = useForm<OrganizerSchema>({
     resolver: zodResolver(organizerSchema),
     defaultValues: {
@@ -34,10 +34,6 @@ const OrganizerForm: React.FC = () => {
       confirmPassword: "",
     },
   });
-
-  useEffect(() => {
-    if (isSubmitSuccessful) reset();
-  }, [reset, isSubmitSuccessful]);
 
   const onSubmit = async (values: OrganizerSchema) => {
     const { email, password, username } = values;
@@ -58,6 +54,7 @@ const OrganizerForm: React.FC = () => {
       });
 
       await promise;
+      reset();
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data.message);

@@ -14,7 +14,7 @@ import { ParticipantSchema, participantSchema } from "@/schemas/authSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React from "react";
 import { toast } from "sonner";
 import axios from "axios";
 import { registerUser } from "@/data/authData";
@@ -24,7 +24,7 @@ const ParticipantForm: React.FC = () => {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitting },
   } = useForm<ParticipantSchema>({
     resolver: zodResolver(participantSchema),
     defaultValues: {
@@ -35,12 +35,6 @@ const ParticipantForm: React.FC = () => {
       referralCode: "",
     },
   });
-
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset();
-    }
-  }, [isSubmitSuccessful, reset]);
 
   const onSubmit = async (values: ParticipantSchema) => {
     const { email, password, username, referralCode } = values;
@@ -62,6 +56,7 @@ const ParticipantForm: React.FC = () => {
       });
 
       await promise;
+      reset();
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data.message);

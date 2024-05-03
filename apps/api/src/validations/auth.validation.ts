@@ -36,14 +36,27 @@ export class AuthValidation {
     })
     .refine(
       (data) => {
-        if (data.isAdmin && data.referralCode !== undefined) {
-          throw new ErrorResponse(400, 'Admin cannot provide a referral code!');
-        }
+        if (data.isAdmin && data.referralCode !== undefined) return false;
         return true;
       },
       {
-        message: 'Invalid input: Admin cannot provide a referral code!',
+        message: 'Admin cannot provide a referral code!',
         path: ['referralCode'],
       },
     );
+
+  static readonly LOGIN: ZodType = z.object({
+    identity: z
+      .string({
+        required_error: 'Identity is required!',
+        invalid_type_error: 'Identity must be a string!',
+      })
+      .min(3, { message: 'Identity must be at least 3 characters!' }),
+    password: z
+      .string({
+        required_error: 'Identity is required!',
+        invalid_type_error: 'Identity must be a string!',
+      })
+      .min(4, { message: 'Password must be at least 4 characters!' }),
+  });
 }

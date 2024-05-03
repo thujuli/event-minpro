@@ -1,8 +1,8 @@
-export type ResponseWithData = {
+export type ResponseWithData<T = any> = {
   rc: number;
   success: boolean;
   message: string;
-  result: object;
+  result: T;
 };
 
 export type ResponseWithoutData = {

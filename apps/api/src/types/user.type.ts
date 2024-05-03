@@ -12,3 +12,8 @@ export type UniqueUserField = {
   email?: string;
   referralCode?: string;
 };
+
+export type LoginRequest = {
+  identity: string;
+  password: string;
+};
