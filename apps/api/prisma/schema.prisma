@@ -11,21 +11,17 @@ datasource db {
 }
 
 model Location {
-  id        Int      @id @default(autoincrement())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  events    Event[]
+  id     Int     @id @default(autoincrement())
+  name   String
+  events Event[]
 
   @@map("locations")
 }
 
 model Category {
-  id        Int      @id @default(autoincrement())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  events    Event[]
+  id     Int     @id @default(autoincrement())
+  name   String
+  events Event[]
 
   @@map("categories")
 }
