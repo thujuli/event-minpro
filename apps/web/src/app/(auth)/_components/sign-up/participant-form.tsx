@@ -8,12 +8,13 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import { ParticipantSchema, participantSchema } from "@/schemas/authSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React from "react";
 import { toast } from "sonner";
 import axios from "axios";
 import { registerUser } from "@/data/authData";
@@ -23,16 +24,17 @@ const ParticipantForm: React.FC = () => {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitting },
   } = useForm<ParticipantSchema>({
     resolver: zodResolver(participantSchema),
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      referralCode: "",
+    },
   });
-
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset();
-    }
-  }, [isSubmitSuccessful, reset]);
 
   const onSubmit = async (values: ParticipantSchema) => {
     const { email, password, username, referralCode } = values;
@@ -54,6 +56,7 @@ const ParticipantForm: React.FC = () => {
       });
 
       await promise;
+      reset();
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data.message);
@@ -65,10 +68,11 @@ const ParticipantForm: React.FC = () => {
     <Card>
       <form onSubmit={handleSubmit(onSubmit)}>
         <CardHeader>
+          <CardTitle>Participants</CardTitle>
           <CardDescription>
-            When you register as a <strong>participant</strong>, you can browse
-            available events, purchase tickets for events, and provide feedback
-            on events you have attended.
+            When you register as a participant, you can browse available events,
+            purchase tickets for events, and provide feedback on the events you
+            have attended.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-2 ">
@@ -107,7 +111,6 @@ const ParticipantForm: React.FC = () => {
           <InputForm
             id="referralCode"
             label="Referral Code"
-            placeholder="EXAMPLE123"
             type="text"
             register={register}
             error={errors.referralCode}

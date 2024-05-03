@@ -11,21 +11,17 @@ datasource db {
 }
 
 model Location {
-  id        Int      @id @default(autoincrement())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  events    Event[]
+  id     Int     @id @default(autoincrement())
+  name   String
+  events Event[]
 
   @@map("locations")
 }
 
 model Category {
-  id        Int      @id @default(autoincrement())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  events    Event[]
+  id     Int     @id @default(autoincrement())
+  name   String
+  events Event[]
 
   @@map("categories")
 }
@@ -50,12 +46,12 @@ model User {
 
 model Point {
   id         Int      @id @default(autoincrement())
-  saldo      Int
+  balance    Int
   expiryDate DateTime
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   userId     Int
-  user       User     @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("points")
 }
@@ -105,14 +101,16 @@ model Voucher {
   discount     Int
   expiryDate   DateTime
   maxUsage     Int
-  usage        Int
+  usage        Int           @default(0)
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   eventId      Int?
   userId       Int?
   transactions Transaction[]
-  user         User?         @relation(fields: [userId], references: [id])
-  event        Event?        @relation(fields: [eventId], references: [id])
+  user         User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event        Event?        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@map("vouchers")
 }
 
 model Transaction {
@@ -128,6 +126,8 @@ model Transaction {
   user          User          @relation(fields: [userId], references: [id])
   event         Event         @relation(fields: [eventId], references: [id])
   voucher       Voucher?      @relation(fields: [voucherId], references: [id])
+
+  @@map("transactions")
 }
 
 enum PaymentStatus {

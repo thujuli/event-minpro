@@ -8,12 +8,13 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import { OrganizerSchema, organizerSchema } from "@/schemas/authSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React from "react";
 import { toast } from "sonner";
 import { registerUser } from "@/data/authData";
 import axios from "axios";
@@ -23,12 +24,16 @@ const OrganizerForm: React.FC = () => {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
-  } = useForm<OrganizerSchema>({ resolver: zodResolver(organizerSchema) });
-
-  useEffect(() => {
-    if (isSubmitSuccessful) reset();
-  }, [reset, isSubmitSuccessful]);
+    formState: { errors, isSubmitting },
+  } = useForm<OrganizerSchema>({
+    resolver: zodResolver(organizerSchema),
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
 
   const onSubmit = async (values: OrganizerSchema) => {
     const { email, password, username } = values;
@@ -49,6 +54,7 @@ const OrganizerForm: React.FC = () => {
       });
 
       await promise;
+      reset();
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data.message);
@@ -60,10 +66,10 @@ const OrganizerForm: React.FC = () => {
     <Card>
       <form onSubmit={handleSubmit(onSubmit)}>
         <CardHeader>
+          <CardTitle>Organizers</CardTitle>
           <CardDescription>
-            When you register as a <strong>organizer</strong>, you can browse
-            available events, purchase tickets for events, and provide feedback
-            on events you have attended.
+            As an event organizer, you have robust capabilities to manage
+            events, transactions, and gather feedback from participants.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-2 ">
