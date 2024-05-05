@@ -6,9 +6,10 @@ import CardEvent from "../../_components/cardEvent";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 
-interface ICategoryMusikSectionProps {}
+interface ICategorySeminarSectionProps {}
 
-const CategoryMusikSection: React.FunctionComponent<ICategoryMusikSectionProps> = (props) => {
+const CategorySeminarSection: React.FunctionComponent<ICategorySeminarSectionProps> = (props) => {
+const [activeButton, setActiveButton] = React.useState("Online");
 const [event, setEvent] = React.useState([]);
     React.useEffect(() => {
       onHandleGet();
@@ -38,15 +39,56 @@ const filterEventMusik = event.filter(
         }
       };
   return (
-    <section>
+    <section className="bg-[#f4f7fe] py-[10px]">
         <div className=" my-[26px] mx-[20px] md:mx-[140px] ">
         <div className=" flex flex-col justify-between">
-          <h1 className=" text-[14px] md:text-[24px] font-semibold">Music</h1>
+          <h1 className=" text-[14px] md:text-[24px] font-semibold">Seminar</h1>
           <h1 className=" mt-[4px] md:mt-[14px] text-[12px] md:text-[14px] ">
             Diskon 50% buat main musik bareng kita. 🎠
           </h1>
         </div>
-        <div className="flex md:grid md:grid-cols-5 overflow-hidden overflow-x-auto gap-4 my-[18px]">
+        <div className="mt-[10px] space-x-4">
+          <Button
+                className={`w-auto h-[30px] px-4 bg-white border ${activeButton === "All" ? "border-blue-500" : "border-gray-400"} text-black rounded-md`}
+                type="button"
+                onClick={(element: any) => {
+                    // const newData = {
+                    //   ...getData,
+                    //   category: ""
+                    // };
+                    // setGetData(newData);
+                    setActiveButton("Online");
+                  }}>
+                Online
+            </Button>
+          <Button
+                className={`w-auto h-[30px] px-4 bg-white border ${activeButton === "Jawa Barat" ? "border-blue-500" : "border-gray-400"} text-black rounded-md`}
+                type="button"
+                onClick={(element: any) => {
+                    // const newData = {
+                    //   ...getData,
+                    //   category: "Musik"
+                    // };
+                    // setGetData(newData);
+                    setActiveButton("Musik");
+                  }}>
+                Jawa Barat
+            </Button>
+          <Button
+                className={`w-auto h-[30px] px-4 bg-white border ${activeButton === "Jawa Timur" ? "border-blue-500" : "border-gray-400"} text-black rounded-md`}
+                type="button"
+                onClick={(element: any) => {
+                    // const newData = {
+                    //   ...getData,
+                    //   category: "Webinar"
+                    // };
+                    // setGetData(newData);
+                    setActiveButton("Jawa Timur");
+                  }}>
+                Jawa Timur
+            </Button>
+          </div>
+        <div className="flex md:grid md:grid-cols-5 overflow-hidden overflow-x-auto gap-4 my-[18px] ">
           {filterEventMusik
             .slice(0, displayedEvents)
             .map((event: any, index:number) => (
@@ -77,4 +119,4 @@ const filterEventMusik = event.filter(
   );
 };
 
-export default CategoryMusikSection;
+export default CategorySeminarSection;

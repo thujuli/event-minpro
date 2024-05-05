@@ -74,3 +74,11 @@
       @apply bg-background text-foreground;
     }
   }
+  .modal-portal {
+    position: absolute; /* Agar modal tidak terkunci saat di-scroll */
+    /* top: 54px; Pusatkan modal secara vertikal */
+    top: 0px; /* Pusatkan modal secara vertikal */
+    /* left: 128px; Pusatkan modal secara horizontal */
+    left: 0px; /* Pusatkan modal secara horizontal */
+    /* transform: translate(-50%, -50%); Geser modal ke tengah */
+  }

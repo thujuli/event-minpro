@@ -29,32 +29,32 @@ const DeskripsiDetail: React.FunctionComponent<IDeskripsiDetailProps> = (props) 
   };
   return (
     <section>
-        <div className="relative md:static top-[-40px] mt-[24px] mx-[10px] md:mx-[120px] w-[360px] md:w-[1296px] h-auto  md:h-[306px]  rounded-lg p-[20px] md:p-[48px] border md:border-none shadow md:shadow-none bg-white ">
-        <h1 className="text-[22px] md:text-[38px] font-semibold text-center md:text-left">
+        <div className="relative md:static top-[-40px] mt-[24px] mx-[10px] md:mx-[120px] w-[360px] md:w-[1296px] h-auto  rounded-lg p-[20px] md:py-[28px] md:px-[28px] border md:border-none shadow md:shadow-none  bg-white ">
+        <h1 className="text-[22px] md:text-[18px] font-semibold text-center md:text-left">
           {event.name}
         </h1>
-        <div className=" mt-[38px] space-y-[14px]">
+        <div className=" mt-[10px] space-y-[14px]">
           <div className=" flex items-center">
-            <IoLocationSharp className="w-[20px] md:w-[24px] h-[20px] md:h-[24px]" />
-            <p className="mx-[12px] md:mx-[30px] text-[14px] md:text-[16px]">
+            <IoLocationSharp className="w-[20px] md:w-[24px] h-[20px] md:h-[24px] text-[#aeb2be]" />
+            <p className="mx-[12px]  text-[14px] md:text-[14px]">
               {event.location}
             </p>
           </div>
           <div className=" flex items-center">
-            <MdOutlineDateRange className=" w-[20px] md:w-[24px] h-[20px] md:h-[24px]" />
-            <p className="mx-[12px] md:mx-[30px] text-[14px] md:text-[16px]">
+            <MdOutlineDateRange className=" w-[20px] md:w-[24px] h-[20px] md:h-[24px] text-[#aeb2be]" />
+            <p className="mx-[12px]  text-[14px] md:text-[14px]">
               {event.createdAt}
             </p>
           </div>
           <div className=" flex items-center">
-            <BiBookmarks className=" w-[20px] md:w-[24px] h-[20px] md:h-[24px]" />
-            <p className="mx-[12px] md:mx-[30px] text-[14px] md:text-[16px]">
+            <BiBookmarks className=" w-[20px] md:w-[24px] h-[20px] md:h-[24px] text-[#aeb2be]" />
+            <p className="mx-[12px]  text-[14px] md:text-[14px]">
               {event.category}
             </p>
           </div>
           <div className=" flex items-center">
-            <MdGroups3 className=" w-[20px] md:w-[24px] h-[20px] md:h-[24px]" />
-            <p className="mx-[12px] md:mx-[30px] text-[14px] md:text-[16px]">
+            <MdGroups3 className=" w-[20px] md:w-[24px] h-[20px] md:h-[24px] text-[#aeb2be]" />
+            <p className="mx-[12px]  text-[14px] md:text-[14px]">
               Diselenggarakan oleh :{" "}
               <span className=" font-semibold">FLASHBACK Motion</span>
             </p>

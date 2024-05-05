@@ -15,7 +15,7 @@ const CardEvent: React.FunctionComponent<ICardEventProps> = (props) => {
 
   return (
     <div
-      className="min-w-[188px] max-w-[188px] md:min-w-[236px] md:max-w-[236px]  h-[278px] md:h-[338px] border border-gray-400 rounded-lg overflow-hidden cursor-pointer"
+      className="min-w-[188px] max-w-[188px] md:min-w-[236px] md:max-w-[236px] bg-white  h-[278px] md:h-[338px] border border-gray-400 rounded-lg overflow-hidden cursor-pointer"
       onClick={() => router.push(`/detail/${props.id}`)}
     >
       <img
