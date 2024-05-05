@@ -13,7 +13,7 @@ const CardSearch: React.FunctionComponent<ICardSearchProps> = (props) => {
 
   return (
     <div
-      className="min-w-[306px] max-w-[306px] md:min-w-[306px] md:max-w-[306px]  h-[68px]  border border-gray-400 rounded-lg overflow-hidden cursor-pointer flex p-[12px]"
+      className="min-w-[306px] max-w-[306px] md:min-w-[306px] md:max-w-[306px]  h-[68px] bg-white  border border-gray-400 rounded-lg overflow-hidden cursor-pointer flex p-[12px]"
       onClick={() => router.push(`/detail/${props.id}`)}
     >
       <img className="w-[40px]  h-[40px] " src="https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2021/12/08/d408eb52-5459-41b7-b136-455bf66b4874-1638949824913-fb6a74fe056f99f3d4c0ecd9cb50a2e4.jpg" alt="" />
