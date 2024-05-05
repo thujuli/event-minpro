@@ -23,3 +23,21 @@ export const responseWithoutData = (
     message,
   };
 };
+export const responseDataWithPagination = (
+  status: number,
+  message: string,
+  data: object | Array<any>,
+  page:number,
+  limit: number,
+  total : number,
+) => {
+  return {
+    rc: status,
+    success: true,
+    message,
+    result: data,
+    page,
+    limit,
+    total
+  };
+};

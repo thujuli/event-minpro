@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
 interface IAllEventSectionProps {}
 
 const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
@@ -22,25 +23,25 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
   const [totalPages, setTotalPages] = React.useState(1);
   //fitur lain
   const [activeButton, setActiveButton] = React.useState("All");
-  const [event, setEvent] = React.useState([]);
+  const [events, setEvents] = React.useState([]);
   const [getData, setGetData] = React.useState<any>({
-    category: "",
+    categoryId: 0,
   });
   React.useEffect(() => {
     onHandleGet();
   }, [getData, currentPage]);
   const onHandleGet = async () => {
     try {
-      let url = "http://localhost:2000/event?";
-      if (getData.category) {
-        url += `category=${getData.category}`;
+      let url = NEXT_PUBLIC_BASE_API_URL + "/events?";
+      if (getData.categoryId) {
+        url += `categoryId=${getData.categoryId}`;
       }
       if (getData.page) {
         url += `${url ? "&" : ""}page=${currentPage}`;
       }
 
       const response = await axios.get(url);
-      setEvent(response.data.data);
+      setEvents(response.data.result);
       setTotalPages(Math.ceil(response.data.total / response.data.limit));
       console.log(Math.ceil(response.data.total / response.data.limit));
 
@@ -87,7 +88,7 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
                 onClick={(element: any) => {
                   const newData = {
                     ...getData,
-                    category: "",
+                    categoryId: 0,
                   };
                   setCurrentPage(1);
                   setGetData(newData);
@@ -102,7 +103,7 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
                 onClick={(element: any) => {
                   const newData = {
                     ...getData,
-                    category: "Musik",
+                    categoryId: 2,
                   };
                   setCurrentPage(1);
                   setGetData(newData);
@@ -117,7 +118,7 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
                 onClick={(element: any) => {
                   const newData = {
                     ...getData,
-                    category: "Webinar",
+                    categoryId: 4,
                   };
                   setCurrentPage(1);
                   setGetData(newData);
@@ -130,12 +131,13 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
           </div>
         </div>
         <div className="my-[18px] flex gap-4 overflow-hidden overflow-x-auto md:grid md:grid-cols-5">
-          {event.map((event: any, index: number) => (
+          {events.map((event: any, index: number) => (
             <div key={index}>
               <CardEvent
                 id={event.id}
+                urlImage={event.imageURL}
                 judul={event.name}
-                lokasi={event.location}
+                lokasi={event.locationId}
                 waktu={event.createdAt}
                 harga={event.price}
               />
