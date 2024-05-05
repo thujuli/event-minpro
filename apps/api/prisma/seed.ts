@@ -4,6 +4,7 @@ import { locations } from './data/locations';
 import { categories } from './data/categories';
 import { users } from './data/users';
 import { SALT } from '../src/config';
+import { events } from './data/events';
 
 const prisma = new PrismaClient();
 
@@ -29,6 +30,25 @@ async function seed() {
         password: hashPassword(user.password),
         isAdmin: user.isAdmin,
         referralCode: user.referralCode,
+      },
+    });
+  }
+
+  for (const event of events) {
+    await prisma.event.create({
+      data: {
+        name: event.name,
+        price: event.price,
+        description: event.description,
+        imageURL: event.imageURL,
+        availableSeats: event.availableSeats,
+        limitCheckout: event.limitCheckout,
+        startDate: new Date(event.startDate),
+        endDate: new Date(event.endDate),
+        isActive: event.isActive,
+        userId: event.userId,
+        locationId: event.locationId,
+        categoryId: event.categoryId,
       },
     });
   }
