@@ -13,7 +13,7 @@ interface IVoucherSectionProps {}
 
 const VoucherSection: React.FunctionComponent<IVoucherSectionProps> = (props) => {
   return (
-    <section className=" ">
+    <section className=" mx-[10px] md:mx-0">
             <div className="mt-[20px] shadow bg-white w-full md:w-[828px]  h-auto ml-0 md:ml-[120px] rounded-lg md:py-[28px] md:px-[28px] md:h-auto">
             <div className="  flex justify-between">
               <Select >

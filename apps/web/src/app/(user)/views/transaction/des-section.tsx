@@ -15,7 +15,7 @@ const DesSection: React.FunctionComponent<IDesSectionProps> = (props) => {
   //Handle Get API Detail :
   const getApiDetail = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/event/${1}`);
+      const response = await axios.get(`http://localhost:2000/event/${1}`);
       console.log(response.data);
       setEvent(response.data);
     } catch (err) {
