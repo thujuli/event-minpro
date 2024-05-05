@@ -11,7 +11,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import axios from "axios";
-import CardEvent from "./cardEvent";
 import CardSearch from "./cardSearch";
 import { useDebounce } from "use-debounce";
 
@@ -39,9 +38,9 @@ const SearchBar: React.FunctionComponent<ISearchBarProps> = (props) => {
   console.log("onChange", searchDebouce);
 
   return (
-    <section>
-      <div className="mx-[168px] mt-6">
-        <div>
+    <section className="relative ">
+      <div className=" relative mx-[168px] mt-6 ">
+        <div className="">
           <Input
             className="w-[300px] h-[36px] mt-[10px] "
             type="text"
@@ -51,12 +50,12 @@ const SearchBar: React.FunctionComponent<ISearchBarProps> = (props) => {
           <ReactModal
             isOpen={modalIsOpen}
             onRequestClose={() => setModalIsOpen(false)}
-            className="w-[500px] h-auto bg-white mx-[168px] mt-20 border border-slate-400 rounded-lg p-10"
+            className="w-[500px] h-auto absolute rounded-lg p-10 "
+            portalClassName="modal-portal"
           >
-            {/* Konten search bar di sini */}
-            <div className="flex justify-between">
+            <div className="flex justify-between items-center  ">
               <Input
-                className="w-[300px] h-[36px] mt-[10px]"
+                className="w-[300px] h-[36px]  bg-[#f4f7fe]"
                 type="text"
                 placeholder="Cari eventMu"
                 onChange={(e) => setSearch(e.target.value)}
@@ -69,9 +68,9 @@ const SearchBar: React.FunctionComponent<ISearchBarProps> = (props) => {
                 Close
               </Button>
             </div>
-            <div className="flex mt-4 ">
+            <div className="flex justify-around mt-4 bg-white">
               <Select onValueChange={(e: any) => console.log(e)}>
-                <SelectTrigger className="w-[158px] mr-10">
+                <SelectTrigger className="w-[158px] ">
                   <SelectValue placeholder="Theme" />
                 </SelectTrigger>
                 <SelectContent>
@@ -91,7 +90,7 @@ const SearchBar: React.FunctionComponent<ISearchBarProps> = (props) => {
                 </SelectContent>
               </Select>
             </div>
-            <div className=" flex overflow-hidden">
+            <div className=" flex overflow-hidden bg-white p-4 rounded-b-lg">
               <div className="mt-[12px] space-y-1">
                 {event.slice(0, 5).map((event: any, index) => (
                   <div key={index}>

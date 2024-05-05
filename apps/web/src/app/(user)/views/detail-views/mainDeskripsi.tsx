@@ -26,12 +26,12 @@ const [event, setEvent] = React.useState<any>([]);
   };
   return (
     <section>
-    <div className="w-full md:w-[784px] h-[300] mx-[0px] md:mx-[120px] p-0 md:p-[24px] ">
-        <div className=" mx-[20px]">
-          <h1 className="text-[18px]  md:text-[24px] font-semibold ">
+    <div className="w-full md:w-[784px] h-[300] mx-[0px] md:mx-[120px] p-[20px] md:py-[28px] md:px-[28px] rounded-lg  md:mt-[10px] bg-white">
+        <div className=" ">
+          <h1 className="text-[18px]  font-semibold ">
             Deskripsi
           </h1>
-          <p className="text-[14px] md:text-[16px] text-justify mt-[12px] md:mt-[32px]">
+          <p className="text-[14px] md:text-[14px] text-justify mt-[12px] md:mt-[10px]">
             {event.description}
           </p>
         </div>

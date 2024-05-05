@@ -1,42 +1,37 @@
 "use client";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import ReactModal from "react-modal";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import SearchBar from "../_components/handleSeachBar";
+import InputSearch from "../_components/search-bar";
 
 interface INavbarDesktopProps {}
 
 const NavbarDesktop: React.FunctionComponent<INavbarDesktopProps> = (props) => {
   const [modalIsOpen, setModalIsOpen] = React.useState(false);
   return (
-    <section className=" hidden md:block w-full h-[152px] bg-white  text-black border-b-2 ">
+    <section className=" hidden h-[152px] w-full border-b-2 bg-white  text-black md:block ">
       <div className="mx-[168px] flex justify-between pt-[20px]">
         <h1>Logo</h1>
         <div className=" flex space-x-2">
           <Button
-            className=" w-[78px] h-[40px] mx-auto bg-white border border-gray-400 text-black"
+            className=" mx-auto h-[40px] w-[78px] border border-gray-400 bg-white text-black"
             type="button"
           >
             Sign In
           </Button>
           <Button
-            className=" w-[78px] h-[40px] mx-auto bg-white border border-gray-400 text-black"
+            className=" mx-auto h-[40px] w-[78px] border border-gray-400 bg-white text-black"
             type="button"
           >
             Sign Up
           </Button>
         </div>
       </div>
-      <div id="stroke" className=" border mt-[10px]"></div>
-      <SearchBar/>
+      <div id="stroke" className=" mt-[30px] border "></div>
+      <div className="mx-[168px] ">
+        {/* <SearchBar/> */}
+        <InputSearch />
+      </div>
     </section>
   );
 };
