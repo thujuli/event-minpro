@@ -5,6 +5,7 @@ import { ErrorMiddleware } from './middlewares/error.middleware';
 import { AuthRouter } from './routers/auth.router';
 import { LocationRouter } from './routers/location.router';
 import { CategoryRouter } from './routers/category.router';
+import { EventRouter } from './routers/event.router';
 
 export default class App {
   private app: Express;
@@ -30,6 +31,7 @@ export default class App {
     const authRouter = new AuthRouter();
     const locationRouter = new LocationRouter();
     const categoryRouter = new CategoryRouter();
+    const eventRouter = new EventRouter()
 
     this.app.get('/', (req: Request, res: Response) => {
       res.send(`Hello, Purwadhika Student !`);
@@ -38,6 +40,7 @@ export default class App {
     this.app.use('/auth', authRouter.getRoutes());
     this.app.use('/locations', locationRouter.getRoutes());
     this.app.use('/categories', categoryRouter.getRoutes());
+    this.app.use('/events', eventRouter.getRoutes());
   }
 
   public start(): void {

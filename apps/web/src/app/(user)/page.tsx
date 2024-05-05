@@ -13,10 +13,10 @@ const HomePage: React.FC = () => {
     <section>
       <NavbarDesktop />
       <Hero />
-      <CategorySection />
+      {/* <CategorySection />
       <TopNews />
-      <CategoryMusikSection />
-      <CategorySeminarSection />
+      <CategoryMusikSection /> */}
+      {/* <CategorySeminarSection /> */}
       <AllEventSection />
     </section>
   );
