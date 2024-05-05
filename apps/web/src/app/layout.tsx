@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "sonner";
 import NavbarDesktop from "./(user)/views/navbarDesktop";
+import { TanstackQueryProvider } from "@/providers/tanstack-query-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,17 +19,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body
-        className={cn(
-          "min-h-screen bg-background antialiased",
-          inter.className,
-        )}
-      >
-        
-        {children}
-        <Toaster richColors />
-      </body>
-    </html>
+    <TanstackQueryProvider>
+      <html lang="en">
+        <body
+          className={cn(
+            "min-h-screen bg-background antialiased",
+            inter.className,
+          )}
+        >
+          {children}
+          <Toaster richColors />
+        </body>
+      </html>
+    </TanstackQueryProvider>
   );
 }
