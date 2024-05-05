@@ -1,21 +1,19 @@
 import React from "react";
 import Hero from "./views/hero";
-import TopNews from "./views/home/topnews";
-import CategoryMusikSection from "./views/home/categoryMusik";
-import NavbarDesktop from "./views/navbarDesktop";
+import TopNews from "./views/home/top-news";
+import CategoryMusikSection from "./views/home/category-musik";
+import NavbarDesktop from "./views/navbar-desktop";
 import AllEventSection from "./views/home/all-event";
 import CategorySeminarSection from "./views/home/category-seminar";
 import { Button } from "@/components/ui/button";
 import CategorySection from "./views/home/category-hero-mobile";
-import CategoryDesktop from "./views/home/category-hero-desktop";
 
 const HomePage: React.FC = () => {
   return (
     <section>
       <NavbarDesktop />
       <Hero />
-
-      <CategorySection/>
+      <CategorySection />
       <TopNews />
       <CategoryMusikSection />
       <CategorySeminarSection />

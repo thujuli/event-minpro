@@ -9,15 +9,15 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select";
-interface IPembayaranSectionProps {}
+interface IPaymentSectionProps {}
 
-const PembayaranSection: React.FunctionComponent<IPembayaranSectionProps> = (props) => {
+const PaymentSection: React.FunctionComponent<IPaymentSectionProps> = (props) => {
   return (
-    <section>
-          <div className="mt-[20px] shadow bg-white w-[828px] h-[120px] ml-[120px] rounded-lg md:py-[28px] md:px-[28px] md:h-auto">
+    <section className=" mx-[10px] md:mx-0">
+          <div className="mt-[20px] shadow bg-white w-full md:w-[828px] h-auto ml-0 md:ml-[120px] rounded-lg md:py-[28px] md:px-[28px] md:h-auto">
             <div className=" flex justify-between">
               <Select>
-                <SelectTrigger className="w-[1000px]">
+                <SelectTrigger className="w-full md:w-[1000px]">
                   <div className=" flex space-x-4">
                     <FaTicketAlt className="w-[20px] md:w-[24px] h-[20px] md:h-[24px] text-[#aeb2be]" />
                     <p className="text-gray-500 text-[12px]">Metode Pembayaran</p>
@@ -37,4 +37,4 @@ const PembayaranSection: React.FunctionComponent<IPembayaranSectionProps> = (pro
   );
 };
 
-export default PembayaranSection;
+export default PaymentSection;

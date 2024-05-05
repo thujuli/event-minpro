@@ -11,14 +11,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { FaCoins } from "react-icons/fa6";
-import HeroDetails from "../views/detail-views/heroDetail";
-import NavbarDesktop from "../views/navbarDesktop";
-import DesSection from "../views/transaction/desSection";
-import VoucherSection from "../views/transaction/voucherSection";
-import RedeemPointSection from "../views/transaction/redeemPoint";
-import PembayaranSection from "../views/transaction/pembayaranSection";
+import HeroDetails from "../views/detail-views/detail-hero";
+import NavbarDesktop from "../views/navbar-desktop";
+import DesSection from "../views/transaction/des-section";
+import VoucherSection from "../views/transaction/voucher-section";
+import RedeemPointSection from "../views/transaction/redeem-point";
 import axios from "axios";
-import DetailPembayaran from "../views/transaction/detailPemesanan";
+import PaymentSection from "../views/transaction/payment-section";
+import DetailOrder from "../views/transaction/detail-order";
 
 interface IBayarPageProps {}
 
@@ -33,7 +33,7 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = (props) => {
   //Handle Get API Detail :
   const getApiDetail = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/event/${4}`);
+      const response = await axios.get(`http://localhost:2000/event/${4}`);
       console.log(response.data);
       setEvent(response.data);
     } catch (err) {
@@ -43,14 +43,14 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = (props) => {
   return (
     <section className=" h-[1000px] bg-[#f4f7fe]">
       {/* <NavbarDesktop /> */}
-      <div className=" flex">
+      <div className=" block md:flex">
         <div className=" flex flex-col">
           <DesSection />
           <VoucherSection />
-          {/* <RedeemPointSection />
-          <PembayaranSection /> */}
+          <RedeemPointSection />
+          <PaymentSection/>
         </div>
-        {/* <DetailPembayaran /> */}
+        <DetailOrder/>
       </div>
     </section>
   );

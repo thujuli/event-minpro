@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
-import SearchBar from "../_components/handleSeachBar";
+import SearchBar from "../_components/handle-seachbar";
 import InputSearch from "../_components/search-bar";
 
 interface INavbarDesktopProps {}

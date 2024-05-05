@@ -2,9 +2,9 @@ import * as React from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
 
-interface IDetailPembayaranProps {}
+interface IDetailOrderProps {}
 
-const DetailPembayaran: React.FunctionComponent<IDetailPembayaranProps> = (props) => {
+const DetailOrder: React.FunctionComponent<IDetailOrderProps> = (props) => {
     const [event, setEvent] = React.useState<any>([]);
     const [eventId, setRventId] = React.useState<string>(
       window.location.href.split("/")[4]
@@ -16,7 +16,7 @@ const DetailPembayaran: React.FunctionComponent<IDetailPembayaranProps> = (props
     const getApiDetail = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/event/${4}`
+          `http://localhost:2000/event/${4}`
         );
         console.log(response.data);
         setEvent(response.data);
@@ -25,9 +25,9 @@ const DetailPembayaran: React.FunctionComponent<IDetailPembayaranProps> = (props
       }
     };
   return (
-    <section>
-                <div className=" flex flex-col relative">
-          <div className="fixed mt-[24px] w-[392px] h-[678px] md:h-auto  rounded-lg p-[20px] shadow bg-white ml-[48px]">
+    <section className="mx-[10px] md:mx-0">
+          <div className=" flex flex-col relative">
+          <div className="md:fixed mt-[24px] w-full md:w-[392px] h-auto md:h-auto  rounded-lg p-[20px] shadow bg-white  ml-0 md:ml-[48px]">
             <div className=" flex">
           <img className="w-[40px]  h-[40px] rounded-md " src="https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2021/12/08/d408eb52-5459-41b7-b136-455bf66b4874-1638949824913-fb6a74fe056f99f3d4c0ecd9cb50a2e4.jpg" alt="" />
             <div className="overflow-hidden whitespace-nowrap overflow-ellipsis  px-2 flex items-center">
@@ -51,7 +51,7 @@ const DetailPembayaran: React.FunctionComponent<IDetailPembayaranProps> = (props
             </div>
         <div>
       <Button
-        className="hidden md:block w-full h-[36px]  bg-[#53B253]  text-white rounded-md"
+        className="block md:block w-full h-[36px]  bg-[#53B253]  text-white rounded-md"
         type="button"
       >
         Beli Tiket
@@ -63,4 +63,4 @@ const DetailPembayaran: React.FunctionComponent<IDetailPembayaranProps> = (props
   );
 };
 
-export default DetailPembayaran;
+export default DetailOrder;

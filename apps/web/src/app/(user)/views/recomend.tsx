@@ -1,17 +1,17 @@
 import * as React from "react";
-import CardEvent from "@/app/(user)/_components/cardEvent";
+import CardEvent from "@/app/(user)/_components/card-event";
 import axios from "axios";
 
-interface IRekomendasiProps {}
+interface IRecomendProps {}
 
-const Rekomendasi: React.FunctionComponent<IRekomendasiProps> = (props) => {
+const Recomend: React.FunctionComponent<IRecomendProps> = (props) => {
   const [event, setEvent] = React.useState([]);
   React.useEffect(() => {
     onHandleGet();
   }, []);
   const onHandleGet = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/event");
+      const response = await axios.get("http://localhost:2000/event");
       setEvent(response.data.data);
       console.log(response.data);
     } catch (err) {
@@ -19,15 +19,14 @@ const Rekomendasi: React.FunctionComponent<IRekomendasiProps> = (props) => {
     }
   };
   return (
-    <section className=" mt-[10px] bg-white rounded-lg p-[20px] md:py-[28px] md:px-[28px]" >
-
-      <div id="stroke" className=" border mb-[40px] hidden md:block"></div>
-      <div className=" mt-[10px]" >
-        <h1 className=" text-[18px] md:text-[18px] font-semibold ">
+    <section className=" mt-[10px] rounded-lg bg-white p-[20px] md:px-[28px] md:py-[28px]">
+      <div id="stroke" className=" mb-[40px] hidden border md:block"></div>
+      <div className=" mt-[10px]">
+        <h1 className=" text-[18px] font-semibold md:text-[18px] ">
           Mungkin kamu suka
         </h1>
       </div>
-      <div className="flex md:grid md:grid-cols-5 gap-4 my-[18px] overflow-hidden ">
+      <div className="my-[18px] flex gap-4 overflow-hidden md:grid md:grid-cols-5 ">
         {event.slice(0, 5).map((event: any, index) => (
           <div key={index}>
             <CardEvent
@@ -40,9 +39,9 @@ const Rekomendasi: React.FunctionComponent<IRekomendasiProps> = (props) => {
           </div>
         ))}
       </div>
-      <div id="stroke" className=" border mt-[40px] hidden md:block"></div>
+      <div id="stroke" className=" mt-[40px] hidden border md:block"></div>
     </section>
   );
 };
 
-export default Rekomendasi;
+export default Recomend;

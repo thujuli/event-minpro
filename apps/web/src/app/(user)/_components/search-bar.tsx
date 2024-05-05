@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { Input } from "@/components/ui/input";
-import SearchBar from "../_components/handleSeachBar";
+import SearchBar from "./handle-seachbar";
 import {
   Sheet,
   SheetContent,
@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import CardSearch from "./cardSearch";
+import CardSearch from "./card-search";
 
 interface IInputSearchProps {}
 
@@ -35,12 +35,12 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
   }, [searchDebouce, getData]);
   const onHandleGet = async () => {
     try {
-      let url = `http://localhost:8000/event/search?`;
+      let url = `http://localhost:2000/event/search?`;
       if (searchDebouce) {
         url += `name=${searchDebouce}`;
       }
-      if(getData.category){
-        url += `${searchDebouce ? '&' : ''}category=${getData.category}`;
+      if (getData.category) {
+        url += `${searchDebouce ? "&" : ""}category=${getData.category}`;
       }
       let response = await axios.get(url);
       setEvent(response.data);
@@ -74,13 +74,15 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
                 onChange={(e) => setSearch(e.target.value)}
               />
               <div className=" mt-[10px] flex justify-between">
-                <Select onValueChange={(element: any) => {
+                <Select
+                  onValueChange={(element: any) => {
                     const newData = {
                       ...getData,
-                      category: element
-                    }
+                      category: element,
+                    };
                     setGetData(newData);
-                  }}>
+                  }}
+                >
                   <SelectTrigger className="w-[158px] ">
                     <SelectValue placeholder="Category" />
                   </SelectTrigger>
