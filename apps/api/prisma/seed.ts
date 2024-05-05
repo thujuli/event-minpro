@@ -46,9 +46,9 @@ async function seed() {
         startDate: new Date(event.startDate),
         endDate: new Date(event.endDate),
         isActive: event.isActive,
-        userId: event.userId,
-        locationId: event.locationId,
-        categoryId: event.categoryId,
+        user: { connect: { id: event.userId } },
+        location: { connect: { id: event.locationId } },
+        category: { connect: { id: event.categoryId } },
       },
     });
   }
