@@ -20,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <TanstackQueryProvider>
-      <html lang="en">
+      <html lang="en" className="scroll-smooth">
         <body
           className={cn(
             "min-h-screen bg-background antialiased",

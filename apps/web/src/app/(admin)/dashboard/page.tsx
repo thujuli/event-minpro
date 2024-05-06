@@ -7,14 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Activity,
-  ArrowUpRight,
-  Badge,
-  CreditCard,
-  DollarSign,
-  Users,
-} from "lucide-react";
+import { ArrowUpRight, CreditCard, DollarSign, Users } from "lucide-react";
 import Link from "next/link";
 import {
   Table,
@@ -24,15 +17,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-// dummy data
-const getData = async () => {
-  const res = await fetch(
-    "https://662dd263a7dda1fa378b5b89.mockapi.io/api/users",
-  );
-  const json = await res.json();
-  return json;
-};
 
 const DashboardPage: React.FC = async () => {
   return (

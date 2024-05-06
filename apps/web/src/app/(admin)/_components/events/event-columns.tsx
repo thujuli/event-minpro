@@ -1,10 +1,8 @@
 "use client";
 
-import { User } from "@/types/users";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,27 +11,44 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { EventResponse } from "@/types/event";
+import { format } from "date-fns";
 
-export const eventColumns: ColumnDef<User>[] = [
+export const eventColumns: ColumnDef<EventResponse>[] = [
   {
     accessorKey: "name",
     header: "Name",
   },
   {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Email" />;
+    accessorKey: "price",
+    header: "Price",
+  },
+  {
+    accessorKey: "startDate",
+    header: "Start Date",
+    cell: ({ row }) => {
+      const date = new Date(row.getValue("startDate"));
+      const formatted = format(date, "dd/MM/yyyy");
+      return <div className="text-sm">{formatted}</div>;
+    },
+  },
+
+  {
+    accessorKey: "endDate",
+    header: "End Date",
+    cell: ({ row }) => {
+      const date = new Date(row.getValue("endDate"));
+      const formatted = format(date, "dd/MM/yyyy");
+      return <div className="text-sm">{formatted}</div>;
     },
   },
   {
     accessorKey: "createdAt",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Created At" />;
-    },
+    header: "Created At",
     cell: ({ row }) => {
       const date = new Date(row.getValue("createdAt"));
-      const formatted = date.toLocaleDateString();
-      return <div className="font-bold">{formatted}</div>;
+      const formatted = format(date, "dd/MM/yyyy");
+      return <div className="font-medium">{formatted}</div>;
     },
   },
   {
@@ -52,7 +67,7 @@ export const eventColumns: ColumnDef<User>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(name.id)}
+              onClick={() => navigator.clipboard.writeText(name.id.toString())}
             >
               Copy name ID
             </DropdownMenuItem>
