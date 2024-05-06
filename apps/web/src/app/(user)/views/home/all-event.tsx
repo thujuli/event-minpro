@@ -137,7 +137,7 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
                 id={event.id}
                 urlImage={event.imageURL}
                 judul={event.name}
-                lokasi={event.locationId}
+                lokasi={event.location.name}
                 waktu={event.createdAt}
                 harga={event.price}
               />

@@ -29,6 +29,7 @@ const CardEvent: React.FunctionComponent<ICardEventProps> = (props) => {
         <h1 className="  text-[12px] md:text-[14px]  font-bold overflow-hidden whitespace-nowrap overflow-ellipsis">
           {props.judul}
         </h1>
+        {/* <h1 className="  text-[10px]  mt-[10px]">{props.lokasi}</h1> */}
         <h1 className="  text-[10px]  mt-[10px]">{props.lokasi}</h1>
         <h1 className="  text-[10px]  mt-[4px]">{props.waktu}</h1>
         <h1 className="  text-[10px] md:text-[12px] font-semibold  mt-[20px] md:mt-[40px] text-[#53B253]">

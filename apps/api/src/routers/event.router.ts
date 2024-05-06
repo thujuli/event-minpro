@@ -13,6 +13,8 @@ private router: Router;
 
   private initializeRoutes(): void {
     this.router.get('/', this.eventController.getEvents);
+    this.router.get('/search', this.eventController.getEventsBySearch);
+    this.router.get('/:id', this.eventController.getEventById);
   }
 
   public getRoutes(): Router {

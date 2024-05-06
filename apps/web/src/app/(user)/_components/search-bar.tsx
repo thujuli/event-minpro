@@ -20,22 +20,28 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import CardSearch from "./card-search";
+import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
 
 interface IInputSearchProps {}
 
 const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
+  //buat kategori
+  const [categories, setCategories] = React.useState<any[]>([]);
+
   const [getData, setGetData] = React.useState<any>({
     category: "",
+    location: "",
   });
   const [search, setSearch] = React.useState("");
   const [event, setEvent] = React.useState<any>([]);
   const [searchDebouce] = useDebounce(search, 1000);
   React.useEffect(() => {
     onHandleGet();
+    getCategories();
   }, [searchDebouce, getData]);
   const onHandleGet = async () => {
     try {
-      let url = `http://localhost:2000/event/search?`;
+      let url = NEXT_PUBLIC_BASE_API_URL + "/events/search?";
       if (searchDebouce) {
         url += `name=${searchDebouce}`;
       }
@@ -43,9 +49,18 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
         url += `${searchDebouce ? "&" : ""}category=${getData.category}`;
       }
       let response = await axios.get(url);
-      setEvent(response.data);
+      setEvent(response.data.result);
     } catch (err) {
       console.log(err);
+    }
+  };
+  const getCategories = async () => {
+    try {
+      const url = NEXT_PUBLIC_BASE_API_URL + "/categories";
+      const response = await axios.get(url);
+      setCategories(response.data.result);
+    } catch (error) {
+      console.log("Error fetching categories:", error);
     }
   };
   console.log("onChange", searchDebouce);
@@ -65,7 +80,6 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
           className="mx-auto h-[450px] w-full rounded-lg bg-white md:h-[534px] md:w-[450px]"
         >
           <SheetHeader>
-            {/* <SheetTitle>Are you absolutely sure?</SheetTitle> */}
             <SheetDescription className="  mx-auto">
               <Input
                 className="h-[36px] w-[300px]  bg-[#f4f7fe]"
@@ -75,7 +89,7 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
               />
               <div className=" mt-[10px] flex justify-between">
                 <Select
-                  onValueChange={(element: any) => {
+                  onValueChange={(element: string) => {
                     const newData = {
                       ...getData,
                       category: element,
@@ -86,22 +100,18 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
                   <SelectTrigger className="w-[158px] ">
                     <SelectValue placeholder="Category" />
                   </SelectTrigger>
-                  <SelectContent>
+                  {/* <SelectContent>
                     <SelectItem value="Webinar">Webinar</SelectItem>
                     <SelectItem value="Musik">Musik</SelectItem>
-                    {/* <SelectItem value="system">System</SelectItem> */}
+                  </SelectContent> */}
+                  <SelectContent>
+                    {categories.map((category: any) => (
+                      <SelectItem key={category.id} value={category.name}>
+                        {category.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
-                {/* <Select>
-                  <SelectTrigger className="w-[158px]">
-                    <SelectValue placeholder="Theme" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="light">Light</SelectItem>
-                    <SelectItem value="dark">Dark</SelectItem>
-                    <SelectItem value="system">System</SelectItem>
-                  </SelectContent>
-                </Select> */}
               </div>
               <div className=" flex  overflow-y-scroll rounded-b-lg p-4">
                 <div className="mt-[12px] space-y-1">
@@ -110,7 +120,7 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
                       <CardSearch
                         id={event.id}
                         judul={event.name}
-                        lokasi={event.location}
+                        lokasi={event.location?.name}
                       />
                     </div>
                   ))}
