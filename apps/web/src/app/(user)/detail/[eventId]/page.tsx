@@ -23,7 +23,7 @@ const DetailEvent: React.FunctionComponent<IDetailEventProps> = (props) => {
         <ButtonBeliMobile />
       </div> */}
       <div className="mx-0 md:mx-[120px]">
-        {/* <Recomend/> */}
+        <Recomend/>
       </div>
     </section>
   );

@@ -4,4 +4,8 @@ export type EventQuery = {
   price?: string | number;
   categoryId?: string | number;
   locationId?: string | number;
+  category?: string
+  name?:string
+  location? :string
+  id?:number
 };

@@ -2,6 +2,8 @@ import * as React from "react";
 import { Input } from "@/components/ui/input";
 import CardEventPromo from "../../_components/home/card-event-promo";
 import axios from "axios";
+import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
+
 interface IMainDescriptionProps {}
 
 const MainDescription: React.FunctionComponent<IMainDescriptionProps> = (props) => {
@@ -15,11 +17,10 @@ const MainDescription: React.FunctionComponent<IMainDescriptionProps> = (props) 
   //Handle Get API Detail :
   const getApiDetail = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:2000/event/${eventId}`,
-      );
-      console.log(response.data);
-      setEvent(response.data);
+      let url = NEXT_PUBLIC_BASE_API_URL + `/events/${eventId}`;
+      const response = await axios.get(url);
+      console.log(response.data.result[0]);
+      setEvent(response.data.result[0]);
     } catch (err) {
       console.log("Error fetching event data:", err);
     }

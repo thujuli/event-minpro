@@ -3,6 +3,8 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import ButtonBeliDes from "../../_components/detail/button-buy-des";
 import ButtonBeliMobile from "../../_components/detail/button-buy-mobile";
+import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
+
 
 interface ITicketProps {}
 
@@ -18,11 +20,10 @@ const Ticket: React.FunctionComponent<ITicketProps> = (props) => {
   //Handle Get API Detail :
   const getApiDetail = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:2000/event/${eventId}`,
-      );
-      console.log(response.data);
-      setEvent(response.data);
+      let url = NEXT_PUBLIC_BASE_API_URL + `/events/${eventId}`;
+      const response = await axios.get(url);
+      console.log(response.data.result[0]);
+      setEvent(response.data.result[0]);
     } catch (err) {
       console.log("Error fetching event data:", err);
     }
@@ -75,7 +76,7 @@ const Ticket: React.FunctionComponent<ITicketProps> = (props) => {
             ></div>
             <div className=" flex items-center justify-between py-[18px] text-[14px] md:text-[14px]">
               <p>
-                Available Seat : {event.availableSeats}/{event.maxSeats}
+                Available Seat : {event.availableSeats}/100
               </p>
               <ButtonBeliDes />
             </div>
