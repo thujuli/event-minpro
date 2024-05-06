@@ -32,17 +32,31 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import { useState } from "react";
-import { DataTablePagination } from "./data-table-pagination";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+} from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  pageNumber: number;
+  totalPages: number;
+  canNextPage: boolean;
+  canPrevPage: boolean;
 }
 
-export function DataTable<TData, TValue>({
+export function EventDataTable<TData, TValue>({
   columns,
   data,
+  pageNumber,
+  totalPages,
+  canNextPage,
+  canPrevPage,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -52,16 +66,13 @@ export function DataTable<TData, TValue>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
     state: {
       sorting,
       columnFilters,
-      columnVisibility,
     },
   });
 
@@ -76,7 +87,7 @@ export function DataTable<TData, TValue>({
             onChange={(event) =>
               table.getColumn("name")?.setFilterValue(event.target.value)
             }
-            className="h-8 w-[150px] lg:w-[250px]"
+            className="h-8 w-[250px] lg:w-[300px]"
           />
         </div>
 
@@ -172,7 +183,57 @@ export function DataTable<TData, TValue>({
       </div>
 
       {/* pagination */}
-      <DataTablePagination table={table} />
+      <div className="flex items-center justify-center gap-2">
+        {canPrevPage && (
+          <>
+            <Button asChild size="sm">
+              <Link
+                href="/dashboard/events?page=1"
+                scroll={false}
+                className="flex gap-[2px]"
+              >
+                <ChevronsLeft className="h-5 w-5" />
+                First
+              </Link>
+            </Button>
+            <Button asChild size="sm">
+              <Link
+                href={`/dashboard/events?page=${pageNumber - 1}`}
+                scroll={false}
+                className="flex gap-[2px]"
+              >
+                <ChevronLeft className="h-5 w-5" />
+                Prev
+              </Link>
+            </Button>
+          </>
+        )}
+        <span>
+          Page {pageNumber} of {totalPages}
+        </span>
+        {canNextPage && (
+          <>
+            <Button asChild size="sm" className="flex gap-[2px]">
+              <Link
+                href={`/dashboard/events?page=${pageNumber + 1}`}
+                scroll={false}
+              >
+                Next
+                <ChevronRight className="h-5 w-5" />
+              </Link>
+            </Button>
+            <Button asChild size="sm" className="flex gap-[2px]">
+              <Link
+                href={`/dashboard/events?page=${totalPages}`}
+                scroll={false}
+              >
+                Last
+                <ChevronsRight className="h-5 w-5" />
+              </Link>
+            </Button>
+          </>
+        )}
+      </div>
     </div>
   );
 }

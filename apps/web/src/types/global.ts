@@ -10,3 +10,13 @@ export type ResponseWithoutData = {
   success: boolean;
   message: string;
 };
+
+export type ResponseDataPagination<T = any> = {
+  rc: number;
+  success: boolean;
+  message: string;
+  result: T;
+  page: number;
+  limit: number;
+  total: number;
+};

@@ -1,22 +1,32 @@
 import { Button } from "@/components/ui/button";
-import { DataTable } from "@/components/ui/data-table";
 import { PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { eventColumns } from "../../_components/events/event-columns";
 import DashboardTemplate from "../../_components/template";
+import { getEvents } from "@/data/event";
+import { EventDataTable } from "../../_components/events/event-data-table";
 
-// dummy data
-const getData = async () => {
-  const res = await fetch(
-    "https://662dd263a7dda1fa378b5b89.mockapi.io/api/users",
-  );
-  const json = await res.json();
-  return json;
+type Props = {
+  searchParams: {
+    page?: string;
+  };
 };
 
-const DashboardPage: React.FC = async () => {
-  // fetch dummy data
-  const data = await getData();
+const EventPage: React.FC<Props> = async ({ searchParams }: Props) => {
+  let pageNumber: number;
+
+  if (!searchParams.page) {
+    pageNumber = 1;
+  } else if (!isNaN(Number(searchParams.page))) {
+    pageNumber = Number(searchParams.page);
+  } else {
+    pageNumber = 1;
+  }
+
+  const data = await getEvents(pageNumber);
+  const canNextPage = data.total > data.limit * pageNumber;
+  const canPrevPage = pageNumber > 1;
+  const totalPages = Math.ceil(data.total / data.limit);
 
   return (
     <DashboardTemplate>
@@ -31,22 +41,31 @@ const DashboardPage: React.FC = async () => {
         </Button>
       </div>
       <div className="flex flex-1 items-center justify-center">
-        <div className="w-full">
-          <DataTable columns={eventColumns} data={data} />
-        </div>
-
-        {/* <div className="flex flex-col items-center gap-1 text-center">
-          <h3 className="text-2xl font-bold tracking-tight">
-            You have no events
-          </h3>
-          <p className="text-sm text-muted-foreground">
-            Set up an event and proceed to sell tickets.
-          </p>
-          <Button className="mt-4">Add Event</Button>
-        </div> */}
+        {data.result.length > 0 ? (
+          <div className="w-full">
+            <EventDataTable
+              columns={eventColumns}
+              data={data.result}
+              pageNumber={pageNumber}
+              totalPages={totalPages}
+              canNextPage={canNextPage}
+              canPrevPage={canPrevPage}
+            />
+          </div>
+        ) : (
+          <div className="flex flex-col items-center gap-1 text-center">
+            <h3 className="text-2xl font-bold tracking-tight">
+              You have no events
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              Set up an event and proceed to sell tickets.
+            </p>
+            <Button className="mt-4">Add Event</Button>
+          </div>
+        )}
       </div>
     </DashboardTemplate>
   );
 };
 
-export default DashboardPage;
+export default EventPage;
