@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import ProfileOptions from "./_components/profile-options";
+import ProfileOptions from "@/components/shared/profile-options";
 import BreadcrumbDashboard from "./_components/breadcrumb-dashboard";
 
 type Props = {
