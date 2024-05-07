@@ -21,10 +21,32 @@ import {
 } from "@/components/ui/select";
 import CardSearch from "./card-search";
 import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
+import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { PopoverClose } from "@radix-ui/react-popover";
+import { cn } from "@/lib/utils";
+import { LocationSearch } from "@/components/shared/location-search";
+import { LocationResponse } from "@/types/location";
+import { ChevronsUpDown } from "lucide-react";
+// import SelectLocation from "./profile/select-location";
 
 interface IInputSearchProps {}
 
 const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
+  //buat location
+  const handleSetActive = React.useCallback((item: LocationResponse) => {
+    setSelected(item);
+    setOpen(false);
+  }, []);
+  const [open, setOpen] = React.useState(false);
+  const [selected, setSelected] = React.useState<
+    LocationResponse | undefined
+  >();
+  const displayName = selected ? selected.name : "Select location";
   //buat kategori
   const [categories, setCategories] = React.useState<any[]>([]);
 
@@ -46,8 +68,12 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
         url += `name=${searchDebouce}`;
       }
       if (getData.category) {
-        url += `${searchDebouce ? "&" : ""}category=${getData.category}`;
+        url += `${searchDebouce ? "&" : ""}categoryId=${getData.category}`;
       }
+      if (getData.location) {
+        url += `${searchDebouce ? "&" : ""}locationId=${getData.location.id}`;
+      }
+      console.log("cek log url :", url);
       let response = await axios.get(url);
       setEvent(response.data.result);
     } catch (err) {
@@ -64,7 +90,9 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
     }
   };
   console.log("onChange", searchDebouce);
+  // console.log("onChange", getData.location.id);
   console.log("onChange", getData.category);
+  console.log("onChange", getData.location.id);
   return (
     <section className=" mx-auto flex">
       <Sheet>
@@ -77,7 +105,7 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
         </SheetTrigger>
         <SheetContent
           side="bottom"
-          className="mx-auto h-[450px] w-full rounded-lg bg-white md:h-[534px] md:w-[450px]"
+          className="mx-auto mb-0 h-[450px] w-full overflow-hidden rounded-lg bg-white md:mb-10 md:h-[534px] md:w-[450px]"
         >
           <SheetHeader>
             <SheetDescription className="  mx-auto">
@@ -89,7 +117,7 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
               />
               <div className=" mt-[10px] flex justify-between">
                 <Select
-                  onValueChange={(element: string) => {
+                  onValueChange={(element: any) => {
                     const newData = {
                       ...getData,
                       category: element,
@@ -100,20 +128,43 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
                   <SelectTrigger className="w-[158px] ">
                     <SelectValue placeholder="Category" />
                   </SelectTrigger>
-                  {/* <SelectContent>
-                    <SelectItem value="Webinar">Webinar</SelectItem>
-                    <SelectItem value="Musik">Musik</SelectItem>
-                  </SelectContent> */}
                   <SelectContent>
                     {categories.map((category: any) => (
-                      <SelectItem key={category.id} value={category.name}>
+                      <SelectItem key={category.id} value={category.id}>
                         {category.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
+                {/* SELECT LOCATION MULAI */}
+                <Popover open={open} onOpenChange={setOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={open}
+                      className={cn(
+                        "w-full justify-between",
+                        !selected && "text-muted-foreground",
+                      )}
+                    >
+                      {displayName}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent align="start" className="p-0">
+                    <LocationSearch
+                      selectedResult={selected}
+                      onSelectResult={(result) => {
+                        setGetData({ ...getData, location: result });
+                        handleSetActive(result);
+                      }}
+                    />
+                  </PopoverContent>
+                </Popover>
+                {/* SELECT LOCATION AKHIR */}
               </div>
-              <div className=" flex  overflow-y-scroll rounded-b-lg p-4">
+              <div className=" flex overflow-scroll rounded-b-lg p-4">
                 <div className="mt-[12px] space-y-1">
                   {event.map((event: any, index: number) => (
                     <div key={index}>

@@ -15,7 +15,7 @@ const CategorySection: React.FunctionComponent<ICategorySectionProps> = (
     <section className="px-5 block md:hidden ">
       <div className=" flex h-[120px] w-full overflow-x-auto overflow-hidden gap-5 ">
         {/* 1 */}
-        <div className=" flex flex-col items-center justify-center">
+        <div className=" flex flex-col items-center justify-center ">
           <div className="h-[50px] w-[50px] rounded-lg border border-slate-400 bg-white p-4">
             <FaWindows />
           </div>
