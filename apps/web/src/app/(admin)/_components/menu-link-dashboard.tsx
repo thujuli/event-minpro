@@ -1,6 +1,6 @@
 "use client";
 
-import { dashboardMenuItems } from "@/lib/constants";
+import { dashboardMenuItems } from "./const-dashboard";
 import LinkDashboard from "./link-dashboard";
 import { cn } from "@/lib/utils";
 import React from "react";
