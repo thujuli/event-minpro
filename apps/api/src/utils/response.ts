@@ -2,7 +2,7 @@ export const responseWithData = (
   status: number,
   isSuccess: boolean,
   message: string,
-  data: object | Array<any>,
+  data: object | Array<any> ,
 ) => {
   return {
     rc: status,
