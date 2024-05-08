@@ -20,3 +20,10 @@ export type ResponseDataPagination<T = any> = {
   limit: number;
   total: number;
 };
+
+export type Pagination = {
+  page?: string | number;
+  limit?: string | number;
+  sort_by?: string;
+  order_by?: string;
+};

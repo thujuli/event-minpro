@@ -44,7 +44,7 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  pageNumber: number;
+  page: number;
   totalPages: number;
   canNextPage: boolean;
   canPrevPage: boolean;
@@ -53,7 +53,7 @@ interface DataTableProps<TData, TValue> {
 export function EventDataTable<TData, TValue>({
   columns,
   data,
-  pageNumber,
+  page,
   totalPages,
   canNextPage,
   canPrevPage,
@@ -198,7 +198,7 @@ export function EventDataTable<TData, TValue>({
             </Button>
             <Button asChild size="sm">
               <Link
-                href={`/dashboard/events?page=${pageNumber - 1}`}
+                href={`/dashboard/events?page=${page - 1}`}
                 scroll={false}
                 className="flex gap-[2px]"
               >
@@ -209,15 +209,12 @@ export function EventDataTable<TData, TValue>({
           </>
         )}
         <span>
-          Page {pageNumber} of {totalPages}
+          Page {page} of {totalPages}
         </span>
         {canNextPage && (
           <>
             <Button asChild size="sm" className="flex gap-[2px]">
-              <Link
-                href={`/dashboard/events?page=${pageNumber + 1}`}
-                scroll={false}
-              >
+              <Link href={`/dashboard/events?page=${page + 1}`} scroll={false}>
                 Next
                 <ChevronRight className="h-5 w-5" />
               </Link>

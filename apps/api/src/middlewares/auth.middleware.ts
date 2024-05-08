@@ -14,3 +14,17 @@ export const verifyToken = (
   if (decoded) res.locals.decoded = decoded;
   next();
 };
+
+export const adminGuard = (req: Request, res: Response, next: NextFunction) => {
+  if (!res.locals.decoded?.isAdmin) {
+    throw new ErrorResponse(401, 'Unauthorized');
+  }
+  next();
+};
+
+export const userGuard = (req: Request, res: Response, next: NextFunction) => {
+  if (res.locals.decoded?.isAdmin) {
+    throw new ErrorResponse(401, 'Unauthorized');
+  }
+  next();
+};
