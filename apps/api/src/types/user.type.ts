@@ -4,3 +4,11 @@ export type UniqueUserField = {
   email?: string;
   referralCode?: string;
 };
+
+export type UserEventQuery = {
+  name?: string;
+  page?: string | number;
+  limit?: string | number;
+  sort_by?: string;
+  order_by?: string;
+};

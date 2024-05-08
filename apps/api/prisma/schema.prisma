@@ -63,10 +63,10 @@ model Event {
   description    String        @db.Text
   imageURL       String
   availableSeats Int
+  maxSeats       Int
   limitCheckout  Int
   startDate      DateTime
   endDate        DateTime
-  isActive       Boolean       @default(true)
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
   userId         Int

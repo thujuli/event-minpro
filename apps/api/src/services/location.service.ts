@@ -1,4 +1,3 @@
-import prisma from '@/prisma';
 import { LocationRepository } from '@/repositories/location.repository';
 import { LocationQuery } from '@/types/location.type';
 import { responseWithData } from '@/utils/response';
@@ -10,9 +9,9 @@ export class LocationService {
     let locationQuery = Validation.validate(LocationValidation.QUERY, query);
 
     if (!locationQuery.page) locationQuery.page = 1;
-    if (!locationQuery.per_page) locationQuery.per_page = 5;
+    if (!locationQuery.limit) locationQuery.limit = 5;
     if (!locationQuery.sort_by) locationQuery.sort_by = 'name';
-    if (!locationQuery.sort_oder) locationQuery.sort_oder = 'asc';
+    if (!locationQuery.order_by) locationQuery.order_by = 'asc';
 
     const locations = await LocationRepository.getLocations(locationQuery);
 

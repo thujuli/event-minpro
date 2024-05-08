@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,21 +11,74 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { EventResponse } from "@/types/event";
+import { UserEventResponse } from "@/types/user";
 import { format } from "date-fns";
+import Link from "next/link";
 
-export const eventColumns: ColumnDef<EventResponse>[] = [
+export const eventColumns: ColumnDef<UserEventResponse>[] = [
   {
     accessorKey: "name",
-    header: "Name",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
   },
   {
     accessorKey: "price",
-    header: "Price",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Price
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "category.name",
+    header: "Category",
+  },
+  {
+    accessorKey: "location.name",
+    header: "Location",
+  },
+  {
+    accessorKey: "availableSeats",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Available Seats
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
   },
   {
     accessorKey: "startDate",
-    header: "Start Date",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Start Date
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       const date = new Date(row.getValue("startDate"));
       const formatted = format(date, "dd/MM/yyyy");
@@ -35,7 +88,17 @@ export const eventColumns: ColumnDef<EventResponse>[] = [
 
   {
     accessorKey: "endDate",
-    header: "End Date",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          End Date
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       const date = new Date(row.getValue("endDate"));
       const formatted = format(date, "dd/MM/yyyy");
@@ -44,7 +107,17 @@ export const eventColumns: ColumnDef<EventResponse>[] = [
   },
   {
     accessorKey: "createdAt",
-    header: "Created At",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Created At
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       const date = new Date(row.getValue("createdAt"));
       const formatted = format(date, "dd/MM/yyyy");
@@ -72,8 +145,18 @@ export const eventColumns: ColumnDef<EventResponse>[] = [
               Copy name ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View name details</DropdownMenuItem>
+            <DropdownMenuItem
+              asChild
+              className="cursor-pointer text-blue-500 focus:text-blue-600"
+            >
+              <Link href={`/admin/events/${name.id}/edit`}>Edit</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              asChild
+              className="cursor-pointer text-red-500 focus:text-red-600"
+            >
+              <Link href={`/admin/events/${name.id}/edit`}>Delete</Link>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

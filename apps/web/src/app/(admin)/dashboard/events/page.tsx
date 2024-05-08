@@ -1,32 +1,56 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { eventColumns } from "../../_components/events/event-columns";
 import DashboardTemplate from "../../_components/template";
-import { getEvents } from "@/data/event";
+import { getUserEvents } from "@/data/user";
 import { EventDataTable } from "../../_components/events/event-data-table";
+import { ResponseDataPagination } from "@/types/global";
+import { useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import Cookie from "js-cookie";
+import { UserEventResponse } from "@/types/user";
 
-type Props = {
-  searchParams: {
-    page?: string;
-  };
-};
+const EventPage: React.FC = () => {
+  const searchParams = useSearchParams();
+  const [data, setData] = useState<
+    ResponseDataPagination<UserEventResponse[]> | undefined
+  >(undefined);
+  const [canNextPage, setCanNextPage] = useState<boolean>(false);
+  const [canPrevPage, setCanPrevPage] = useState<boolean>(false);
+  const [totalPages, setTotalPages] = useState(1);
 
-const EventPage: React.FC<Props> = async ({ searchParams }: Props) => {
-  let pageNumber: number;
+  useEffect(() => {
+    const getData = async () => {
+      const page = searchParams.get("page")
+        ? Number(searchParams.get("page"))
+        : 1;
+      const limit = searchParams.get("limit")
+        ? Number(searchParams.get("limit"))
+        : 10;
+      const sort_by = searchParams.get("sort_by")
+        ? searchParams.get("sort_by")!
+        : "createdAt";
+      const order_by = searchParams.get("order_by")
+        ? searchParams.get("order_by")!
+        : "desc";
 
-  if (!searchParams.page) {
-    pageNumber = 1;
-  } else if (!isNaN(Number(searchParams.page))) {
-    pageNumber = Number(searchParams.page);
-  } else {
-    pageNumber = 1;
-  }
+      const userEvents = await getUserEvents(Cookie.get("admin-tkn")!, {
+        page,
+        limit,
+        sort_by,
+        order_by,
+      });
+      setData(userEvents);
+      setCanNextPage(userEvents.total > userEvents.limit * userEvents.page);
+      setCanPrevPage(userEvents.page > 1);
+      setTotalPages(Math.ceil(userEvents.total / userEvents.limit));
+    };
 
-  const data = await getEvents(pageNumber);
-  const canNextPage = data.total > data.limit * pageNumber;
-  const canPrevPage = pageNumber > 1;
-  const totalPages = Math.ceil(data.total / data.limit);
+    getData();
+  }, [searchParams]);
 
   return (
     <DashboardTemplate>
@@ -40,13 +64,13 @@ const EventPage: React.FC<Props> = async ({ searchParams }: Props) => {
           </Link>
         </Button>
       </div>
-      <div className="flex flex-1 items-center justify-center">
-        {data.result.length > 0 ? (
+      <div className="flex flex-1 justify-center">
+        {data && data.result.length > 0 ? (
           <div className="w-full">
             <EventDataTable
               columns={eventColumns}
               data={data.result}
-              pageNumber={pageNumber}
+              page={data.page}
               totalPages={totalPages}
               canNextPage={canNextPage}
               canPrevPage={canPrevPage}
