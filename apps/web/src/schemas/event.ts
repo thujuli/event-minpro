@@ -1,5 +1,12 @@
 import { z } from "zod";
 
+const MAX_FILE_SIZE = 2 * 1024 * 1024;
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+];
 const yesterday = new Date();
 yesterday.setDate(yesterday.getDate() - 1);
 
@@ -24,16 +31,36 @@ export const eventSchema = z
     location: z.string({ required_error: "Location is required!" }),
     category: z.string({ required_error: "Category is required!" }),
     description: z
-      .string()
-      .min(3, { message: "Description must be at least 3 characters!" })
-      .optional(),
-    capacity: z.coerce
-      .number({ invalid_type_error: "Capacity is required!" })
-      .min(0, { message: "Capacity must be at least 0!" }),
+      .string({ required_error: "Description is required!" })
+      .min(100, { message: "Description must be at least 100 characters!" }),
+    maxSeats: z.coerce
+      .number({ invalid_type_error: "Max Seats is required!" })
+      .min(1, { message: "Max Seats must be at least 1!" }),
+    limitCheckout: z.coerce.number({
+      invalid_type_error: "Limit Checkout is required!",
+    }),
+    image: z
+      .any()
+      .refine((files) => files?.length == 1, "Image is required!")
+      .refine(
+        (files) => files?.[0]?.size < MAX_FILE_SIZE,
+        "Image must be less than 2MB!",
+      )
+      .refine(
+        (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+        ".jpg, .jpeg, .png and .webp files are accepted.",
+      ),
   })
   .refine((data) => data.startDate <= data.endDate, {
     message: "Start date cannot be after end date!",
     path: ["endDate"],
-  });
+  })
+  .refine(
+    (data) => data.limitCheckout > 0 && data.limitCheckout <= data.maxSeats,
+    {
+      message: "Limit Checkout must be less than Max Seats!",
+      path: ["limitCheckout"],
+    },
+  );
 
 export type EventSchema = z.infer<typeof eventSchema>;
