@@ -6,6 +6,9 @@ import { MdOutlineDateRange } from "react-icons/md";
 import { BiBookmarks } from "react-icons/bi";
 import { MdGroups3 } from "react-icons/md";
 import axios from "axios";
+import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
+import { url } from "inspector";
+
 
 const DesSection: React.FunctionComponent<IDesSectionProps> = (props) => {
   const [event, setEvent] = React.useState<any>([]);
@@ -15,9 +18,11 @@ const DesSection: React.FunctionComponent<IDesSectionProps> = (props) => {
   //Handle Get API Detail :
   const getApiDetail = async () => {
     try {
-      const response = await axios.get(`http://localhost:2000/event/${1}`);
-      console.log(response.data);
-      setEvent(response.data);
+      // let url = NEXT_PUBLIC_BASE_API_URL + `/events/${eventId}`;
+      let urlDev = NEXT_PUBLIC_BASE_API_URL + `/events/2`;
+      const response = await axios.get(urlDev);
+      console.log(response.data.result[0]);
+      setEvent(response.data.result[0]);
     } catch (err) {
       console.log("Error fetching event data:", err);
     }
@@ -39,7 +44,7 @@ const DesSection: React.FunctionComponent<IDesSectionProps> = (props) => {
           <div className=" flex items-center">
             <IoLocationSharp className="h-[20px] w-[20px] text-[#aeb2be] md:h-[24px] md:w-[24px]" />
             <p className="mx-[12px] text-[14px] md:mx-[30px] md:text-[12px]">
-              {event.location}
+              {event.location?.name}
             </p>
           </div>
           <div className=" flex items-center">
@@ -51,7 +56,7 @@ const DesSection: React.FunctionComponent<IDesSectionProps> = (props) => {
           <div className=" flex items-center">
             <BiBookmarks className=" h-[20px] w-[20px] text-[#aeb2be] md:h-[24px] md:w-[24px]" />
             <p className="mx-[12px] text-[14px] md:mx-[30px] md:text-[12px]">
-              {event.category}
+              {event.category?.name}
             </p>
           </div>
           <div className=" flex items-center">
