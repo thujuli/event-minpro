@@ -1,8 +1,10 @@
 import { EventController } from '@/controllers/event.controller';
+import { adminGuard, verifyToken } from '@/middlewares/auth.middleware';
+import { uploader } from '@/middlewares/uploader.middleware';
 import { Router } from 'express';
 
 export class EventRouter {
-private router: Router;
+  private router: Router;
   private eventController: EventController;
 
   constructor() {
@@ -13,6 +15,13 @@ private router: Router;
 
   private initializeRoutes(): void {
     this.router.get('/', this.eventController.getEvents);
+    this.router.post(
+      '/',
+      verifyToken,
+      adminGuard,
+      uploader('/events', 'EVENT').single('image'),
+      this.eventController.createEvent,
+    );
     this.router.get('/search', this.eventController.getEventsBySearch);
     this.router.get('/:id', this.eventController.getEventById);
   }

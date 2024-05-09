@@ -1,6 +1,10 @@
 import { EventRepository } from '@/repositories/event.repository';
-import { EventQuery } from '@/types/event.type';
-import { responseDataWithPagination, responseWithData } from '@/utils/response';
+import { EventQuery, EventRequest } from '@/types/event.type';
+import {
+  responseDataWithPagination,
+  responseWithData,
+  responseWithoutData,
+} from '@/utils/response';
 import { EventValidation } from '@/validations/event.validation';
 import { Validation } from '@/validations/validation';
 
@@ -22,6 +26,7 @@ export class EventService {
       totalEvents,
     );
   }
+
   static async getEventsBySearch(query: EventQuery) {
     const eventQuery = Validation.validate(EventValidation.QUERY, query);
     if (!eventQuery.page) eventQuery.page = 1;
@@ -36,14 +41,27 @@ export class EventService {
       response,
       Number(eventQuery.page),
       Number(eventQuery.limit),
-      totalEvent, // Bug pada total Event
+      totalEvent,
     );
   }
+
   static async getEventById(query: EventQuery) {
     const eventQuery = Validation.validate(EventValidation.QUERY, query);
 
     const response = await EventRepository.getEventById(eventQuery);
 
     return responseWithData(200, true, 'Get events successfully', response);
+  }
+
+  static async createEvent(
+    id: number,
+    request: EventRequest,
+    file: Express.Multer.File,
+  ) {
+    const eventRequest = Validation.validate(EventValidation.CREATE, request);
+    const validateFile = EventValidation.fileValidation(file);
+
+    await EventRepository.createEvent(id, eventRequest, validateFile);
+    return responseWithoutData(201, true, 'Create event successfully');
   }
 }

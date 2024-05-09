@@ -4,8 +4,20 @@ export type EventQuery = {
   price?: string | number;
   categoryId?: string | number;
   locationId?: string | number;
-  category?: string
-  name?:string
-  location? :string
-  id?:number
+  category?: string;
+  name?: string;
+  location?: string;
+  id?: number;
+};
+
+export type EventRequest = {
+  name: string;
+  price: number;
+  startDate: Date;
+  endDate: Date;
+  locationId: number;
+  categoryId: number;
+  description: string;
+  maxCapacity: number;
+  limitCheckout: number;
 };

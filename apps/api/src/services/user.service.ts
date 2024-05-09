@@ -27,7 +27,7 @@ export class UserService {
       ({
         description,
         imageURL,
-        maxSeats,
+        maxCapacity,
         limitCheckout,
         updatedAt,
         userId,
@@ -47,9 +47,13 @@ export class UserService {
     );
   }
 
-  static async getDataProfile (id :number){
-
-    const response = await UserRepository.getUserProfile(id)
-    return responseWithData(200,true,"Get user profile successfully", response!)
+  static async getDataProfile(id: number) {
+    const response = await UserRepository.getUserProfile(id);
+    return responseWithData(
+      200,
+      true,
+      'Get user profile successfully',
+      response!,
+    );
   }
 }
