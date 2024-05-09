@@ -37,7 +37,7 @@ const CategoryMusikSection: React.FunctionComponent<
       let url = NEXT_PUBLIC_BASE_API_URL + "/events?categoryId=2";
       const response = await axios.get(url);
       setEvent(response.data.result);
-      console.log(response.data);
+      // console.log("HASIL RESPONSE DATA :",response.data.result);
     } catch (err) {
       console.log(err);
     }

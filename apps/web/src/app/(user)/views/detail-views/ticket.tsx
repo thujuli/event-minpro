@@ -1,33 +1,22 @@
+"use client";
 import * as React from "react";
-import axios from "axios";
 import { Button } from "@/components/ui/button";
 import ButtonBeliDes from "../../_components/detail/button-buy-des";
 import ButtonBeliMobile from "../../_components/detail/button-buy-mobile";
-import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
+import Link from "next/link";
 
-
-interface ITicketProps {}
+interface ITicketProps {
+  id: number;
+  data: {
+    id: number;
+    price: number;
+    availableSeats: number;
+  };
+}
 
 const Ticket: React.FunctionComponent<ITicketProps> = (props) => {
   const [jumlahTiket, setJumlahTiket] = React.useState(1);
-  const [event, setEvent] = React.useState<any>([]);
-  const [eventId, setRventId] = React.useState<string>(
-    window.location.href.split("/")[4],
-  );
-  React.useEffect(() => {
-    getApiDetail();
-  }, [eventId]);
-  //Handle Get API Detail :
-  const getApiDetail = async () => {
-    try {
-      let url = NEXT_PUBLIC_BASE_API_URL + `/events/${eventId}`;
-      const response = await axios.get(url);
-      console.log(response.data.result[0]);
-      setEvent(response.data.result[0]);
-    } catch (err) {
-      console.log("Error fetching event data:", err);
-    }
-  };
+
   const countHarga = (counter: string) => {
     if (counter === "+") {
       return setJumlahTiket((state) => state + 1);
@@ -67,7 +56,7 @@ const Ticket: React.FunctionComponent<ITicketProps> = (props) => {
             <div className="">
               <h1 className=" text-[14px] md:text-[14px]">Price</h1>
               <h1 className=" text-[18px] font-semibold text-[#FFA24B] md:text-[16px]">
-                IDR. {(event.price * jumlahTiket).toLocaleString()}
+                IDR. {props.data.price * jumlahTiket}
               </h1>
             </div>
             <div
@@ -75,14 +64,16 @@ const Ticket: React.FunctionComponent<ITicketProps> = (props) => {
               className=" mt-[10px] border-[0.2px] md:border"
             ></div>
             <div className=" flex items-center justify-between py-[18px] text-[14px] md:text-[14px]">
-              <p>
-                Available Seat : {event.availableSeats}/100
-              </p>
-              <ButtonBeliDes />
+              <p>Available Seat : {props.data.availableSeats}/100</p>
+              <Link href={`/transaction/${props.id}`}>
+                <ButtonBeliDes />
+              </Link>
             </div>
           </div>
           <div className=" mx-[28px] md:hidden ">
-            <ButtonBeliMobile />
+            <Link href={`/transaction/${props.id}`}>
+              <ButtonBeliMobile />
+            </Link>
           </div>
         </div>
       </div>

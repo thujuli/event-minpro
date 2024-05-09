@@ -1,7 +1,7 @@
 import { UserRepository } from '@/repositories/user.repository';
 import { UserEventQuery } from '@/types/user.type';
 import { ErrorResponse } from '@/utils/error';
-import { responseDataWithPagination } from '@/utils/response';
+import { responseDataWithPagination, responseWithData } from '@/utils/response';
 import { UserValidation } from '@/validations/user.validation';
 import { Validation } from '@/validations/validation';
 
@@ -27,7 +27,7 @@ export class UserService {
       ({
         description,
         imageURL,
-        maxSeats,
+        maxCapacity,
         limitCheckout,
         updatedAt,
         userId,
@@ -44,6 +44,16 @@ export class UserService {
       Number(userEventQuery.page),
       Number(userEventQuery.limit),
       allUserEvents!.events.length,
+    );
+  }
+
+  static async getDataProfile(id: number) {
+    const response = await UserRepository.getUserProfile(id);
+    return responseWithData(
+      200,
+      true,
+      'Get user profile successfully',
+      response!,
     );
   }
 }

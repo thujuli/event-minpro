@@ -172,6 +172,7 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
                         id={event.id}
                         judul={event.name}
                         lokasi={event.location?.name}
+                        imageURL={event.imageURL}
                       />
                     </div>
                   ))}

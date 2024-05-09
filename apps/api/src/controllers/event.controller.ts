@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { EventQuery } from '@/types/event.type';
+import { EventQuery, EventRequest } from '@/types/event.type';
 import { EventService } from '@/services/event.service';
 export class EventController {
   public async getEvents(req: Request, res: Response, next: NextFunction) {
@@ -32,6 +32,19 @@ export class EventController {
 
       const response = await EventService.getEventById(params);
       return res.status(200).send(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async createEvent(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = res.locals.decoded.id as number;
+      const request = req.body as EventRequest;
+      const file = req.file as Express.Multer.File;
+
+      const response = await EventService.createEvent(id, request, file);
+      return res.status(201).send(response);
     } catch (error) {
       next(error);
     }

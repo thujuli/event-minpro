@@ -1,64 +1,72 @@
 import * as React from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
+import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
+import Image from "next/image";
 
 interface IDetailOrderProps {}
 
 const DetailOrder: React.FunctionComponent<IDetailOrderProps> = (props) => {
-    const [event, setEvent] = React.useState<any>([]);
-    const [eventId, setRventId] = React.useState<string>(
-      window.location.href.split("/")[4]
-    );
-    React.useEffect(() => {
-      getApiDetail();
-    }, []);
-        //Handle Get API Detail :
-    const getApiDetail = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:2000/event/${4}`
-        );
-        console.log(response.data);
-        setEvent(response.data);
-      } catch (err) {
-        console.log("Error fetching event data:", err);
-      }
-    };
+  const [event, setEvent] = React.useState<any>([]);
+  const [eventId, setRventId] = React.useState<string>(
+    window.location.href.split("/")[4],
+  );
+
+  React.useEffect(() => {
+    getApiDetail();
+  }, []);
+  //Handle Get API Detail :
+  const getApiDetail = async () => {
+    try {
+      let url = NEXT_PUBLIC_BASE_API_URL + `/events/${eventId}`;
+      const response = await axios.get(url);
+      setEvent(response.data.result[0]);
+    } catch (err) {
+      console.log("Error fetching event data:", err);
+    }
+  };
   return (
     <section className="mx-[10px] md:mx-0">
-          <div className=" flex flex-col relative">
-          <div className="md:fixed mt-[24px] w-full md:w-[392px] h-auto md:h-auto  rounded-lg p-[20px] shadow bg-white  ml-0 md:ml-[48px]">
-            <div className=" flex">
-          <img className="w-[40px]  h-[40px] rounded-md " src="https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2021/12/08/d408eb52-5459-41b7-b136-455bf66b4874-1638949824913-fb6a74fe056f99f3d4c0ecd9cb50a2e4.jpg" alt="" />
-            <div className="overflow-hidden whitespace-nowrap overflow-ellipsis  px-2 flex items-center">
-            <p className=" font-semibold text-[14px]">{event.name}</p>
+      <div className=" relative flex flex-col">
+        <div className="ml-0 mt-[24px] h-auto w-full rounded-lg bg-white  p-[20px] shadow md:fixed md:ml-[48px]  md:h-auto md:w-[392px]">
+          <div className=" flex">
+          <Image
+          className="h-[40px] w-[40px] rounded-md "
+          src={event.imageURL}
+          width={236}
+          height={148}
+          alt=""
+        />
+            <div className="flex items-center overflow-hidden  overflow-ellipsis whitespace-nowrap px-2">
+              <p className=" text-[14px] font-semibold">{event.name}</p>
             </div>
-            </div>
-            <div id="stroke" className=" border mt-[10px]"></div>
-            <div className="my-[24px] space-y-3  text-gray-800 text-[12px]" >
-              <h1>REGULAR</h1>
-              <h1 className="text-black text-[14px]">1 Tiket</h1>
-            </div>
-            <div id="stroke" className=" border "></div>
-            <div className="my-[24px] space-y-3  text-gray-800 text-[12px]">
-              <h1>Tanggal dipilih</h1>
-              <h1 className="text-black text-[14px]">Sab, 8 Jun 2024</h1>
-            </div>
-            <div id="stroke" className=" border "></div>
-            <div className=" flex text-[12px] justify-between  text-gray-800 my-[16px]">
-              <p className=" font-semibold">Total Pembayaran</p>
-              <p className=" font-semibold text-[16px]">IDR. {event.price}</p>
-            </div>
-        <div>
-      <Button
-        className="block md:block w-full h-[36px]  bg-[#53B253]  text-white rounded-md"
-        type="button"
-      >
-        Beli Tiket
-      </Button>
-    </div>
+          </div>
+          <div id="stroke" className=" mt-[10px] border"></div>
+          <div className="my-[24px] space-y-3  text-[12px] text-gray-800">
+            <h1>REGULAR</h1>
+            <h1 className="text-[14px] text-black">1 Tiket</h1>
+          </div>
+          <div id="stroke" className=" border "></div>
+          <div className="my-[24px] space-y-3  text-[12px] text-gray-800">
+            <h1>Tanggal dipilih</h1>
+            <h1 className="text-[14px] text-black">{event.startDate}</h1>
+          </div>
+          <div id="stroke" className=" border "></div>
+          <div className=" my-[16px] flex justify-between  text-[12px] text-gray-800">
+            <p className=" font-semibold">Total Pembayaran</p>
+            <p className=" text-[16px] font-semibold">IDR. {event.price}</p>
+          </div>
+          <div>
+            <Button
+              className="hidden h-[36px] w-full rounded-md  bg-[#53B253]  text-white md:block"
+              type="button"
+            >
+              Beli Tiket
+            </Button>
           </div>
         </div>
+      </div>
+
     </section>
   );
 };

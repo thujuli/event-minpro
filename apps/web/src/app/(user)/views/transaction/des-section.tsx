@@ -12,15 +12,17 @@ import { url } from "inspector";
 
 const DesSection: React.FunctionComponent<IDesSectionProps> = (props) => {
   const [event, setEvent] = React.useState<any>([]);
+  const [eventId, setRventId] = React.useState<string>(
+    window.location.href.split("/")[4],
+  );
   React.useEffect(() => {
     getApiDetail();
   }, []);
   //Handle Get API Detail :
   const getApiDetail = async () => {
     try {
-      // let url = NEXT_PUBLIC_BASE_API_URL + `/events/${eventId}`;
-      let urlDev = NEXT_PUBLIC_BASE_API_URL + `/events/2`;
-      const response = await axios.get(urlDev);
+      let url = NEXT_PUBLIC_BASE_API_URL + `/events/${eventId}`;
+      const response = await axios.get(url);
       console.log(response.data.result[0]);
       setEvent(response.data.result[0]);
     } catch (err) {
