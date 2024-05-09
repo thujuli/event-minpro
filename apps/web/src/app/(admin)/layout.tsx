@@ -37,7 +37,7 @@ const DashboardLayout: React.FC<Props> = (props) => {
         </div>
       </div>
       <div className="flex flex-col">
-        <header className="flex h-14 items-center gap-4 border-b bg-white px-4 lg:h-[60px] lg:px-6">
+        <header className="flex h-14 items-center gap-4 border-b bg-white px-4 md:border-b-0 lg:h-[60px] lg:px-6">
           <Sheet>
             <SheetTrigger asChild>
               <Button
@@ -54,7 +54,9 @@ const DashboardLayout: React.FC<Props> = (props) => {
               <MobileMenuDashboard />
             </SheetContent>
           </Sheet>
-          <div className="w-full flex-1" />
+          <div className="w-full flex-1">
+            <BreadcrumbDashboard />
+          </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="icon" className="rounded-full">
@@ -68,7 +70,6 @@ const DashboardLayout: React.FC<Props> = (props) => {
           </DropdownMenu>
         </header>
         <main className="flex w-full flex-1 flex-col gap-4 bg-neutral-200/40 p-4 lg:gap-6 lg:p-6">
-          <BreadcrumbDashboard />
           {children}
         </main>
       </div>

@@ -1,10 +1,3 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import React from "react";
 import DashboardTemplate from "@/app/(admin)/_components/template";
 import EventForm from "@/app/(admin)/_components/events/event-form";

@@ -14,6 +14,7 @@ import {
 import { UserEventResponse } from "@/types/user";
 import { format } from "date-fns";
 import Link from "next/link";
+import { formatDate, formatNumber, formatPrice } from "@/lib/formater";
 
 export const eventColumns: ColumnDef<UserEventResponse>[] = [
   {
@@ -43,14 +44,10 @@ export const eventColumns: ColumnDef<UserEventResponse>[] = [
         </Button>
       );
     },
-  },
-  {
-    accessorKey: "category.name",
-    header: "Category",
-  },
-  {
-    accessorKey: "location.name",
-    header: "Location",
+    cell: ({ row }) => {
+      const price: number = row.getValue("price");
+      return <div>{formatPrice(price)}</div>;
+    },
   },
   {
     accessorKey: "availableSeats",
@@ -64,6 +61,28 @@ export const eventColumns: ColumnDef<UserEventResponse>[] = [
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
+    },
+    cell: ({ row }) => {
+      const value: number = row.getValue("availableSeats");
+      return <div>{formatNumber(value)}</div>;
+    },
+  },
+  {
+    accessorKey: "maxCapacity",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Max Capacity
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const value: number = row.getValue("maxCapacity");
+      return <div>{formatNumber(value)}</div>;
     },
   },
   {
@@ -80,9 +99,8 @@ export const eventColumns: ColumnDef<UserEventResponse>[] = [
       );
     },
     cell: ({ row }) => {
-      const date = new Date(row.getValue("startDate"));
-      const formatted = format(date, "dd/MM/yyyy");
-      return <div className="text-sm">{formatted}</div>;
+      const date: string = row.getValue("startDate");
+      return <div>{formatDate(date)}</div>;
     },
   },
 
@@ -100,9 +118,8 @@ export const eventColumns: ColumnDef<UserEventResponse>[] = [
       );
     },
     cell: ({ row }) => {
-      const date = new Date(row.getValue("endDate"));
-      const formatted = format(date, "dd/MM/yyyy");
-      return <div className="text-sm">{formatted}</div>;
+      const date: string = row.getValue("endDate");
+      return <div>{formatDate(date)}</div>;
     },
   },
   {
@@ -119,9 +136,8 @@ export const eventColumns: ColumnDef<UserEventResponse>[] = [
       );
     },
     cell: ({ row }) => {
-      const date = new Date(row.getValue("createdAt"));
-      const formatted = format(date, "dd/MM/yyyy");
-      return <div className="font-medium">{formatted}</div>;
+      const date: string = row.getValue("createdAt");
+      return <div>{formatDate(date)}</div>;
     },
   },
   {

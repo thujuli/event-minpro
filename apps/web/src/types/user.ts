@@ -5,10 +5,15 @@ export type UserEventResponse = {
   id: number;
   name: string;
   price: number;
-  category: CategoryResponse;
-  location: LocationResponse;
+  description: string;
   availableSeats: number;
+  maxCapacity: number;
+  imageURL: string;
+  limitCheckout: number;
   startDate: string;
   endDate: string;
   createdAt: string;
+  updatedAt: string;
+  category: CategoryResponse;
+  location: LocationResponse;
 };
