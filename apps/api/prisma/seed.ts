@@ -42,7 +42,7 @@ async function seed() {
         description: event.description,
         imageURL: event.imageURL,
         availableSeats: event.availableSeats,
-        maxSeats: event.maxSeats,
+        maxCapacity: event.maxCapacity,
         limitCheckout: event.limitCheckout,
         startDate: new Date(event.startDate),
         endDate: new Date(event.endDate),
