@@ -8,13 +8,15 @@ interface IMyEventListProps {}
 
 const MyEventList: React.FunctionComponent<IMyEventListProps> = (props) => {
   const [event, setEvent] = React.useState([]);
+  const [showOnGoing, setShowOnGoing] =React.useState(true); 
+  const [stateStatus, setStateStatus] = React.useState(4);
   React.useEffect(() => {
     onHandleGet();
-  }, []);
+  }, [stateStatus, showOnGoing]);
   const onHandleGet = async () => {
     try {
-        // route ini nanti diganti sesuai event? id pengggna, status
-      let url = NEXT_PUBLIC_BASE_API_URL + "/events?categoryId=4";
+      // route ini nanti diganti sesuai event? id pengggna, status
+      let url = NEXT_PUBLIC_BASE_API_URL + `/events?categoryId=${stateStatus}`;
       const response = await axios.get(url);
       setEvent(response.data.result);
       console.log(response.data);
@@ -22,11 +24,27 @@ const MyEventList: React.FunctionComponent<IMyEventListProps> = (props) => {
       console.log(err);
     }
   };
+  const filteredEvents = event.filter((event : any) => {
+    return showOnGoing ? setStateStatus(4) : setStateStatus(2)
+  });
+  const handleShowOnGoing = () => {
+    setShowOnGoing(true);
+    setStateStatus(4); // Update stateStatus to filter onGoing events
+  };
+
+  const handleShowCompleted = () => {
+    setShowOnGoing(false);
+    setStateStatus(2); // Update stateStatus to filter completed events
+  };
   return (
     <section>
       <div className="mx-10 flex  justify-evenly ">
-        <h1 className=" font-semibold">On Going</h1>
-        <h1 className=" font-semibold">Selesai</h1>
+        <button onClick={handleShowOnGoing} className=" font-semibold">
+          On Going
+        </button>
+        <button onClick={handleShowCompleted} className=" font-semibold">
+          Selesai
+        </button>
       </div>
       <div className="mx-10 my-[18px] md:grid md:grid-cols-4 md:gap-4 md:p-6">
         {event.map((event: any, index: number) => (

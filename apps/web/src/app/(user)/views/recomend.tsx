@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 import CardEvent from "@/app/(user)/_components/card-event";
 import axios from "axios";
@@ -15,7 +16,6 @@ const Recomend: React.FunctionComponent<IRecomendProps> = (props) => {
       let url = NEXT_PUBLIC_BASE_API_URL + "/events?";
       const response = await axios.get(url);
       setEvent(response.data.result);
-      console.log(response.data.result);
     } catch (err) {
       console.log(err);
     }
@@ -29,12 +29,12 @@ const Recomend: React.FunctionComponent<IRecomendProps> = (props) => {
         </h1>
       </div>
       <div className="my-[18px] flex gap-4 overflow-hidden md:grid md:grid-cols-5 ">
-        {event?.slice(0, 5).map((event: any, index:number) => (
+        {event?.slice(0, 5).map((event: any, index: number) => (
           <div key={index}>
             <CardEvent
               id={event.id}
               judul={event.name}
-              lokasi={event.location.name ? event.location.name : ''}
+              lokasi={event.location.name ? event.location.name : ""}
               waktu={event.createdAt}
               harga={event.price}
               urlImage={event.imageURL}
