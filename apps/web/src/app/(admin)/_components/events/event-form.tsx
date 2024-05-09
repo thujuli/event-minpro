@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -32,9 +31,14 @@ import { LocationSearch } from "@/components/shared/location-search";
 import { LocationResponse } from "@/types/location";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { PopoverClose } from "@radix-ui/react-popover";
 import { Calendar } from "@/components/ui/calendar";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardHeader } from "@/components/ui/card";
+import { TimePicker } from "@/components/shared/time-picker";
+import { AutosizeTextarea } from "@/components/shared/autosize-textarea";
+import axios from "axios";
+import { toast } from "sonner";
+import { createEvent } from "@/data/event";
+import Cookie from "js-cookie";
 
 const EventForm: React.FC = () => {
   const form = useForm<EventSchema>({
@@ -55,8 +59,38 @@ const EventForm: React.FC = () => {
 
   const displayName = selected ? selected.name : "Select location";
 
-  const onSubmit = (data: EventSchema) => {
-    console.log(data);
+  const onSubmit = async (data: EventSchema) => {
+    try {
+      const token = Cookie.get("admin-tkn");
+
+      const promise = createEvent(token!, {
+        name: data.name,
+        price: data.price,
+        startDate: data.startDate,
+        endDate: data.endDate,
+        categoryId: data.category,
+        locationId: data.location,
+        description: data.description,
+        maxCapacity: data.maxCapacity,
+        limitCheckout: data.limitCheckout,
+        image: data.image[0],
+      });
+
+      toast.promise(promise, {
+        loading: "Loading...",
+        success: (data) => {
+          return data.message;
+        },
+      });
+
+      await promise;
+
+      form.reset();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data.message);
+      }
+    }
   };
 
   return (
@@ -67,7 +101,7 @@ const EventForm: React.FC = () => {
       >
         <div className="space-y-4 lg:col-span-2 lg:space-y-6">
           <Card>
-            <CardHeader className="space-y-2">
+            <CardHeader className="space-y-4">
               <FormField
                 control={form.control}
                 name="name"
@@ -89,7 +123,7 @@ const EventForm: React.FC = () => {
                   <FormItem>
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <Textarea {...field} className="resize-none" />
+                      <AutosizeTextarea {...field} className="resize-none" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -144,7 +178,7 @@ const EventForm: React.FC = () => {
                         <LocationSearch
                           selectedResult={selected}
                           onSelectResult={(result) => {
-                            form.setValue("location", result.name);
+                            form.setValue("location", result.id);
                             handleSetActive(result);
                           }}
                         />
@@ -160,76 +194,85 @@ const EventForm: React.FC = () => {
                   control={form.control}
                   name="startDate"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Start Date</FormLabel>
+                    <FormItem className="flex flex-col">
+                      <FormLabel className="text-left">Start Date</FormLabel>
                       <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
+                        <FormControl>
+                          <PopoverTrigger asChild>
                             <Button
-                              variant={"outline"}
+                              variant="outline"
                               className={cn(
-                                "w-full justify-start text-left font-normal",
+                                "w-[280px] justify-start text-left font-normal",
                                 !field.value && "text-muted-foreground",
                               )}
                             >
                               <CalendarIcon className="mr-2 h-4 w-4" />
                               {field.value ? (
-                                format(field.value, "dd/MM/yyyy")
+                                format(field.value, "PPP HH:mm:ss")
                               ) : (
                                 <span>Pick a date</span>
                               )}
                             </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent align="start" className="w-auto p-0">
-                          <PopoverClose>
-                            <Calendar
-                              mode="single"
-                              selected={field.value}
-                              onSelect={field.onChange}
-                              initialFocus
+                          </PopoverTrigger>
+                        </FormControl>
+                        <PopoverContent className="w-auto p-0">
+                          <Calendar
+                            mode="single"
+                            selected={field.value}
+                            onSelect={field.onChange}
+                            initialFocus
+                          />
+                          <div className="border-t border-border p-3">
+                            <TimePicker
+                              setDate={field.onChange}
+                              date={field.value}
                             />
-                          </PopoverClose>
+                          </div>
                         </PopoverContent>
                       </Popover>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+
                 <FormField
                   control={form.control}
                   name="endDate"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>End Date</FormLabel>
+                    <FormItem className="flex flex-col">
+                      <FormLabel className="text-left">End Date</FormLabel>
                       <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
+                        <FormControl>
+                          <PopoverTrigger asChild>
                             <Button
-                              variant={"outline"}
+                              variant="outline"
                               className={cn(
-                                "w-full justify-start text-left font-normal",
+                                "w-[280px] justify-start text-left font-normal",
                                 !field.value && "text-muted-foreground",
                               )}
                             >
                               <CalendarIcon className="mr-2 h-4 w-4" />
                               {field.value ? (
-                                format(field.value, "dd/MM/yyyy")
+                                format(field.value, "PPP HH:mm:ss")
                               ) : (
                                 <span>Pick a date</span>
                               )}
                             </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent align="start" className="w-auto p-0">
-                          <PopoverClose>
-                            <Calendar
-                              mode="single"
-                              selected={field.value}
-                              onSelect={field.onChange}
-                              initialFocus
+                          </PopoverTrigger>
+                        </FormControl>
+                        <PopoverContent className="w-auto p-0">
+                          <Calendar
+                            mode="single"
+                            selected={field.value}
+                            onSelect={field.onChange}
+                            initialFocus
+                          />
+                          <div className="border-t border-border p-3">
+                            <TimePicker
+                              setDate={field.onChange}
+                              date={field.value}
                             />
-                          </PopoverClose>
+                          </div>
                         </PopoverContent>
                       </Popover>
                       <FormMessage />
@@ -243,7 +286,7 @@ const EventForm: React.FC = () => {
 
         <div className="space-y-4 lg:space-y-6">
           <Card>
-            <CardHeader className="space-y-2">
+            <CardHeader className="space-y-4">
               <FormField
                 control={form.control}
                 name="price"
@@ -260,10 +303,10 @@ const EventForm: React.FC = () => {
 
               <FormField
                 control={form.control}
-                name="maxSeats"
+                name="maxCapacity"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Max Seats</FormLabel>
+                    <FormLabel>Max Capacity</FormLabel>
                     <FormControl>
                       <Input placeholder="0" {...field} type="number" />
                     </FormControl>
@@ -284,6 +327,7 @@ const EventForm: React.FC = () => {
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="image"
@@ -300,7 +344,11 @@ const EventForm: React.FC = () => {
             </CardHeader>
           </Card>
 
-          <Button type="submit" className="w-full">
+          <Button
+            type="submit"
+            disabled={form.formState.isSubmitting}
+            className="w-full"
+          >
             Create Event
           </Button>
         </div>

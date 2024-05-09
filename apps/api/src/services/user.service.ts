@@ -24,17 +24,7 @@ export class UserService {
     );
 
     const events = user?.events.map(
-      ({
-        description,
-        imageURL,
-        maxCapacity,
-        limitCheckout,
-        updatedAt,
-        userId,
-        locationId,
-        categoryId,
-        ...rest
-      }) => rest,
+      ({ userId, categoryId, locationId, ...rest }) => rest,
     );
 
     return responseDataWithPagination(
