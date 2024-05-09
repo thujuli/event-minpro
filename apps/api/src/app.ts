@@ -7,6 +7,7 @@ import { LocationRouter } from './routers/location.router';
 import { CategoryRouter } from './routers/category.router';
 import { EventRouter } from './routers/event.router';
 import { UserRouter } from './routers/user.router';
+import { join } from 'path';
 
 export default class App {
   private app: Express;
@@ -39,6 +40,7 @@ export default class App {
       res.send(`Hello, Purwadhika Student !`);
     });
 
+    this.app.use('/assets', express.static(join(__dirname, '../public')));
     this.app.use('/auth', authRouter.getRoutes());
     this.app.use('/locations', locationRouter.getRoutes());
     this.app.use('/categories', categoryRouter.getRoutes());

@@ -1,4 +1,4 @@
-import { EventQuery } from '@/types/event.type';
+import { EventQuery, EventRequest } from '@/types/event.type';
 import prisma from '@/prisma';
 export class EventRepository {
   static async getEvents(query: EventQuery) {
@@ -65,11 +65,12 @@ export class EventRepository {
     return await prisma.event.count({
       where: {
         name: { contains: filter.name },
-        locationId :filter.locationId,
-        categoryId:filter.categoryId
+        locationId: filter.locationId,
+        categoryId: filter.categoryId,
       },
     });
   }
+
   static async getEventById(query: EventQuery) {
     const eventId = Number(query.id);
 
@@ -83,5 +84,40 @@ export class EventRepository {
       },
     });
     return res;
+  }
+
+  static async createEvent(
+    id: number,
+    request: EventRequest,
+    file: Express.Multer.File,
+  ) {
+    const {
+      categoryId,
+      description,
+      endDate,
+      limitCheckout,
+      locationId,
+      name,
+      maxCapacity,
+      price,
+      startDate,
+    } = request;
+
+    await prisma.event.create({
+      data: {
+        name,
+        price,
+        description,
+        imageURL: `/assets/events/${file.filename}`,
+        limitCheckout,
+        maxCapacity,
+        availableSeats: maxCapacity,
+        startDate: new Date(startDate),
+        endDate: new Date(endDate),
+        user: { connect: { id } },
+        location: { connect: { id: locationId } },
+        category: { connect: { id: categoryId } },
+      },
+    });
   }
 }

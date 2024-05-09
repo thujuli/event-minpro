@@ -1,6 +1,40 @@
+import { ErrorResponse } from '@/utils/error';
 import { z } from 'zod';
+import { join } from 'path';
+import fs from 'fs';
+
+const MIN_CATEGORY_ID = 1;
+const MAX_CATEGORY_ID = 6;
+const MIN_LOCATION_ID = 1;
+const MAX_LOCATION_ID = 515;
+const MAX_FILE_SIZE = 2 * 1024 * 1024;
+const ACCEPTED_IMAGE_TYPES = [
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp',
+];
 
 export class EventValidation {
+  static fileValidation(file: Express.Multer.File) {
+    if (!file) throw new ErrorResponse(400, 'Image is required!');
+
+    if (file.size > MAX_FILE_SIZE) {
+      fs.unlinkSync(join(__dirname, '../../public/events', file.filename));
+      throw new ErrorResponse(400, 'Image must be less than 2MB!');
+    }
+
+    if (!ACCEPTED_IMAGE_TYPES.includes(file.mimetype)) {
+      fs.unlinkSync(join(__dirname, '../../public/events', file.filename));
+      throw new ErrorResponse(
+        400,
+        '.jpg, .jpeg, .png and .webp files are accepted.',
+      );
+    }
+
+    return file;
+  }
+
   static QUERY = z.object({
     page: z.coerce
       .number({ invalid_type_error: 'Page must be a Number!' })
@@ -26,4 +60,87 @@ export class EventValidation {
     name: z.string().optional(),
     id: z.coerce.string().optional(),
   });
+
+  static CREATE = z
+    .object({
+      name: z
+        .string({ required_error: 'Name is required!' })
+        .min(3, { message: 'Name must be at least 3 characters!' }),
+      price: z.coerce
+        .number({
+          required_error: 'Price is required!',
+          invalid_type_error: 'Price must be a Number!',
+        })
+        .min(0, { message: 'Price must be at least 0!' }),
+      startDate: z
+        .string({ required_error: 'Start date is required!' })
+        .transform((str) => new Date(str))
+        .refine(
+          (date) => {
+            const today = new Date();
+            if (today > date) return false;
+            return true;
+          },
+          { message: 'Start Date cannot be in the past!' },
+        ),
+      endDate: z
+        .string({ required_error: 'End date is required!' })
+        .transform((str) => new Date(str))
+        .refine(
+          (date) => {
+            const today = new Date();
+            if (today > date) return false;
+            return true;
+          },
+          { message: 'End Date cannot be in the past!' },
+        ),
+      locationId: z.coerce
+        .number({
+          required_error: 'LocationId is required!',
+          invalid_type_error: 'LocationId must be a Number!',
+        })
+        .min(MIN_LOCATION_ID, {
+          message: `LocationId must be greater than ${MIN_LOCATION_ID} and less than ${MAX_LOCATION_ID}`,
+        })
+        .max(MAX_LOCATION_ID, {
+          message: `LocationId must be greater than ${MIN_LOCATION_ID} and less than ${MAX_LOCATION_ID}`,
+        }),
+      categoryId: z.coerce
+        .number({
+          required_error: 'Category is required!',
+          invalid_type_error: 'CategoryId must be a Number',
+        })
+        .min(MIN_CATEGORY_ID, {
+          message: `CategoryId must be greater than ${MIN_CATEGORY_ID} and less than ${MAX_CATEGORY_ID}`,
+        })
+        .max(MAX_CATEGORY_ID, {
+          message: `CategoryId must be greater than ${MIN_CATEGORY_ID} and less than ${MAX_CATEGORY_ID}`,
+        }),
+      description: z
+        .string({ required_error: 'Description is required!' })
+        .min(100, { message: 'Description must be at least 100 characters!' }),
+      maxCapacity: z.coerce
+        .number({
+          required_error: 'Max Capacity is required!',
+          invalid_type_error: 'Max Capacity must be a Number!',
+        })
+        .min(1, { message: 'Max Capacity must be at least 1!' }),
+      limitCheckout: z.coerce.number({
+        required_error: 'Limit Checkout is required!',
+        invalid_type_error: 'Limit Checkout must be a Number!',
+      }),
+    })
+    .refine((data) => data.startDate <= data.endDate, {
+      message: 'Start date cannot be after end date!',
+      path: ['endDate'],
+    })
+    .refine(
+      (data) =>
+        data.limitCheckout > 0 && data.limitCheckout <= data.maxCapacity,
+      {
+        message:
+          'Limit Checkout must be greater than 0 and less than Max Capacity!',
+        path: ['limitCheckout'],
+      },
+    );
 }
