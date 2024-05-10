@@ -1,6 +1,5 @@
 import { UserRepository } from '@/repositories/user.repository';
 import { UserEventQuery } from '@/types/user.type';
-import { ErrorResponse } from '@/utils/error';
 import { responseDataWithPagination, responseWithData } from '@/utils/response';
 import { UserValidation } from '@/validations/user.validation';
 import { Validation } from '@/validations/validation';

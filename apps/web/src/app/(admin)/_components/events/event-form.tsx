@@ -43,6 +43,9 @@ import Cookie from "js-cookie";
 const EventForm: React.FC = () => {
   const form = useForm<EventSchema>({
     resolver: zodResolver(eventSchema),
+    defaultValues: {
+      name: "",
+    },
   });
 
   const fileRef = form.register("image");
@@ -136,7 +139,11 @@ const EventForm: React.FC = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Category</FormLabel>
-                    <Select onValueChange={field.onChange}>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value ? `${field.value}` : ""}
+                      defaultValue={`${field.value}`}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select Category" />
@@ -294,7 +301,13 @@ const EventForm: React.FC = () => {
                   <FormItem>
                     <FormLabel>Price</FormLabel>
                     <FormControl>
-                      <Input placeholder="0" {...field} type="number" />
+                      <Input
+                        placeholder="0"
+                        {...field}
+                        type="number"
+                        min={0}
+                        value={field.value ?? ""}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -308,7 +321,13 @@ const EventForm: React.FC = () => {
                   <FormItem>
                     <FormLabel>Max Capacity</FormLabel>
                     <FormControl>
-                      <Input placeholder="0" {...field} type="number" />
+                      <Input
+                        placeholder="0"
+                        {...field}
+                        type="number"
+                        min={0}
+                        value={field.value ?? ""}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -321,7 +340,13 @@ const EventForm: React.FC = () => {
                   <FormItem>
                     <FormLabel>Limit Checkout</FormLabel>
                     <FormControl>
-                      <Input placeholder="0" {...field} type="number" />
+                      <Input
+                        placeholder="0"
+                        {...field}
+                        type="number"
+                        min={0}
+                        value={field.value ?? ""}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

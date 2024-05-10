@@ -35,7 +35,7 @@ model User {
   isAdmin      Boolean
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
-  points       Point[]
+  point        Point?
   events       Event[]
   feedbacks    Feedback[]
   vouchers     Voucher[]
@@ -50,7 +50,7 @@ model Point {
   expiryDate DateTime
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  userId     Int
+  userId     Int      @unique
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("points")

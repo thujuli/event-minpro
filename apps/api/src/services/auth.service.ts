@@ -1,6 +1,5 @@
-import { PointRepository } from '@/repositories/point.repository';
+import prisma from '@/prisma';
 import { UserRepository } from '@/repositories/user.repository';
-import { VoucherRepository } from '@/repositories/voucher.repository';
 import { Decoded, LoginRequest, RegisterRequest } from '@/types/auth.type';
 import { ErrorResponse } from '@/utils/error';
 import { comparePassword, hashPassword } from '@/utils/hash';
@@ -34,27 +33,50 @@ export class AuthService {
       if (!userByReferralCode) {
         throw new ErrorResponse(400, 'Invalid referral code!');
       } else {
-        const currentDate = new Date();
-        currentDate.setMonth(currentDate.getMonth() + 3);
+        await prisma.$transaction(async (tx) => {
+          const currentDate = new Date();
+          currentDate.setMonth(currentDate.getMonth() + 3);
 
-        await PointRepository.createPoint(userByReferralCode.id, {
-          balance: 10000,
-          expiryDate: currentDate,
-        });
+          if (!userByReferralCode.point) {
+            await tx.point.create({
+              data: {
+                balance: 10000,
+                expiryDate: currentDate,
+                user: { connect: { id: userByReferralCode.id } },
+              },
+            });
+          } else {
+            await tx.point.update({
+              data: {
+                balance: userByReferralCode.point.balance + 10000,
+                expiryDate: currentDate,
+              },
+              where: { id: userByReferralCode.point.id },
+            });
+          }
 
-        const newUser = await UserRepository.createUser({
-          email,
-          isAdmin,
-          username,
-          password: await hashPassword(password),
-          referralCode: isAdmin ? undefined : generateReferralCode(),
-        });
+          const newUser = await tx.user.create({
+            data: {
+              email,
+              isAdmin,
+              username,
+              password: await hashPassword(password),
+              referralCode: isAdmin
+                ? undefined
+                : generateReferralCode(username.slice(0, 3)),
+            },
+          });
 
-        await VoucherRepository.createVoucher(newUser.id, {
-          discount: 10,
-          expiryDate: currentDate,
-          maxUsage: 1,
-          name: generateVoucherCode(),
+          await tx.voucher.create({
+            data: {
+              discount: 10,
+              expiryDate: currentDate,
+              maxUsage: 1,
+              name: generateVoucherCode(),
+
+              user: { connect: { id: newUser.id } },
+            },
+          });
         });
 
         return responseWithoutData(201, true, 'Registration was successful');
@@ -66,7 +88,9 @@ export class AuthService {
       isAdmin,
       username,
       password: await hashPassword(password),
-      referralCode: isAdmin ? undefined : generateReferralCode(),
+      referralCode: isAdmin
+        ? undefined
+        : generateReferralCode(username.slice(0, 3)),
     });
 
     return responseWithoutData(201, true, 'Registration was successful');

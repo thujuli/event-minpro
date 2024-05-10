@@ -13,7 +13,10 @@ export class UserRepository {
       whereCondition = { ...identifier };
     }
 
-    return await prisma.user.findUnique({ where: whereCondition });
+    return await prisma.user.findUnique({
+      where: whereCondition,
+      include: { point: true },
+    });
   }
 
   static async createUser(request: RegisterRequest) {
@@ -48,12 +51,11 @@ export class UserRepository {
   }
 
   static async getUserProfile(id: number) {
-    console.log('QueryAAAAAAAAAA:', id);
     const res = await prisma.user.findUnique({
       where: { id: id },
       include: {
         vouchers: true,
-        points: true,
+        point: true,
       },
     });
     return res;
