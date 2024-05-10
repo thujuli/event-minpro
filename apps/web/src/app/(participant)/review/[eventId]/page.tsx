@@ -27,11 +27,13 @@ const Review: React.FunctionComponent<IReviewProps> = (props) => {
   }, [params.eventId, clickedStars]);
   const getApiDetail = async () => {
     try {
-      const UserProfile = await getUserProfile(Cookies.get("user-tkn")!);
+      // const UserProfile = await getUserProfile(Cookies.get("user-tkn")!);
       let url = NEXT_PUBLIC_BASE_API_URL + `/events/${params.eventId}`;
       const response = await axios.get(url);
       setEvent(response.data.result[0]);
-      setDataProfile(UserProfile.result);
+      // setDataProfile(UserProfile.result);
+      console.log("INI DATA :",response.data.result[0]);
+      
     } catch (err) {
       console.log("Error fetching profile:", err);
     }
@@ -41,7 +43,7 @@ const Review: React.FunctionComponent<IReviewProps> = (props) => {
       <div className=" flex- flex-col space-y-4">
         <Image
           className="h-[400px] w-full rounded-md bg-cover bg-center"
-          src={event.imageURL}
+          src={ NEXT_PUBLIC_BASE_API_URL + event.imageURL}
           width={1000}
           height={1000}
           alt=""

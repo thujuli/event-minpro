@@ -6,20 +6,21 @@ import axios from "axios";
 import Image from "next/image";
 
 interface IHeroDetailsProps {
-  data :{
-    imageURL :string
-  }
+  data: {
+    imageURL: string;
+  };
 }
 
 const HeroDetails: React.FunctionComponent<IHeroDetailsProps> = (props) => {
   return (
     <section>
-      <Image className="bg-cover bg-center md:h-[555px] md:w-[1400px] mx-auto flex h-[250px] w-full  flex-col"
-        src={props.data.imageURL} 
+      <Image
+        className="mx-auto flex h-[250px] w-full flex-col bg-cover bg-center md:h-[555px]  md:w-[1400px]"
+        src={NEXT_PUBLIC_BASE_API_URL + props.data.imageURL}
         width={555}
         height={1400}
-        alt="" />
-      
+        alt=""
+      />
     </section>
   );
 };

@@ -45,7 +45,9 @@ const CategoryFestivalSection: React.FunctionComponent<
     <section>
       <div className=" mx-[20px] my-[26px] md:mx-[140px] ">
         <div className=" flex flex-col justify-between">
-          <h1 className=" text-[14px] font-semibold md:text-[24px]">Festival</h1>
+          <h1 className=" text-[14px] font-semibold md:text-[24px]">
+            Festival
+          </h1>
           <h1 className=" mt-[4px] text-[12px] md:mt-[14px] md:text-[14px] ">
             Diskon 50% buat main Festival bareng kita. 🎠
           </h1>
@@ -61,7 +63,7 @@ const CategoryFestivalSection: React.FunctionComponent<
                   lokasi={event.location.name}
                   waktu={event.createdAt}
                   harga={event.price}
-                  urlImage={event.imageURL}
+                  urlImage={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
                 />
               </div>
             ))}
