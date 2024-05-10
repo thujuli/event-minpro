@@ -40,7 +40,7 @@ export default class App {
       res.send(`Hello, Purwadhika Student !`);
     });
 
-    this.app.use('/assets', express.static(join(__dirname, '../public')));
+    this.app.use('/', express.static(join(__dirname, '../public')));
     this.app.use('/auth', authRouter.getRoutes());
     this.app.use('/locations', locationRouter.getRoutes());
     this.app.use('/categories', categoryRouter.getRoutes());

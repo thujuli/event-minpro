@@ -1,8 +1,7 @@
 export const events = [
   {
     name: 'Summer Music Festival',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 350000,
     description: 'Join us for a lively music festival under the summer sun.',
     availableSeats: 250,
@@ -16,8 +15,7 @@ export const events = [
   },
   {
     name: 'Art Workshop: Abstract Painting',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 500000,
     description:
       'Discover the world of abstract art and create your own masterpiece.',
@@ -32,8 +30,7 @@ export const events = [
   },
   {
     name: 'Cooking Class: Italian Cuisine',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 450000,
     description:
       'Learn to cook delicious Italian dishes from experienced chefs.',
@@ -48,8 +45,7 @@ export const events = [
   },
   {
     name: 'Outdoor Adventure: Hiking Expedition',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 400000,
     description: 'Embark on an exciting hiking journey through scenic trails.',
     availableSeats: 300,
@@ -63,8 +59,7 @@ export const events = [
   },
   {
     name: 'Photography Workshop: Landscape Photography',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 350000,
     description:
       'Enhance your photography skills with a focus on capturing stunning landscapes.',
@@ -79,8 +74,7 @@ export const events = [
   },
   {
     name: 'Dance Workshop: Salsa Night',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 400000,
     description: 'Join us for an energetic night of salsa dancing and fun.',
     availableSeats: 80,
@@ -94,8 +88,7 @@ export const events = [
   },
   {
     name: 'Fitness Bootcamp: Strength Training',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 400000,
     description:
       'Achieve your fitness goals with a focused strength training bootcamp.',
@@ -110,8 +103,7 @@ export const events = [
   },
   {
     name: 'Wine Tasting: Italian Wines',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 450000,
     description:
       'Explore the rich flavors of Italian wines in this exclusive tasting event.',
@@ -126,8 +118,7 @@ export const events = [
   },
   {
     name: 'Fashion Workshop: DIY Accessories',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 350000,
     description:
       'Create your own stylish accessories in this hands-on workshop.',
@@ -142,8 +133,7 @@ export const events = [
   },
   {
     name: 'Yoga Retreat: Serene Sanctuary',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 400000,
     description:
       'Immerse yourself in a peaceful yoga retreat surrounded by nature.',
@@ -158,8 +148,7 @@ export const events = [
   },
   {
     name: 'Tech Workshop: Introduction to AI',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 500000,
     description:
       'Discover the basics of Artificial Intelligence and its applications.',
@@ -174,8 +163,7 @@ export const events = [
   },
   {
     name: 'Gardening Workshop: Urban Gardening Tips',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 450000,
     description:
       'Learn how to create a beautiful urban garden in your own space.',
@@ -190,8 +178,7 @@ export const events = [
   },
   {
     name: 'Board Games Night: Strategy Games',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 350000,
     description:
       'Enjoy a fun-filled evening playing strategic board games with friends.',
@@ -206,8 +193,7 @@ export const events = [
   },
   {
     name: 'Painting Workshop: Watercolor Techniques',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 450000,
     description:
       'Explore various watercolor painting techniques and create beautiful artworks.',
@@ -222,8 +208,7 @@ export const events = [
   },
   {
     name: 'Film Screening: Classic Movies',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 350000,
     description:
       'Watch timeless classics on the big screen in this special film screening event.',
@@ -238,8 +223,7 @@ export const events = [
   },
   {
     name: 'Craft Workshop: DIY Candle Making',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 400000,
     description:
       'Learn the art of candle making and create your own custom scented candles.',
@@ -254,8 +238,7 @@ export const events = [
   },
   {
     name: 'Live Comedy Show: Stand-up Night',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 450000,
     description:
       'Laugh out loud with hilarious stand-up comedians in this live comedy event.',
@@ -270,8 +253,7 @@ export const events = [
   },
   {
     name: 'Music Workshop: Guitar Masterclass',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 450000,
     description:
       'Enhance your guitar skills with professional instructors in this intensive workshop.',
@@ -286,8 +268,7 @@ export const events = [
   },
   {
     name: 'Fashion Show: Summer Collection',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 350000,
     description:
       'Experience the latest summer fashion trends in this glamorous runway show.',
@@ -302,8 +283,7 @@ export const events = [
   },
   {
     name: 'Cooking Workshop: Thai Cuisine',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 500000,
     description: 'Learn to cook authentic Thai dishes with professional chefs.',
     availableSeats: 80,
@@ -317,8 +297,7 @@ export const events = [
   },
   {
     name: 'Fitness Workshop: Yoga & Pilates Fusion',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 400000,
     description:
       'Combine the benefits of yoga and pilates in this invigorating fitness workshop.',
@@ -333,8 +312,7 @@ export const events = [
   },
   {
     name: 'Outdoor Painting: En Plein Air',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 400000,
     description:
       'Create beautiful landscape paintings outdoors in this unique painting experience.',
@@ -349,8 +327,7 @@ export const events = [
   },
   {
     name: 'Wine Pairing Dinner: French Cuisine',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 400000,
     description:
       'Indulge in a gourmet French dinner paired with exquisite wines.',
@@ -365,8 +342,7 @@ export const events = [
   },
   {
     name: 'Pottery Workshop: Handcrafted Creations',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 450000,
     description:
       'Learn the art of pottery and create unique handcrafted pieces.',
@@ -381,8 +357,7 @@ export const events = [
   },
   {
     name: 'Live Music Performance: Jazz Night',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 450000,
     description:
       'Enjoy an evening of soulful jazz music performed by talented musicians.',
@@ -397,8 +372,7 @@ export const events = [
   },
   {
     name: 'Culinary Tour: Local Delicacies',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 350000,
     description:
       'Explore the flavors of the city with a guided culinary tour of local eateries.',
@@ -413,8 +387,7 @@ export const events = [
   },
   {
     name: 'Writing Workshop: Creative Writing Techniques',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 400000,
     description:
       'Unlock your creativity with insightful techniques for creative writing.',
@@ -429,8 +402,7 @@ export const events = [
   },
   {
     name: 'Fitness Bootcamp: Cardio Blast',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 400000,
     description:
       'Get your heart pumping with a high-energy cardio bootcamp workout.',
@@ -445,8 +417,7 @@ export const events = [
   },
   {
     name: 'Art Exhibition: Contemporary Art Showcase',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 450000,
     description:
       'Explore captivating contemporary artworks in this art exhibition.',
@@ -461,8 +432,7 @@ export const events = [
   },
   {
     name: 'Gourmet Cooking Class: French Cuisine',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 450000,
     description:
       'Master the art of French cooking with expert chefs in this gourmet class.',
@@ -477,8 +447,7 @@ export const events = [
   },
   {
     name: 'Movie Night: Blockbuster Marathon',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 350000,
     description:
       'Enjoy a movie marathon featuring blockbuster hits from around the world.',
@@ -493,8 +462,7 @@ export const events = [
   },
   {
     name: 'Free Yoga Class in the Park',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 0,
     description: 'Join us for a relaxing yoga session in the park.',
     availableSeats: 50,
@@ -508,8 +476,7 @@ export const events = [
   },
   {
     name: 'Digital Marketing Workshop',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 100000,
     description: 'Learn effective digital marketing strategies and techniques.',
     availableSeats: 30,
@@ -523,8 +490,7 @@ export const events = [
   },
   {
     name: 'Cooking Class: Italian Pasta Making',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 150000,
     description: 'Learn to make delicious Italian pasta from scratch.',
     availableSeats: 20,
@@ -538,8 +504,7 @@ export const events = [
   },
   {
     name: 'Photography Tour: City Sunset',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 200000,
     description: 'Capture stunning cityscape photos during sunset.',
     availableSeats: 15,
@@ -553,8 +518,7 @@ export const events = [
   },
   {
     name: 'Art Workshop: Acrylic Painting',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 150000,
     description:
       'Explore acrylic painting techniques and create beautiful artworks.',
@@ -569,8 +533,7 @@ export const events = [
   },
   {
     name: 'Fitness Bootcamp: High-Intensity Training',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 0,
     description:
       'Get fit with high-intensity workouts and personalized training.',
@@ -585,8 +548,7 @@ export const events = [
   },
   {
     name: 'Gardening Workshop: Urban Gardening Basics',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 100000,
     description: 'Learn the basics of urban gardening and plant care.',
     availableSeats: 30,
@@ -600,8 +562,7 @@ export const events = [
   },
   {
     name: 'Live Music Performance: Jazz Quartet',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 200000,
     description: 'Enjoy a soulful jazz performance by a talented quartet.',
     availableSeats: 20,
@@ -615,8 +576,7 @@ export const events = [
   },
   {
     name: 'DIY Workshop: Handmade Soap Crafting',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 0,
     description: 'Learn to craft your own natural handmade soaps.',
     availableSeats: 15,
@@ -630,8 +590,7 @@ export const events = [
   },
   {
     name: 'Film Screening: Indie Movie Night',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 150000,
     description:
       'Watch thought-provoking indie films in a cozy screening setting.',
@@ -646,8 +605,7 @@ export const events = [
   },
   {
     name: 'Cooking Masterclass: Mediterranean Cuisine',
-    imageURL:
-      'https://s-light.tiket.photos/t/01E25EBZS3W0FY9GTG6C42E1SE/rsfit1440960gsm/events/2024/04/06/fce5b451-c50c-45ed-8d70-e471437b725d-1712379677932-acd16b02b1734f0b443f8db287b3eb2e.png',
+    imageURL: '/EVENT1715306646690.png',
     price: 200000,
     description:
       'Master the art of cooking Mediterranean dishes with expert chefs.',
