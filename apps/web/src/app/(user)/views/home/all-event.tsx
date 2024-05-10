@@ -135,7 +135,7 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
             <div key={index}>
               <CardEvent
                 id={event.id}
-                urlImage={event.imageURL}
+                urlImage={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
                 judul={event.name}
                 lokasi={event.location.name}
                 waktu={event.createdAt}

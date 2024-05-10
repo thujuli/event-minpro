@@ -62,7 +62,7 @@ const CategoryMusikSection: React.FunctionComponent<
                   lokasi={event.location.name}
                   waktu={event.createdAt}
                   harga={event.price}
-                  urlImage={event.imageURL}
+                  urlImage={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
                 />
               </div>
             ))}
