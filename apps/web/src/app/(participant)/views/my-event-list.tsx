@@ -3,6 +3,7 @@ import * as React from "react";
 import axios from "axios";
 import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
 import CardEventMyList from "../_components/card-event-my-list";
+import CardBeforeReview from "../_components/card-after-event";
 
 interface IMyEventListProps {}
 
@@ -12,7 +13,7 @@ const MyEventList: React.FunctionComponent<IMyEventListProps> = (props) => {
   const [stateStatus, setStateStatus] = React.useState(4);
   React.useEffect(() => {
     onHandleGet();
-  }, [stateStatus, showOnGoing]);
+  }, [stateStatus]);
   const onHandleGet = async () => {
     try {
       // route ini nanti diganti sesuai event? id pengggna, status
@@ -24,9 +25,6 @@ const MyEventList: React.FunctionComponent<IMyEventListProps> = (props) => {
       console.log(err);
     }
   };
-  const filteredEvents = event.filter((event : any) => {
-    return showOnGoing ? setStateStatus(4) : setStateStatus(2)
-  });
   const handleShowOnGoing = () => {
     setShowOnGoing(true);
     setStateStatus(4); // Update stateStatus to filter onGoing events
@@ -49,14 +47,25 @@ const MyEventList: React.FunctionComponent<IMyEventListProps> = (props) => {
       <div className="mx-10 my-[18px] md:grid md:grid-cols-4 md:gap-4 md:p-6">
         {event.map((event: any, index: number) => (
           <div key={index}>
-            <CardEventMyList
-              id={event.id}
-              judul={event.name}
-              lokasi={event.location.name}
-              waktu={event.endDate}
-              harga={event.price}
-              urlImage={event.imageURL}
-            />
+            {showOnGoing ? (
+              <CardEventMyList
+                id={event.id}
+                judul={event.name}
+                lokasi={event.location.name}
+                waktu={event.endDate}
+                harga={event.price}
+                urlImage={event.imageURL}
+              />
+            ) : (
+              <CardBeforeReview
+                id={event.id}
+                judul={event.name}
+                lokasi={event.location.name}
+                waktu={event.endDate}
+                harga={event.price}
+                urlImage={event.imageURL}
+              />
+            )}
           </div>
         ))}
       </div>
