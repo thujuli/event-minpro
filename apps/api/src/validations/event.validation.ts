@@ -38,24 +38,23 @@ export class EventValidation {
   static QUERY = z.object({
     page: z.coerce
       .number({ invalid_type_error: 'Page must be a Number!' })
+      .int({ message: 'Page must be an integer' })
       .optional(),
     limit: z.coerce
       .number({ invalid_type_error: 'Limit must be a Number!' })
+      .int({ message: 'Limit must be an integer' })
       .optional(),
     price: z.coerce
       .number({ invalid_type_error: 'Price must be a Number!' })
+      .int({ message: 'Price must be an integer' })
       .optional(),
     categoryId: z.coerce
       .number({ invalid_type_error: 'CategoryId must be a Number!' })
+      .int({ message: 'CategoryId must be an integer' })
       .optional(),
     locationId: z.coerce
       .number({ invalid_type_error: 'LocationId must be a Number!' })
-      .optional(),
-    location: z
-      .string({ invalid_type_error: 'LocationId must be a String!' })
-      .optional(),
-    category: z
-      .string({ invalid_type_error: 'LocationId must be a String!' })
+      .int({ message: 'LocationId must be an integer' })
       .optional(),
     name: z.string().optional(),
     id: z.coerce.string().optional(),
@@ -71,7 +70,8 @@ export class EventValidation {
           required_error: 'Price is required!',
           invalid_type_error: 'Price must be a Number!',
         })
-        .min(0, { message: 'Price must be at least 0!' }),
+        .min(0, { message: 'Price must be at least 0!' })
+        .int({ message: 'Price must be an integer!' }),
       startDate: z
         .string({ required_error: 'Start date is required!' })
         .transform((str) => new Date(str))
@@ -104,7 +104,8 @@ export class EventValidation {
         })
         .max(MAX_LOCATION_ID, {
           message: `LocationId must be greater than ${MIN_LOCATION_ID} and less than ${MAX_LOCATION_ID}`,
-        }),
+        })
+        .int({ message: 'LocationId must be an integer!' }),
       categoryId: z.coerce
         .number({
           required_error: 'Category is required!',
@@ -115,7 +116,8 @@ export class EventValidation {
         })
         .max(MAX_CATEGORY_ID, {
           message: `CategoryId must be greater than ${MIN_CATEGORY_ID} and less than ${MAX_CATEGORY_ID}`,
-        }),
+        })
+        .int({ message: 'CategoryId must be an integer!' }),
       description: z
         .string({ required_error: 'Description is required!' })
         .min(100, { message: 'Description must be at least 100 characters!' }),
@@ -124,11 +126,14 @@ export class EventValidation {
           required_error: 'Max Capacity is required!',
           invalid_type_error: 'Max Capacity must be a Number!',
         })
-        .min(1, { message: 'Max Capacity must be at least 1!' }),
-      limitCheckout: z.coerce.number({
-        required_error: 'Limit Checkout is required!',
-        invalid_type_error: 'Limit Checkout must be a Number!',
-      }),
+        .min(1, { message: 'Max Capacity must be at least 1!' })
+        .int({ message: 'Max Capacity must be an integer!' }),
+      limitCheckout: z.coerce
+        .number({
+          required_error: 'Limit Checkout is required!',
+          invalid_type_error: 'Limit Checkout must be a Number!',
+        })
+        .int({ message: 'Limit Checkout must be an integer!' }),
     })
     .refine((data) => data.startDate <= data.endDate, {
       message: 'Start date cannot be after end date!',

@@ -8,17 +8,12 @@ export class EventRepository {
       categoryId: query.categoryId ? Number(query.categoryId) : undefined,
     };
 
-    const res = await prisma.event.findMany({
+    return await prisma.event.findMany({
       where: filter,
-      include: {
-        category: true,
-        location: true,
-      },
+      include: { category: true, location: true },
       skip: (Number(query.page) - 1) * Number(query.limit), // Lewati data sejumlah offset
       take: Number(query.limit), // Ambil sejumlah data sesuai limit
     });
-
-    return res;
   }
   static async getTotalEvents(query: EventQuery) {
     const filter: any = {
@@ -26,42 +21,38 @@ export class EventRepository {
       locationId: query.locationId ? Number(query.locationId) : undefined,
       categoryId: query.categoryId ? Number(query.categoryId) : undefined,
     };
+
     return await prisma.event.count({ where: filter });
   }
   static async getEventsBySearch(query: EventQuery) {
-    console.log('QueryAAAAAAAAAA:', query);
     const filter: any = {
       name: query.name ? String(query.name) : undefined,
       locationId: query.locationId ? Number(query.locationId) : undefined,
       categoryId: query.categoryId ? Number(query.categoryId) : undefined,
     };
 
-    const res = await prisma.event.findMany({
+    return await prisma.event.findMany({
       where: {
         name: { contains: query.name },
         categoryId: filter.categoryId,
         locationId: filter.locationId,
       },
       include: {
-        category: {
-          select: {
-            name: true,
-          },
-        },
+        category: { select: { name: true } },
         location: true,
       },
       skip: (Number(query.page) - 1) * Number(query.limit), // Lewati data sejumlah offset
       take: Number(query.limit), // Ambil sejumlah data sesuai limit
     });
-    return res;
   }
+
   static async getTotalEventsBySearch(query: EventQuery) {
     const filter: any = {
       name: query.name ? String(query.name) : undefined,
       locationId: query.locationId ? Number(query.locationId) : undefined,
       categoryId: query.categoryId ? Number(query.categoryId) : undefined,
     };
-    console.log(filter);
+
     return await prisma.event.count({
       where: {
         name: { contains: filter.name },
@@ -74,16 +65,10 @@ export class EventRepository {
   static async getEventById(query: EventQuery) {
     const eventId = Number(query.id);
 
-    const res = await prisma.event.findMany({
-      where: {
-        id: eventId,
-      },
-      include: {
-        category: true,
-        location: true,
-      },
+    return await prisma.event.findMany({
+      where: { id: eventId },
+      include: { category: true, location: true },
     });
-    return res;
   }
 
   static async createEvent(
@@ -91,32 +76,20 @@ export class EventRepository {
     request: EventRequest,
     file: Express.Multer.File,
   ) {
-    const {
-      categoryId,
-      description,
-      endDate,
-      limitCheckout,
-      locationId,
-      name,
-      maxCapacity,
-      price,
-      startDate,
-    } = request;
-
     await prisma.event.create({
       data: {
-        name,
-        price,
-        description,
+        name: request.name,
+        price: request.price,
+        description: request.description,
         imageURL: `/assets/events/${file.filename}`,
-        limitCheckout,
-        maxCapacity,
-        availableSeats: maxCapacity,
-        startDate: new Date(startDate),
-        endDate: new Date(endDate),
+        limitCheckout: request.limitCheckout,
+        maxCapacity: request.maxCapacity,
+        availableSeats: request.maxCapacity,
+        startDate: new Date(request.startDate),
+        endDate: new Date(request.endDate),
         user: { connect: { id } },
-        location: { connect: { id: locationId } },
-        category: { connect: { id: categoryId } },
+        location: { connect: { id: request.locationId } },
+        category: { connect: { id: request.categoryId } },
       },
     });
   }
