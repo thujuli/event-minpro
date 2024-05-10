@@ -13,13 +13,18 @@ import { useParams } from "next/navigation";
 interface IReviewProps {}
 
 const Review: React.FunctionComponent<IReviewProps> = (props) => {
+  const [clickedStars, setClickedStars] = React.useState(0);
+
+  const handleClick = (starIndex:number) => {
+    setClickedStars(starIndex);
+  };
   const [textReview, settextReview] = React.useState<string>("");
   const [dataProfile, setDataProfile] = React.useState<any[]>([]);
-  const params = useParams()
+  const params = useParams();
   const [event, setEvent] = React.useState<any>([]);
   React.useEffect(() => {
     getApiDetail();
-  }, [params.eventId]);
+  }, [params.eventId, clickedStars]);
   const getApiDetail = async () => {
     try {
       const UserProfile = await getUserProfile(Cookies.get("user-tkn")!);
@@ -44,12 +49,16 @@ const Review: React.FunctionComponent<IReviewProps> = (props) => {
         <h1>{event.name}</h1>
         <div className="flex space-x-2">
           {[1, 2, 3, 4, 5].map((index) => (
-            <FaStar key={index} className="h-6 w-6" />
+            <FaStar
+              key={index}
+              className={`h-6 w-6 cursor-pointer ${
+                index <= clickedStars ? "text-yellow-500" : "text-gray-400"
+              }`}
+              onClick={() => handleClick(index)}
+            />
           ))}
         </div>
-        <Textarea
-          onChange={(e) =>  settextReview(e.target.value)}
-        />
+        <Textarea onChange={(e) => settextReview(e.target.value)} />
         <Button
           className="block h-[36px] w-[300px] rounded-md  bg-[#53B253]  text-white md:block"
           type="button"
