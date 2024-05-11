@@ -3,7 +3,6 @@ import { CreateVoucher } from '@/types/voucher.type';
 
 export class VoucherRepository {
   static async createVoucher(id: number, data: CreateVoucher) {
-
     return await prisma.voucher.create({
       data: {
         discount: data.discount,
@@ -12,6 +11,12 @@ export class VoucherRepository {
         event: { connect: { id: data.eventId } },
         user: { connect: { id } },
       },
+    });
+  }
+
+  static async findVoucherById(id: number) {
+    return await prisma.voucher.findUnique({
+      where: { id },
     });
   }
 }

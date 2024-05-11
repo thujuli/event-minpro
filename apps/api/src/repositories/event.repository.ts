@@ -15,6 +15,7 @@ export class EventRepository {
       take: Number(query.limit), // Ambil sejumlah data sesuai limit
     });
   }
+
   static async getTotalEvents(query: EventQuery) {
     const filter: any = {
       price: query.price ? Number(query.price) : undefined,
@@ -71,8 +72,8 @@ export class EventRepository {
     });
   }
 
-  static async getEventById (id:number){
-     return await prisma.event.findUnique({
+  static async getEventById(id: number) {
+    return await prisma.event.findUnique({
       where: { id },
     });
   }
