@@ -15,11 +15,9 @@ interface ICardEventProps {
 const CardEvent: React.FunctionComponent<ICardEventProps> = (props) => {
   return (
     <Link href={`/detail/${props.id}`}>
-      <div
-        className="h-[278px] min-w-[188px] max-w-[188px] cursor-pointer overflow-hidden  rounded-lg border border-gray-400 bg-white md:h-[338px] md:min-w-[236px] md:max-w-[236px]"
-      >
+      <div className="h-[278px] min-w-[188px] max-w-[188px] cursor-pointer overflow-hidden  rounded-lg border border-gray-400 bg-white md:h-[338px] md:min-w-[236px] md:max-w-[236px]">
         <Image
-          className="h-[144px] w-[188px] md:h-[148px] md:w-[236px] "
+          className="h-[144px] w-[188px] md:h-[148px] md:w-[236px] bg-cover"
           src={props.urlImage}
           width={236}
           height={148}

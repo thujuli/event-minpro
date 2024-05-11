@@ -13,11 +13,23 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
+import { Slider } from "@/components/ui/slider";
+
 interface IAllEventSectionProps {}
 
 const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
   props,
 ) => {
+  //FILTERING
+  const [showConfirmationModal, setShowConfirmationModal] =
+    React.useState(false);
+  const handleShowConfirmationModal = () => {
+    setShowConfirmationModal(true);
+  };
+
+  const handleCloseConfirmationModal = () => {
+    setShowConfirmationModal(false);
+  };
   //fitur pagination
   const [currentPage, setCurrentPage] = React.useState(1);
   const [totalPages, setTotalPages] = React.useState(1);
@@ -44,6 +56,7 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
       setEvents(response.data.result);
       setTotalPages(Math.ceil(response.data.total / response.data.limit));
       console.log(Math.ceil(response.data.total / response.data.limit));
+      console.log("INI LOG DATA EVENTS", response.data.result[0]);
 
       console.log(response.data);
     } catch (err) {
@@ -98,7 +111,22 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
                 All
               </Button>
               <Button
-                className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Musik" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
+                className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Festival" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
+                type="button"
+                onClick={(element: any) => {
+                  const newData = {
+                    ...getData,
+                    categoryId: 1,
+                  };
+                  setCurrentPage(1);
+                  setGetData(newData);
+                  setActiveButton("Festival");
+                }}
+              >
+                Festival
+              </Button>
+              <Button
+                className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Concert" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
                 type="button"
                 onClick={(element: any) => {
                   const newData = {
@@ -107,13 +135,28 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
                   };
                   setCurrentPage(1);
                   setGetData(newData);
-                  setActiveButton("Musik");
+                  setActiveButton("Concert");
                 }}
               >
-                Musik
+                Concert
               </Button>
               <Button
-                className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Webinar" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
+                className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Sport" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
+                type="button"
+                onClick={(element: any) => {
+                  const newData = {
+                    ...getData,
+                    categoryId: 3,
+                  };
+                  setCurrentPage(1);
+                  setGetData(newData);
+                  setActiveButton("Sport");
+                }}
+              >
+                Sport
+              </Button>
+              <Button
+                className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Workshop & Seminar" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
                 type="button"
                 onClick={(element: any) => {
                   const newData = {
@@ -122,12 +165,63 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
                   };
                   setCurrentPage(1);
                   setGetData(newData);
-                  setActiveButton("Webinar");
+                  setActiveButton("Workshop & Seminar");
                 }}
               >
-                Webinar
+                Workshop & Seminar
+              </Button>
+              <Button
+                className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Theater & Drama" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
+                type="button"
+                onClick={(element: any) => {
+                  const newData = {
+                    ...getData,
+                    categoryId: 5,
+                  };
+                  setCurrentPage(1);
+                  setGetData(newData);
+                  setActiveButton("Theater & Drama");
+                }}
+              >
+                Theater & Drama
+              </Button>
+              <Button
+                className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Attractions" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
+                type="button"
+                onClick={(element: any) => {
+                  const newData = {
+                    ...getData,
+                    categoryId: 6,
+                  };
+                  setCurrentPage(1);
+                  setGetData(newData);
+                  setActiveButton("Attractions");
+                }}
+              >
+                Attractions
               </Button>
             </div>
+            <Button className="  " onClick={handleShowConfirmationModal}>
+              Filtering
+            </Button>
+            {showConfirmationModal && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center">
+                <div className="rounded-lg bg-white p-8">
+                  <p>Apakah Anda yakin sudah melakukan pembayaran?</p>
+                  <div className="mt-4 flex justify-center space-x-4">
+                    {/* TINGGAL BUTTON YA NYA KASIH FUNCTION BUAT NGIRIM AXIOS */}
+                    {/* <Button>Ya</Button> */}
+                    {/* BUAT ON CHANGE FILTERING  BY PRICE */}
+                    <Slider defaultValue={[33]} max={100} step={1} />
+                    <div>
+                      <Button onClick={handleCloseConfirmationModal}>
+                        Batal
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
         <div className="my-[18px] flex gap-4 overflow-hidden overflow-x-auto md:grid md:grid-cols-5">
