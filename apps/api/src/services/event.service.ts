@@ -48,7 +48,7 @@ export class EventService {
   static async getEventById(query: EventQuery) {
     const eventQuery = Validation.validate(EventValidation.QUERY, query);
 
-    const response = await EventRepository.getEventById(eventQuery);
+    const response = await EventRepository.getEventByIdWithInclude(eventQuery);
 
     return responseWithData(200, true, 'Get events successfully', response);
   }

@@ -62,12 +62,18 @@ export class EventRepository {
     });
   }
 
-  static async getEventById(query: EventQuery) {
+  static async getEventByIdWithInclude(query: EventQuery) {
     const eventId = Number(query.id);
 
     return await prisma.event.findMany({
       where: { id: eventId },
       include: { category: true, location: true },
+    });
+  }
+
+  static async getEventById (id:number){
+     return await prisma.event.findUnique({
+      where: { id },
     });
   }
 
