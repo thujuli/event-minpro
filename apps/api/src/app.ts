@@ -8,6 +8,7 @@ import { CategoryRouter } from './routers/category.router';
 import { EventRouter } from './routers/event.router';
 import { UserRouter } from './routers/user.router';
 import { join } from 'path';
+import { VoucherRouter } from './routers/voucher.router';
 
 export default class App {
   private app: Express;
@@ -35,6 +36,7 @@ export default class App {
     const categoryRouter = new CategoryRouter();
     const eventRouter = new EventRouter();
     const userRouter = new UserRouter();
+    const voucherRouter = new VoucherRouter()
 
     this.app.get('/', (req: Request, res: Response) => {
       res.send(`Hello, Purwadhika Student !`);
@@ -45,7 +47,9 @@ export default class App {
     this.app.use('/locations', locationRouter.getRoutes());
     this.app.use('/categories', categoryRouter.getRoutes());
     this.app.use('/events', eventRouter.getRoutes());
-    this.app.use('/user', userRouter.getRoutes());
+    this.app.use('/user', userRouter.getRoutes());  
+    this.app.use('/vouchers', voucherRouter.getRoutes());  
+    
   }
 
   public start(): void {
