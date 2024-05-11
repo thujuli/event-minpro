@@ -51,13 +51,19 @@ export class UserRepository {
   }
 
   static async getUserProfile(id: number) {
-    const res = await prisma.user.findUnique({
+    return await prisma.user.findUnique({
       where: { id: id },
       include: {
         vouchers: true,
         point: true,
       },
     });
-    return res;
+  }
+
+  static async findUserByIdIncludePoint(id: number) {
+    return await prisma.user.findUnique({
+      where: { id },
+      include: { point: true },
+    });
   }
 }

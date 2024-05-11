@@ -54,8 +54,8 @@ export class AuthValidation {
       .min(3, { message: 'Identity must be at least 3 characters!' }),
     password: z
       .string({
-        required_error: 'Identity is required!',
-        invalid_type_error: 'Identity must be a string!',
+        required_error: 'Password is required!',
+        invalid_type_error: 'Password must be a string!',
       })
       .min(4, { message: 'Password must be at least 4 characters!' }),
   });
