@@ -6,7 +6,7 @@ import CardEvent from "../../_components/card-event";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
-
+import Link from "next/link";
 
 interface ICategoryMusikSectionProps {}
 
@@ -14,27 +14,21 @@ const CategoryMusikSection: React.FunctionComponent<
   ICategoryMusikSectionProps
 > = (props) => {
   const [event, setEvent] = React.useState([]);
+  const [activeButton, setActiveButton] = React.useState("Online");
+  const [getData, setGetData] = React.useState<any>({
+    locationId: 0,
+  });
   React.useEffect(() => {
     onHandleGet();
-  }, []);
-  const [showLoadMoreMusik, setShowLoadMoreMusik] = React.useState(true);
+  }, [getData]);
   const [displayedEvents, setDisplayedEvents] = React.useState(5);
-  const filterEventMusik = event.filter(
-    (event: any) => event.categoryId === 2,
-  );
-  const handleLoadMoreMusik = () => {
-    const loadMoreMusik = event.filter(
-      (event: any) => event.categoryId === 2,
-    );
-    const newDisplayedEvents = displayedEvents + 5;
-    setDisplayedEvents(newDisplayedEvents);
-    if (newDisplayedEvents >= loadMoreMusik.length) {
-      setShowLoadMoreMusik(false);
-    }
-  };
+  const filterEventMusik = event.filter((event: any) => event.categoryId === 2);
   const onHandleGet = async () => {
     try {
       let url = NEXT_PUBLIC_BASE_API_URL + "/events?categoryId=2";
+      if (getData.locationId) {
+        url += `&locationId=${getData.locationId}`;
+      }
       const response = await axios.get(url);
       setEvent(response.data.result);
       // console.log("HASIL RESPONSE DATA :",response.data.result);
@@ -50,6 +44,55 @@ const CategoryMusikSection: React.FunctionComponent<
           <h1 className=" mt-[4px] text-[12px] md:mt-[14px] md:text-[14px] ">
             Diskon 50% buat main musik bareng kita. 🎠
           </h1>
+        </div>
+        <div className=" flex items-center justify-between">
+          <div className="mt-[10px] space-x-4">
+            <Button
+              className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "All" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
+              type="button"
+              onClick={(element: any) => {
+                const newData = {
+                  ...getData,
+                  locationId: 0,
+                };
+                setGetData(newData);
+                setActiveButton("All");
+              }}
+            >
+              All
+            </Button>
+            <Button
+              className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Jakarta" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
+              type="button"
+              onClick={(element: any) => {
+                const newData = {
+                  ...getData,
+                  locationId: 158,
+                };
+                setGetData(newData);
+                setActiveButton("Jakarta");
+              }}
+            >
+              Jakarta
+            </Button>
+            <Button
+              className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Denpasar" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
+              type="button"
+              onClick={(element: any) => {
+                const newData = {
+                  ...getData,
+                  locationId: 283,
+                };
+                setGetData(newData);
+                setActiveButton("Denpasar");
+              }}
+            >
+              Denpasar
+            </Button>
+          </div>
+          <Link href={`/explore`}>
+            <p className=" cursor-pointer text-[12px]">Explore lebih banyak</p>
+          </Link>
         </div>
         <div className="my-[18px] flex gap-4 overflow-hidden overflow-x-auto md:grid md:grid-cols-5">
           {filterEventMusik
@@ -67,17 +110,6 @@ const CategoryMusikSection: React.FunctionComponent<
               </div>
             ))}
         </div>
-        {showLoadMoreMusik && (
-          <div className=" mx-auto flex">
-            <Button
-              className=" mx-auto h-[36px] w-[242px] bg-[#5CC8E4] text-[14px] text-white  md:h-[44px] "
-              type="button"
-              onClick={handleLoadMoreMusik}
-            >
-              Load more
-            </Button>
-          </div>
-        )}
       </div>
     </section>
   );

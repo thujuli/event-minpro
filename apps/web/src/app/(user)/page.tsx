@@ -25,7 +25,6 @@ const HomePage: React.FC = () => {
       <CategorySeminarSection />
       <CategoryDramaSection/>
       <CategoryAttractionSection/>
-      <AllEventSection />
     </section>
   );
 };

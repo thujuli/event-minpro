@@ -12,7 +12,7 @@ interface ICategoryFestivalSectionProps {}
 const CategoryFestivalSection: React.FunctionComponent<
   ICategoryFestivalSectionProps
 > = (props) => {
-  const [event, setEvent] = React.useState([]);
+  const [event, setEvent] = React.useState<any[]>([]);
   React.useEffect(() => {
     onHandleGet();
   }, []);
@@ -41,6 +41,8 @@ const CategoryFestivalSection: React.FunctionComponent<
       console.log(err);
     }
   };
+
+
   return (
     <section>
       <div className=" mx-[20px] my-[26px] md:mx-[140px] ">

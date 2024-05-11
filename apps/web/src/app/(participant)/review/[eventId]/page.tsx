@@ -24,7 +24,7 @@ const Review: React.FunctionComponent<IReviewProps> = (props) => {
   const [event, setEvent] = React.useState<any>([]);
   React.useEffect(() => {
     getApiDetail();
-  }, [params.eventId, clickedStars]);
+  }, [clickedStars]);
   const getApiDetail = async () => {
     try {
       // const UserProfile = await getUserProfile(Cookies.get("user-tkn")!);

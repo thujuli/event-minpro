@@ -164,15 +164,16 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
                 </Popover>
                 {/* SELECT LOCATION AKHIR */}
               </div>
-              <div className=" flex overflow-scroll rounded-b-lg p-4">
-                <div className="mt-[12px] space-y-1">
+              <div className=" flex overflow-auto rounded-b-lg p-4">
+                {/*  INI DIKASI H nya yang bener*/}
+                <div className="mt-[12px] h-[320px] space-y-1">
                   {event.map((event: any, index: number) => (
                     <div key={index}>
                       <CardSearch
                         id={event.id}
                         judul={event.name}
                         lokasi={event.location?.name}
-                        imageURL={event.imageURL}
+                        imageURL={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
                       />
                     </div>
                   ))}

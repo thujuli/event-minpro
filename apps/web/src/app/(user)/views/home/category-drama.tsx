@@ -32,7 +32,6 @@ const CategoryDramaSection: React.FunctionComponent<
       let url = NEXT_PUBLIC_BASE_API_URL + "/events?categoryId=5";
       const response = await axios.get(url);
       setEvent(response.data.result);
-      // console.log("HASIL RESPONSE DATA :",response.data.result);
     } catch (err) {
       console.log(err);
     }
