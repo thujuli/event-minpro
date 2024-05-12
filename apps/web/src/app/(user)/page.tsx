@@ -19,12 +19,12 @@ const HomePage: React.FC = () => {
       <Hero />
       <CategorySection />
       {/* <TopNews /> */}
-      <CategoryFestivalSection/>
+      <CategoryFestivalSection />
       <CategoryMusikSection />
-      <CategorySportsSection/>
+      <CategorySportsSection />
       <CategorySeminarSection />
-      <CategoryDramaSection/>
-      <CategoryAttractionSection/>
+      <CategoryDramaSection />
+      <CategoryAttractionSection />
     </section>
   );
 };
