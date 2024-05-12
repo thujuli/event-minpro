@@ -1,7 +1,7 @@
 import Spinner from "@/components/shared/spinner";
 import React from "react";
 
-const DashboardLoading: React.FC = () => {
+const LoadingDashboard: React.FC = () => {
   return (
     <div className="flex flex-1 items-center justify-center">
       <Spinner className="h-20 w-20" />
@@ -9,4 +9,4 @@ const DashboardLoading: React.FC = () => {
   );
 };
 
-export default DashboardLoading;
+export default LoadingDashboard;

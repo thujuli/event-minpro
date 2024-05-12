@@ -9,6 +9,7 @@ import { UserEventTransactionResponse } from "@/types/user";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { formatPrice } from "@/lib/formater";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
 
 const TransactionTableRow: React.FC = () => {
   const [transactions, setTransactions] = useState<
@@ -59,14 +60,35 @@ const TransactionTableRow: React.FC = () => {
       ));
   }
 
-  return transactions.map((transaction) => (
-    <TableRow key={transaction.id}>
-      <TableCell className="font-medium">{transaction.user.username}</TableCell>
-      <TableCell className="text-right">
-        {!transaction.amount ? "Free" : formatPrice(transaction.amount)}
+  return !transactions.length ? (
+    <TableRow>
+      <TableCell colSpan={2}>
+        <div className="flex flex-col items-center justify-center gap-1 text-center">
+          <h3 className="text-xl font-bold tracking-tight">
+            No transactions found!
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            There are currently no transactions to display
+          </p>
+        </div>
       </TableCell>
     </TableRow>
-  ));
+  ) : (
+    transactions.map((transaction) => (
+      <TableRow key={transaction.id}>
+        <TableCell className="font-medium">
+          {transaction.user.username}
+        </TableCell>
+        <TableCell className="text-right">
+          {!transaction.amount ? (
+            <Badge>Free</Badge>
+          ) : (
+            formatPrice(transaction.amount)
+          )}
+        </TableCell>
+      </TableRow>
+    ))
+  );
 };
 
 export default TransactionTableRow;

@@ -9,6 +9,7 @@ import { UserEventResponse } from "@/types/user";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { formatPrice } from "@/lib/formater";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
 
 const EventTableRow: React.FC = () => {
   const [events, setEvents] = useState<UserEventResponse[]>([]);
@@ -57,14 +58,27 @@ const EventTableRow: React.FC = () => {
       ));
   }
 
-  return events.map((event) => (
-    <TableRow key={event.id}>
-      <TableCell className="font-medium">{event.name}</TableCell>
-      <TableCell className="text-right">
-        {!event.price ? "Free" : formatPrice(event.price)}
+  return !events.length ? (
+    <TableRow>
+      <TableCell colSpan={2}>
+        <div className="flex flex-col items-center justify-center gap-1 text-center">
+          <h3 className="text-xl font-bold tracking-tight">No events found!</h3>
+          <p className="text-sm text-muted-foreground">
+            There are currently no events to display
+          </p>
+        </div>
       </TableCell>
     </TableRow>
-  ));
+  ) : (
+    events.map((event) => (
+      <TableRow key={event.id}>
+        <TableCell className="font-medium">{event.name}</TableCell>
+        <TableCell className="text-right">
+          {!event.price ? <Badge>Free</Badge> : formatPrice(event.price)}
+        </TableCell>
+      </TableRow>
+    ))
+  );
 };
 
 export default EventTableRow;

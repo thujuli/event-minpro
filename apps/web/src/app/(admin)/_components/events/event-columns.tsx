@@ -8,13 +8,12 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { UserEventResponse } from "@/types/user";
-import { format } from "date-fns";
 import Link from "next/link";
 import { formatDate, formatNumber, formatPrice } from "@/lib/formater";
+import { Badge } from "@/components/ui/badge";
 
 export const eventColumns: ColumnDef<UserEventResponse>[] = [
   {
@@ -46,7 +45,7 @@ export const eventColumns: ColumnDef<UserEventResponse>[] = [
     },
     cell: ({ row }) => {
       const price: number = row.getValue("price");
-      return <div>{formatPrice(price)}</div>;
+      return <div>{!price ? <Badge>Free</Badge> : formatPrice(price)}</div>;
     },
   },
   {
@@ -64,7 +63,9 @@ export const eventColumns: ColumnDef<UserEventResponse>[] = [
     },
     cell: ({ row }) => {
       const value: number = row.getValue("availableSeats");
-      return <div>{formatNumber(value)}</div>;
+      return (
+        <div>{!value ? <Badge>Sold Out!</Badge> : formatNumber(value)}</div>
+      );
     },
   },
   {
@@ -155,12 +156,6 @@ export const eventColumns: ColumnDef<UserEventResponse>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(name.id.toString())}
-            >
-              Copy name ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
             <DropdownMenuItem
               asChild
               className="cursor-pointer text-blue-500 focus:text-blue-600"
