@@ -24,6 +24,9 @@ const EventPage: React.FC = () => {
 
   useEffect(() => {
     const getData = async () => {
+      const token = Cookie.get("admin-tkn")!;
+      if (!token) return;
+
       const page = searchParams.get("page")
         ? Number(searchParams.get("page"))
         : 1;
@@ -37,12 +40,13 @@ const EventPage: React.FC = () => {
         ? searchParams.get("order_by")!
         : "desc";
 
-      const userEvents = await getUserEvents(Cookie.get("admin-tkn")!, {
+      const userEvents = await getUserEvents(token, {
         page,
         limit,
         sort_by,
         order_by,
       });
+
       setData(userEvents);
       setCanNextPage(userEvents.total > userEvents.limit * userEvents.page);
       setCanPrevPage(userEvents.page > 1);

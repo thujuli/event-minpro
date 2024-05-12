@@ -198,6 +198,15 @@ export class TransactionService {
             },
           });
         }
+      } else {
+        await tx.transaction.create({
+          data: {
+            amount: event.price * seatRequests,
+            paymentStatus: 'waiting',
+            user: { connect: { id } },
+            event: { connect: { id: eventId } },
+          },
+        });
       }
     });
 

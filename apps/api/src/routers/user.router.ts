@@ -27,7 +27,7 @@ export class UserRouter {
     );
 
     this.router.get(
-      '/event/transactions',
+      '/events/transactions',
       verifyToken,
       adminGuard,
       this.userController.getEventTransactions,

@@ -1,5 +1,6 @@
 import { CategoryResponse } from "./category";
 import { LocationResponse } from "./location";
+import { PaymentStatus } from "./transaction";
 
 export type UserEventResponse = {
   id: number;
@@ -16,4 +17,16 @@ export type UserEventResponse = {
   updatedAt: string;
   category: CategoryResponse;
   location: LocationResponse;
+};
+
+export type UserEventTransactionResponse = {
+  id: number;
+  amount: number;
+  redeemedPoints: number | null;
+  paymentStatus: PaymentStatus;
+  createdAt: string;
+  updatedAt: string;
+  user: { username: string };
+  event: { name: string };
+  voucher: { name: string | null };
 };
