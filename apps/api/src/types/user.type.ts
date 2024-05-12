@@ -12,3 +12,10 @@ export type UserEventQuery = {
   sort_by?: string;
   order_by?: string;
 };
+
+export type UserEventTransactionQuery = {
+  page?: string | number;
+  limit?: string | number;
+  sort_by?: string;
+  order_by?: string;
+};

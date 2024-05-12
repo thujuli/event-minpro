@@ -25,6 +25,13 @@ export class UserRouter {
       verifyToken,
       this.userController.getUserProfile,
     );
+
+    this.router.get(
+      '/event/transactions',
+      verifyToken,
+      adminGuard,
+      this.userController.getEventTransactions,
+    );
   }
 
   public getRoutes(): Router {

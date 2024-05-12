@@ -121,6 +121,8 @@ export class TransactionService {
               paymentStatus: 'waiting',
               user: { connect: { id } },
               event: { connect: { id: eventId } },
+              voucher: { connect: { id: voucherId } },
+              redeemedPoints: amountAfterDiscount,
             },
           });
         } else {
@@ -136,6 +138,8 @@ export class TransactionService {
               paymentStatus: 'waiting',
               user: { connect: { id } },
               event: { connect: { id: eventId } },
+              voucher: { connect: { id: voucherId } },
+              redeemedPoints,
             },
           });
         }
@@ -155,6 +159,7 @@ export class TransactionService {
             paymentStatus: 'waiting',
             user: { connect: { id } },
             event: { connect: { id: eventId } },
+            voucher: { connect: { id: voucherId } },
           },
         });
       } else if (redeemedPoints) {
@@ -172,6 +177,7 @@ export class TransactionService {
               paymentStatus: 'waiting',
               user: { connect: { id } },
               event: { connect: { id: eventId } },
+              redeemedPoints: amount,
             },
           });
         } else {
@@ -188,6 +194,7 @@ export class TransactionService {
               paymentStatus: 'waiting',
               user: { connect: { id } },
               event: { connect: { id: eventId } },
+              redeemedPoints,
             },
           });
         }
