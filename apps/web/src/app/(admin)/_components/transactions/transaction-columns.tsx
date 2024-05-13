@@ -34,24 +34,38 @@ export const transactionColumns: ColumnDef<AdminEventTransactionResponse>[] = [
     },
   },
   {
-    accessorKey: "user.username",
-    header: "Customer",
-  },
-  {
-    accessorKey: "amount",
+    accessorKey: "discountedAmount",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Amount
+          Discounted Amount
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => {
-      const amount: number = row.getValue("amount");
+      const amount: number = row.getValue("discountedAmount");
+      return <div>{!amount ? <Badge>Free</Badge> : formatPrice(amount)}</div>;
+    },
+  },
+  {
+    accessorKey: "originalAmount",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Original Amount
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const amount: number = row.getValue("originalAmount");
       return <div>{!amount ? <Badge>Free</Badge> : formatPrice(amount)}</div>;
     },
   },
