@@ -10,7 +10,7 @@ import { UserRouter } from './routers/user.router';
 import { join } from 'path';
 import { VoucherRouter } from './routers/voucher.router';
 import { ReviewRouter } from './routers/review.router';
-import { TrasactionRouter } from './routers/transaction.router';
+import { TransactionRouter } from './routers/transaction.router';
 
 export default class App {
   private app: Express;
@@ -40,7 +40,7 @@ export default class App {
     const userRouter = new UserRouter();
     const voucherRouter = new VoucherRouter();
     const reviewRouter = new ReviewRouter();
-    const transactionRouter = new TrasactionRouter();
+    const transactionRouter = new TransactionRouter();
 
     this.app.get('/', (req: Request, res: Response) => {
       res.send(`Hello, Purwadhika Student !`);
