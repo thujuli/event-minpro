@@ -1,19 +1,16 @@
+
 import { ReviewController } from '@/controllers/review.controller';
 import { TransactionController } from '@/controllers/transaction.controller';
-import {
-  adminGuard,
-  userGuard,
-  verifyToken,
-} from '@/middlewares/auth.middleware';
+import { adminGuard, userGuard, verifyToken } from '@/middlewares/auth.middleware';
 import { Router } from 'express';
 
 export class TrasactionRouter {
   private router: Router;
-  private transactionController: TransactionController;
+  private trasactionController: TransactionController;
 
   constructor() {
     this.router = Router();
-    this.transactionController = new TransactionController();
+    this.trasactionController = new TransactionController();
     this.initializeRoutes();
   }
 

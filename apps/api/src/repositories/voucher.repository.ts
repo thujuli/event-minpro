@@ -3,6 +3,10 @@ import { CreateVoucher } from '@/types/voucher.type';
 
 export class VoucherRepository {
   static async createVoucher(id: number, data: CreateVoucher) {
+<<<<<<< HEAD
+
+=======
+>>>>>>> main
     return await prisma.voucher.create({
       data: {
         discount: data.discount,
