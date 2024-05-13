@@ -1,12 +1,14 @@
 import prisma from '@/prisma';
 import { EventRepository } from '@/repositories/event.repository';
-import { ReviewRepository } from '@/repositories/review.repository';
 import { TransactionRepository } from '@/repositories/transaction.repository';
 import { UserRepository } from '@/repositories/user.repository';
 import { VoucherRepository } from '@/repositories/voucher.repository';
-import { CreateFeedback } from '@/types/review.type';
-import { TransactionCheckout, TransactionRequest } from '@/types/transaction.type';
+import {
+  TransactionCheckout,
+  TransactionRequest,
+} from '@/types/transaction.type';
 import { ErrorResponse } from '@/utils/error';
+import { generateTicketCode } from '@/utils/randomGenerator';
 import { responseWithData, responseWithoutData } from '@/utils/response';
 import { TransactionValidation } from '@/validations/transaction.validation';
 import { Validation } from '@/validations/validation';
@@ -17,7 +19,10 @@ export class TransactionService {
       Validation.validate(TransactionValidation.CREATE, request);
 
     // check event availability
-    const event = await EventRepository.getEventById(eventId);
+    const event = await EventRepository.getEventByIdWithTransaction(
+      eventId,
+      id,
+    );
     if (!event) throw new ErrorResponse(404, 'Event not found!');
 
     if (seatRequests > event.limitCheckout) {
@@ -30,6 +35,20 @@ export class TransactionService {
 
     if (new Date(event.endDate).getTime() < new Date().getTime()) {
       throw new ErrorResponse(400, 'Event has ended!');
+    }
+
+    if (event.transactions.length) {
+      const userTransactions = event.transactions.reduce((acc, curr) => {
+        return acc + curr.quantity;
+      }, 0);
+
+      if (userTransactions >= event.limitCheckout) {
+        throw new ErrorResponse(400, 'You have reached limit checkout!');
+      }
+
+      if (userTransactions + seatRequests > event.limitCheckout) {
+        throw new ErrorResponse(400, 'Seat requests exceeds limit checkout!');
+      }
     }
 
     // check voucher owned by user and event
@@ -82,15 +101,29 @@ export class TransactionService {
           where: { id: event.id },
         });
 
-        await tx.transaction.create({
+        const transaction = await tx.transaction.create({
           data: {
-            amount: 0,
+            amount: event.price,
+            quantity: seatRequests,
+            originalAmount: event.price * seatRequests,
             paymentStatus: 'waiting',
             user: { connect: { id } },
             event: { connect: { id: eventId } },
           },
         });
+
+        const prefixTicketCode = event.name.slice(0, 3).toUpperCase();
+        for (let index = 0; index < seatRequests; index++) {
+          await tx.transactionDetail.create({
+            data: {
+              ticketCode: generateTicketCode(prefixTicketCode),
+              transaction: { connect: { id: transaction.id } },
+            },
+          });
+        }
       });
+
+      return responseWithoutData(201, true, 'Transaction created!');
     }
 
     // transaction for event is not free
@@ -102,10 +135,11 @@ export class TransactionService {
         where: { id: event.id },
       });
 
+      let transaction: any = null;
       if (voucherId && redeemedPoints) {
-        const amount = event.price * seatRequests;
-        const totalDiscount = (amount * voucher.discount) / 100;
-        const amountAfterDiscount = amount - totalDiscount;
+        const originalAmount = event.price * seatRequests;
+        const totalDiscount = (originalAmount * voucher.discount) / 100;
+        const amountAfterDiscount = originalAmount - totalDiscount;
 
         await tx.voucher.update({
           where: { id: voucherId },
@@ -118,9 +152,12 @@ export class TransactionService {
             data: { balance: { decrement: amountAfterDiscount } },
           });
 
-          await tx.transaction.create({
+          transaction = await tx.transaction.create({
             data: {
-              amount: 0,
+              amount: event.price,
+              quantity: seatRequests,
+              originalAmount,
+              discountedAmount: 0,
               paymentStatus: 'waiting',
               user: { connect: { id } },
               event: { connect: { id: eventId } },
@@ -135,9 +172,12 @@ export class TransactionService {
             data: { balance: { decrement: redeemedPoints } },
           });
 
-          await tx.transaction.create({
+          transaction = await tx.transaction.create({
             data: {
-              amount: totalAmount,
+              amount: event.price,
+              quantity: seatRequests,
+              originalAmount,
+              discountedAmount: totalAmount,
               paymentStatus: 'waiting',
               user: { connect: { id } },
               event: { connect: { id: eventId } },
@@ -147,18 +187,21 @@ export class TransactionService {
           });
         }
       } else if (voucherId) {
-        const amount = event.price * seatRequests;
-        const totalDiscount = (amount * voucher.discount) / 100;
-        const amountAfterDiscount = amount - totalDiscount;
+        const originalAmount = event.price * seatRequests;
+        const totalDiscount = (originalAmount * voucher.discount) / 100;
+        const amountAfterDiscount = originalAmount - totalDiscount;
 
         await tx.voucher.update({
           where: { id: voucherId },
           data: { usage: { increment: 1 } },
         });
 
-        await tx.transaction.create({
+        transaction = await tx.transaction.create({
           data: {
-            amount: amountAfterDiscount,
+            amount: event.price,
+            quantity: seatRequests,
+            originalAmount,
+            discountedAmount: amountAfterDiscount,
             paymentStatus: 'waiting',
             user: { connect: { id } },
             event: { connect: { id: eventId } },
@@ -166,34 +209,40 @@ export class TransactionService {
           },
         });
       } else if (redeemedPoints) {
-        const amount = event.price * seatRequests;
+        const originalAmount = event.price * seatRequests;
 
-        if (amount <= redeemedPoints) {
+        if (originalAmount <= redeemedPoints) {
           await tx.point.update({
             where: { id: user?.point?.id },
-            data: { balance: { decrement: amount } },
+            data: { balance: { decrement: originalAmount } },
           });
 
-          await tx.transaction.create({
+          transaction = await tx.transaction.create({
             data: {
-              amount: 0,
+              amount: event.price,
+              quantity: seatRequests,
+              originalAmount,
+              discountedAmount: 0,
               paymentStatus: 'waiting',
               user: { connect: { id } },
               event: { connect: { id: eventId } },
-              redeemedPoints: amount,
+              redeemedPoints: originalAmount,
             },
           });
         } else {
-          const totalAmount = amount - redeemedPoints;
+          const totalAmount = originalAmount - redeemedPoints;
 
           await tx.point.update({
             where: { id: user?.point?.id },
             data: { balance: { decrement: redeemedPoints } },
           });
 
-          await tx.transaction.create({
+          transaction = await tx.transaction.create({
             data: {
-              amount: totalAmount,
+              amount: event.price,
+              quantity: seatRequests,
+              originalAmount,
+              discountedAmount: totalAmount,
               paymentStatus: 'waiting',
               user: { connect: { id } },
               event: { connect: { id: eventId } },
@@ -202,18 +251,30 @@ export class TransactionService {
           });
         }
       } else {
-        await tx.transaction.create({
+        transaction = await tx.transaction.create({
           data: {
-            amount: event.price * seatRequests,
+            amount: event.price,
+            quantity: seatRequests,
+            originalAmount: event.price * seatRequests,
             paymentStatus: 'waiting',
             user: { connect: { id } },
             event: { connect: { id: eventId } },
           },
         });
       }
-    });
 
-    return responseWithoutData(201, true, 'Transaction created!');
+      const prefixTicketCode = event.name.slice(0, 3).toUpperCase();
+      for (let index = 0; index < seatRequests; index++) {
+        await tx.transactionDetail.create({
+          data: {
+            ticketCode: generateTicketCode(prefixTicketCode),
+            transaction: { connect: { id: transaction.id } },
+          },
+        });
+      }
+
+      return responseWithoutData(201, true, 'Transaction created!');
+    });
   }
 
   static async getPaymentStatusWaiting(id: number, body: TransactionCheckout) {

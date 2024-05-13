@@ -115,18 +115,22 @@ model Voucher {
 }
 
 model Transaction {
-  id             Int           @id @default(autoincrement())
-  amount         Int
-  redeemedPoints Int?
-  userId         Int
-  eventId        Int
-  voucherId      Int?
-  paymentStatus  PaymentStatus
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-  user           User          @relation(fields: [userId], references: [id])
-  event          Event         @relation(fields: [eventId], references: [id])
-  voucher        Voucher?      @relation(fields: [voucherId], references: [id])
+  id               Int                 @id @default(autoincrement())
+  amount           Int
+  quantity         Int
+  originalAmount   Int
+  discountedAmount Int?
+  redeemedPoints   Int?
+  userId           Int
+  eventId          Int
+  voucherId        Int?
+  paymentStatus    PaymentStatus
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+  user             User                @relation(fields: [userId], references: [id])
+  event            Event               @relation(fields: [eventId], references: [id])
+  voucher          Voucher?            @relation(fields: [voucherId], references: [id])
+  details          TransactionDetail[]
 
   @@map("transactions")
 }
@@ -136,4 +140,13 @@ enum PaymentStatus {
   paid
   success
   failed
+}
+
+model TransactionDetail {
+  id            Int         @id @default(autoincrement())
+  ticketCode    String
+  transactionId Int
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+
+  @@map("transaction_details")
 }
