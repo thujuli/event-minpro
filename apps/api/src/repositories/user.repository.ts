@@ -1,10 +1,7 @@
 import prisma from '@/prisma';
 import { RegisterRequest } from '@/types/auth.type';
-import {
-  UniqueUserField,
-  UserEventQuery,
-  UserEventTransactionQuery,
-} from '@/types/user.type';
+import { UniqueUserField } from '@/types/user.type';
+import { AdminEventQuery } from '@/types/admin.type';
 
 export class UserRepository {
   static async findUserByUnique(identifier: UniqueUserField) {
@@ -27,7 +24,7 @@ export class UserRepository {
     return await prisma.user.create({ data: request });
   }
 
-  static async getUserEvents(id: number, query: UserEventQuery) {
+  static async getAdminEvents(id: number, query: AdminEventQuery) {
     return await prisma.user.findUnique({
       where: { id },
       include: {
@@ -42,7 +39,7 @@ export class UserRepository {
     });
   }
 
-  static async getAllUserEvents(id: number, query: UserEventQuery) {
+  static async getAllAdminEvents(id: number, query: AdminEventQuery) {
     return await prisma.user.findUnique({
       where: { id },
       include: {
@@ -68,29 +65,6 @@ export class UserRepository {
     return await prisma.user.findUnique({
       where: { id },
       include: { point: true },
-    });
-  }
-
-  static async getUserEventTransactions(
-    id: number,
-    query: UserEventTransactionQuery,
-  ) {
-    return await prisma.transaction.findMany({
-      where: { event: { user: { id: id } } },
-      include: {
-        user: { select: { username: true } },
-        event: { select: { name: true } },
-        voucher: { select: { name: true } },
-      },
-      skip: (Number(query.page) - 1) * Number(query.limit),
-      take: Number(query.limit),
-      orderBy: { [query.sort_by!]: query.order_by },
-    });
-  }
-
-  static async getAllUserEventTransactions(id: number) {
-    return await prisma.transaction.findMany({
-      where: { event: { user: { id: id } } },
     });
   }
 }

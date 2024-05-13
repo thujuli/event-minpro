@@ -9,13 +9,14 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { UserEventResponse } from "@/types/user";
+import { AdminEventResponse } from "@/types/admin";
 import Link from "next/link";
-import { formatDate, formatNumber, formatPrice } from "@/lib/formater";
+import { formatDate, formatNumber, formatPrice } from "@/lib/formatter";
 import { Badge } from "@/components/ui/badge";
 
-export const eventColumns: ColumnDef<UserEventResponse>[] = [
+export const eventColumns: ColumnDef<AdminEventResponse>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => {
@@ -156,17 +157,26 @@ export const eventColumns: ColumnDef<UserEventResponse>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem asChild className="cursor-pointer">
+              <Link href={`/dashboard/events/${name.id}/promo`}>Promo</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild className="cursor-pointer">
+              <Link href={`/dashboard/events/${name.id}/participants`}>
+                Participants
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuItem
               asChild
               className="cursor-pointer text-blue-500 focus:text-blue-600"
             >
-              <Link href={`/admin/events/${name.id}/edit`}>Edit</Link>
+              <Link href={`/dashboard/events/${name.id}/edit`}>Edit</Link>
             </DropdownMenuItem>
             <DropdownMenuItem
               asChild
               className="cursor-pointer text-red-500 focus:text-red-600"
             >
-              <Link href={`/admin/events/${name.id}/edit`}>Delete</Link>
+              <Link href="#">Delete</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

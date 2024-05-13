@@ -1,5 +1,5 @@
 import { UserController } from '@/controllers/user.controller';
-import { adminGuard, verifyToken } from '@/middlewares/auth.middleware';
+import { verifyToken } from '@/middlewares/auth.middleware';
 import { Router } from 'express';
 
 export class UserRouter {
@@ -14,23 +14,9 @@ export class UserRouter {
 
   private initializeRoutes(): void {
     this.router.get(
-      '/events',
-      verifyToken,
-      adminGuard,
-      this.userController.getUserEvents,
-    );
-
-    this.router.get(
       '/profile',
       verifyToken,
       this.userController.getUserProfile,
-    );
-
-    this.router.get(
-      '/events/transactions',
-      verifyToken,
-      adminGuard,
-      this.userController.getEventTransactions,
     );
   }
 

@@ -4,15 +4,15 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Cookie from "js-cookie";
-import { getUserEvents } from "@/data/user";
-import { UserEventResponse } from "@/types/user";
+import { getAdminEvents } from "@/data/admin";
+import { AdminEventResponse } from "@/types/admin";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { formatPrice } from "@/lib/formater";
+import { formatPrice } from "@/lib/formatter";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 
 const EventTableRow: React.FC = () => {
-  const [events, setEvents] = useState<UserEventResponse[]>([]);
+  const [events, setEvents] = useState<AdminEventResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -26,14 +26,14 @@ const EventTableRow: React.FC = () => {
       const token = Cookie.get("admin-tkn");
       if (!token) return;
 
-      const userEvents = await getUserEvents(token, {
+      const adminEvents = await getAdminEvents(token, {
         page: 1,
         limit: 5,
         sort_by: "createdAt",
         order_by: "desc",
       });
 
-      setEvents(userEvents.result);
+      setEvents(adminEvents.result);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data.message);

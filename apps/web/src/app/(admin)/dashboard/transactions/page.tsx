@@ -4,10 +4,10 @@ import React, { useEffect, useState } from "react";
 import DashboardTemplate from "../../_components/template";
 import { useSearchParams } from "next/navigation";
 import { ResponseDataPagination } from "@/types/global";
-import { UserEventTransactionResponse } from "@/types/user";
+import { AdminEventTransactionResponse } from "@/types/admin";
 import usePagination from "@/hooks/usePagination";
 import Cookie from "js-cookie";
-import { getUserEventTransactions } from "@/data/user";
+import { getAdminEventTransactions } from "@/data/admin";
 import axios from "axios";
 import { toast } from "sonner";
 import LoadingDashboard from "../../_components/loading";
@@ -18,7 +18,7 @@ const TransactionsPage: React.FC = () => {
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<
-    ResponseDataPagination<UserEventTransactionResponse[]> | undefined
+    ResponseDataPagination<AdminEventTransactionResponse[]> | undefined
   >(undefined);
   const {
     canNextPage,
@@ -54,7 +54,7 @@ const TransactionsPage: React.FC = () => {
         ? searchParams.get("order_by")!
         : "desc";
 
-      const eventTransactions = await getUserEventTransactions(token, {
+      const eventTransactions = await getAdminEventTransactions(token, {
         page,
         limit,
         sort_by,

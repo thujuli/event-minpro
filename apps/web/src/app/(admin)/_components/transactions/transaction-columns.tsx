@@ -8,17 +8,16 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { UserEventTransactionResponse } from "@/types/user";
+import { AdminEventTransactionResponse } from "@/types/admin";
 import Link from "next/link";
-import { formatDate, formatNumber, formatPrice } from "@/lib/formater";
+import { formatNumber, formatPrice } from "@/lib/formatter";
 import { Badge } from "@/components/ui/badge";
 import { PaymentStatus } from "@/types/transaction";
 import StatusBadge from "./status-badge";
 
-export const transactionColumns: ColumnDef<UserEventTransactionResponse>[] = [
+export const transactionColumns: ColumnDef<AdminEventTransactionResponse>[] = [
   {
     id: "event_name",
     accessorKey: "event.name",
@@ -133,13 +132,13 @@ export const transactionColumns: ColumnDef<UserEventTransactionResponse>[] = [
               asChild
               className="cursor-pointer text-green-500 focus:text-green-600"
             >
-              <Link href={`/admin/events/${name.id}/edit`}>Success</Link>
+              <Link href="#">Success</Link>
             </DropdownMenuItem>
             <DropdownMenuItem
               asChild
               className="cursor-pointer text-red-500 focus:text-red-600"
             >
-              <Link href={`/admin/events/${name.id}/edit`}>Failed</Link>
+              <Link href="#">Failed</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

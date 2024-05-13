@@ -1,5 +1,5 @@
 import prisma from '@/prisma';
-import { CreateFeedback } from '@/types/review.type';
+import { AdminEventTransactionQuery } from '@/types/admin.type';
 import { PaymentStatus, TransactionCheckout } from '@/types/transaction.type';
 import { Transaction } from '@prisma/client';
 
@@ -70,5 +70,28 @@ export class TransactionRepository {
     });
 
     return response;
+  }
+
+  static async getAdminEventTransactions(
+    id: number,
+    query: AdminEventTransactionQuery,
+  ) {
+    return await prisma.transaction.findMany({
+      where: { event: { user: { id: id } } },
+      include: {
+        user: { select: { username: true } },
+        event: { select: { name: true } },
+        voucher: { select: { name: true } },
+      },
+      skip: (Number(query.page) - 1) * Number(query.limit),
+      take: Number(query.limit),
+      orderBy: { [query.sort_by!]: query.order_by },
+    });
+  }
+
+  static async getAllAdminEventTransactions(id: number) {
+    return await prisma.transaction.findMany({
+      where: { event: { user: { id: id } } },
+    });
   }
 }

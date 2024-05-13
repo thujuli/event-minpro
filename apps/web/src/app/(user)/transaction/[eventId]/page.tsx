@@ -4,9 +4,7 @@ import { FaTicketAlt } from "react-icons/fa";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -15,9 +13,8 @@ import DesSection from "../../views/transaction/des-section";
 import axios from "axios";
 import PaymentSection from "../../views/transaction/payment-section";
 import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
-import { getUserEvents, getUserProfile } from "@/data/user";
+import { getUserProfile } from "@/data/user";
 import Cookies from "js-cookie";
-import { getEventById } from "@/data/event";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import Image from "next/image";
@@ -37,7 +34,7 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
   const [voucher, setVoucher] = React.useState<any[]>([]);
   const [point, setPoint] = React.useState<number>(0);
   const [switchOn, setSwitchOn] = React.useState<boolean>(false);
-  const [eventId, setRventId] = React.useState<string>(
+  const [eventId, setEventId] = React.useState<string>(
     window.location.href.split("/")[4],
   );
   React.useEffect(() => {
@@ -53,7 +50,7 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
       setEvent(response.data.result[0]);
       setDataProfile(UserProfile.result);
       setVoucher(UserProfile.result.vouchers);
-      setPoint(UserProfile.result.points[0].balance);
+      setPoint(UserProfile.result.point.balance);
     } catch (err) {
       console.log("Error fetching profile:", err);
     }
@@ -72,13 +69,12 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
 
   // Handle Total
   const countTotalPayment = () => {
-
     let total = event.price;
 
     if (selectedVoucher) {
       total -= (event.price * selectedVoucher) / 100;
     }
-    
+
     if (switchOn) {
       total -= point;
     }
@@ -172,7 +168,12 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
             <div className="my-[24px] space-y-3  text-[12px] text-gray-800">
               <h1>Total Point dipakai</h1>
               <h1 className="text-[14px] text-black">
-                IDR. {switchOn ? point >= event.price ?  event.price - discount : event.price - point - discount : 0}
+                IDR.{" "}
+                {switchOn
+                  ? point >= event.price
+                    ? event.price - discount
+                    : event.price - point - discount
+                  : 0}
               </h1>
             </div>
             <div id="stroke" className=" mb-10 border "></div>
