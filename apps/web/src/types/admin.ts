@@ -22,6 +22,9 @@ export type AdminEventResponse = {
 export type AdminEventTransactionResponse = {
   id: number;
   amount: number;
+  quantity: number;
+  originalAmount: number;
+  discountedAmount?: number;
   redeemedPoints: number | null;
   paymentStatus: PaymentStatus;
   createdAt: string;

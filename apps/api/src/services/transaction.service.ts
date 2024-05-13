@@ -272,9 +272,9 @@ export class TransactionService {
           },
         });
       }
-
-      return responseWithoutData(201, true, 'Transaction created!');
     });
+
+    return responseWithoutData(201, true, 'Transaction created!');
   }
 
   static async getPaymentStatusWaiting(id: number, body: TransactionCheckout) {

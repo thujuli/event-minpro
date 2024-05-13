@@ -74,20 +74,20 @@ const TransactionTableRow: React.FC = () => {
       </TableCell>
     </TableRow>
   ) : (
-    transactions.map((transaction) => (
-      <TableRow key={transaction.id}>
-        <TableCell className="font-medium">
-          {transaction.user.username}
-        </TableCell>
-        <TableCell className="text-right">
-          {!transaction.amount ? (
-            <Badge>Free</Badge>
-          ) : (
-            formatPrice(transaction.amount)
-          )}
-        </TableCell>
-      </TableRow>
-    ))
+    transactions.map((transaction) => {
+      const amount = transaction.discountedAmount ?? transaction.originalAmount;
+
+      return (
+        <TableRow key={transaction.id}>
+          <TableCell className="font-medium">
+            {transaction.user.username}
+          </TableCell>
+          <TableCell className="text-right">
+            {!amount ? <Badge>Free</Badge> : formatPrice(amount)}
+          </TableCell>
+        </TableRow>
+      );
+    })
   );
 };
 
