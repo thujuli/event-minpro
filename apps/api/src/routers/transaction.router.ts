@@ -1,13 +1,8 @@
-import { ReviewController } from '@/controllers/review.controller';
 import { TransactionController } from '@/controllers/transaction.controller';
-import {
-  adminGuard,
-  userGuard,
-  verifyToken,
-} from '@/middlewares/auth.middleware';
+import { userGuard, verifyToken } from '@/middlewares/auth.middleware';
 import { Router } from 'express';
 
-export class TrasactionRouter {
+export class TransactionRouter {
   private router: Router;
   private transactionController: TransactionController;
 
