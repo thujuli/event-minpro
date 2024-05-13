@@ -14,6 +14,7 @@ export class UserController {
       next(error);
     }
   }
+
   public async getUserProfile(req: Request, res: Response, next: NextFunction) {
     try {
       const id = res.locals.decoded.id as number;

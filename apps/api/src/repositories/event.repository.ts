@@ -100,4 +100,9 @@ export class EventRepository {
       },
     });
   }
+  static async getEventByUser(id: number) {
+    return await prisma.event.findMany({
+      where: { id: id },
+    });
+  }
 }
