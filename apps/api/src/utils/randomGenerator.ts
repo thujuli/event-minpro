@@ -1,12 +1,17 @@
-import { nanoid } from 'nanoid';
+import { nanoid, customAlphabet } from 'nanoid';
 
 const REFERRAL_CODE_LENGTH = 3;
-const VOUCHER_CODE_LENGTH = 10;
+const TICKET_CODE_LENGTH = 6;
+const CUSTOM_ALPHABET = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 export function generateReferralCode(username: string) {
   return username + nanoid(REFERRAL_CODE_LENGTH);
 }
 
-export function generateVoucherCode() {
-  return nanoid(VOUCHER_CODE_LENGTH);
+export function generateVoucherCode(prefix: string) {
+  return prefix + '-' + nanoid(REFERRAL_CODE_LENGTH);
+}
+
+export function generateTicketCode(prefix: string) {
+  return prefix + '-' + customAlphabet(CUSTOM_ALPHABET, TICKET_CODE_LENGTH)();
 }

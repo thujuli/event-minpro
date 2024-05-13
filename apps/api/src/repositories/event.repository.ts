@@ -73,8 +73,15 @@ export class EventRepository {
   }
 
   static async getEventById(id: number) {
+    return await prisma.event.findUnique({ where: { id } });
+  }
+
+  static async getEventByIdWithTransaction(eventId: number, userId: number) {
     return await prisma.event.findUnique({
-      where: { id },
+      where: { id: eventId },
+      include: {
+        transactions: { where: { userId }, select: { quantity: true } },
+      },
     });
   }
 

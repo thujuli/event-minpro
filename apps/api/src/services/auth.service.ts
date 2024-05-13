@@ -72,7 +72,7 @@ export class AuthService {
               discount: 10,
               expiryDate: currentDate,
               maxUsage: 1,
-              name: generateVoucherCode(),
+              name: generateVoucherCode(userByReferralCode.referralCode!),
 
               user: { connect: { id: newUser.id } },
             },
