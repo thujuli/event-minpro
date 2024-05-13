@@ -11,6 +11,7 @@ import { join } from 'path';
 import { VoucherRouter } from './routers/voucher.router';
 import { ReviewRouter } from './routers/review.router';
 import { TransactionRouter } from './routers/transaction.router';
+import { AdminRouter } from './routers/admin.router';
 
 export default class App {
   private app: Express;
@@ -41,6 +42,7 @@ export default class App {
     const voucherRouter = new VoucherRouter();
     const reviewRouter = new ReviewRouter();
     const transactionRouter = new TransactionRouter();
+    const adminRouter = new AdminRouter();
 
     this.app.get('/', (req: Request, res: Response) => {
       res.send(`Hello, Purwadhika Student !`);
@@ -55,6 +57,7 @@ export default class App {
     this.app.use('/vouchers', voucherRouter.getRoutes());
     this.app.use('/reviews', reviewRouter.getRoutes());
     this.app.use('/transactions', transactionRouter.getRoutes());
+    this.app.use('/admin', adminRouter.getRoutes());
   }
 
   public start(): void {

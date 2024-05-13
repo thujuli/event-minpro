@@ -2,7 +2,7 @@ import { CategoryResponse } from "./category";
 import { LocationResponse } from "./location";
 import { PaymentStatus } from "./transaction";
 
-export type UserEventResponse = {
+export type AdminEventResponse = {
   id: number;
   name: string;
   price: number;
@@ -19,7 +19,7 @@ export type UserEventResponse = {
   location: LocationResponse;
 };
 
-export type UserEventTransactionResponse = {
+export type AdminEventTransactionResponse = {
   id: number;
   amount: number;
   redeemedPoints: number | null;

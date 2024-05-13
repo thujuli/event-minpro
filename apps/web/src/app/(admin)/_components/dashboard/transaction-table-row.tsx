@@ -4,16 +4,16 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Cookie from "js-cookie";
-import { getUserEvents, getUserEventTransactions } from "@/data/user";
-import { UserEventTransactionResponse } from "@/types/user";
+import { getAdminEventTransactions } from "@/data/admin";
+import { AdminEventTransactionResponse } from "@/types/admin";
 import { TableCell, TableRow } from "@/components/ui/table";
-import { formatPrice } from "@/lib/formater";
+import { formatPrice } from "@/lib/formatter";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 
 const TransactionTableRow: React.FC = () => {
   const [transactions, setTransactions] = useState<
-    UserEventTransactionResponse[]
+    AdminEventTransactionResponse[]
   >([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -28,14 +28,14 @@ const TransactionTableRow: React.FC = () => {
       const token = Cookie.get("admin-tkn");
       if (!token) return;
 
-      const userEventTransactions = await getUserEventTransactions(token, {
+      const adminEventTransactions = await getAdminEventTransactions(token, {
         page: 1,
         limit: 5,
         sort_by: "createdAt",
         order_by: "desc",
       });
 
-      setTransactions(userEventTransactions.result);
+      setTransactions(adminEventTransactions.result);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data.message);

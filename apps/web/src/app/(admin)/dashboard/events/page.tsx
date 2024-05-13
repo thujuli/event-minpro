@@ -5,13 +5,13 @@ import { PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { eventColumns } from "../../_components/events/event-columns";
 import DashboardTemplate from "../../_components/template";
-import { getUserEvents } from "@/data/user";
+import { getAdminEvents } from "@/data/admin";
 import { EventDataTable } from "../../_components/events/event-data-table";
 import { ResponseDataPagination } from "@/types/global";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import Cookie from "js-cookie";
-import { UserEventResponse } from "@/types/user";
+import { AdminEventResponse } from "@/types/admin";
 import axios from "axios";
 import { toast } from "sonner";
 import usePagination from "@/hooks/usePagination";
@@ -21,7 +21,7 @@ const EventPage: React.FC = () => {
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<
-    ResponseDataPagination<UserEventResponse[]> | undefined
+    ResponseDataPagination<AdminEventResponse[]> | undefined
   >(undefined);
   const {
     canNextPage,
@@ -57,17 +57,17 @@ const EventPage: React.FC = () => {
         ? searchParams.get("order_by")!
         : "desc";
 
-      const userEvents = await getUserEvents(token, {
+      const adminEvents = await getAdminEvents(token, {
         page,
         limit,
         sort_by,
         order_by,
       });
 
-      setData(userEvents);
-      setCanNextPage(userEvents.total > userEvents.limit * userEvents.page);
-      setCanPrevPage(userEvents.page > 1);
-      setTotalPages(Math.ceil(userEvents.total / userEvents.limit));
+      setData(adminEvents);
+      setCanNextPage(adminEvents.total > adminEvents.limit * adminEvents.page);
+      setCanPrevPage(adminEvents.page > 1);
+      setTotalPages(Math.ceil(adminEvents.total / adminEvents.limit));
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data.message);
