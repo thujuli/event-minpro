@@ -4,11 +4,9 @@ import {
   ColumnDef,
   ColumnFiltersState,
   SortingState,
-  VisibilityState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
@@ -50,7 +48,7 @@ interface DataTableProps<TData, TValue> {
   canPrevPage: boolean;
 }
 
-export function EventDataTable<TData, TValue>({
+export function TransactionDataTable<TData, TValue>({
   columns,
   data,
   page,
@@ -81,10 +79,12 @@ export function EventDataTable<TData, TValue>({
         {/* filter */}
         <div className="flex flex-1 items-center space-x-2">
           <Input
-            placeholder="Search name..."
-            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+            placeholder="Search Event..."
+            value={
+              (table.getColumn("event_name")?.getFilterValue() as string) ?? ""
+            }
             onChange={(event) =>
-              table.getColumn("name")?.setFilterValue(event.target.value)
+              table.getColumn("event_name")?.setFilterValue(event.target.value)
             }
             className="h-8 w-[250px] lg:w-[300px]"
           />
@@ -187,7 +187,7 @@ export function EventDataTable<TData, TValue>({
           <>
             <Button asChild size="sm">
               <Link
-                href="/dashboard/events?page=1"
+                href="/dashboard/transactions?page=1"
                 scroll={false}
                 className="flex gap-[2px]"
               >
@@ -197,7 +197,7 @@ export function EventDataTable<TData, TValue>({
             </Button>
             <Button asChild size="sm">
               <Link
-                href={`/dashboard/events?page=${page - 1}`}
+                href={`/dashboard/transactions?page=${page - 1}`}
                 scroll={false}
                 className="flex gap-[2px]"
               >
@@ -213,14 +213,17 @@ export function EventDataTable<TData, TValue>({
         {canNextPage && (
           <>
             <Button asChild size="sm" className="flex gap-[2px]">
-              <Link href={`/dashboard/events?page=${page + 1}`} scroll={false}>
+              <Link
+                href={`/dashboard/transactions?page=${page + 1}`}
+                scroll={false}
+              >
                 Next
                 <ChevronRight className="h-5 w-5" />
               </Link>
             </Button>
             <Button asChild size="sm" className="flex gap-[2px]">
               <Link
-                href={`/dashboard/events?page=${totalPages}`}
+                href={`/dashboard/transactions?page=${totalPages}`}
                 scroll={false}
               >
                 Last

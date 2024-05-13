@@ -1,5 +1,5 @@
 import { UserRepository } from '@/repositories/user.repository';
-import { UserEventQuery } from '@/types/user.type';
+import { UserEventQuery, UserEventTransactionQuery } from '@/types/user.type';
 import { responseDataWithPagination, responseWithData } from '@/utils/response';
 import { UserValidation } from '@/validations/user.validation';
 import { Validation } from '@/validations/validation';
@@ -33,6 +33,52 @@ export class UserService {
       Number(userEventQuery.page),
       Number(userEventQuery.limit),
       allUserEvents!.events.length,
+    );
+  }
+
+  static async getDataProfile(id: number) {
+    const response = await UserRepository.getUserProfile(id);
+    return responseWithData(
+      200,
+      true,
+      'Get user profile successfully',
+      response!,
+    );
+  }
+
+  static async getUserEventTransactions(
+    id: number,
+    query: UserEventTransactionQuery,
+  ) {
+    const eventQuery = Validation.validate(
+      UserValidation.EVENT_TRANSACTION_QUERY,
+      query,
+    );
+
+    if (!eventQuery.page) eventQuery.page = 1;
+    if (!eventQuery.limit) eventQuery.limit = 10;
+    if (!eventQuery.sort_by) eventQuery.sort_by = 'createdAt';
+    if (!eventQuery.order_by) eventQuery.order_by = 'desc';
+
+    const eventTransactions = await UserRepository.getUserEventTransactions(
+      id,
+      eventQuery,
+    );
+
+    const allEventTransactions =
+      await UserRepository.getAllUserEventTransactions(id);
+
+    const transactions = eventTransactions?.map(
+      ({ userId, eventId, voucherId, ...rest }) => rest,
+    );
+
+    return responseDataWithPagination(
+      200,
+      'Get user event transactions successfully',
+      transactions,
+      Number(eventQuery.page),
+      Number(eventQuery.limit),
+      allEventTransactions.length,
     );
   }
 }

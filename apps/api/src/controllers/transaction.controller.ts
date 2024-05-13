@@ -1,8 +1,28 @@
-import { TrasactionService } from '@/services/transaction.service';
-import { TransactionCheckout } from '@/types/transaction.type';
+import { TransactionService } from '@/services/transaction.service';
+import {
+  TransactionCheckout,
+  TransactionRequest,
+} from '@/types/transaction.type';
 import { NextFunction, Request, Response } from 'express';
 
 export class TransactionController {
+  public async createTransaction(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      const id = res.locals.decoded.id as number;
+
+      const request = req.body as TransactionRequest;
+
+      const response = await TransactionService.createTransaction(id, request);
+      return res.status(201).send(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   public async getEventTransactionWaiting(
     req: Request,
     res: Response,
@@ -12,17 +32,17 @@ export class TransactionController {
       const id = res.locals.decoded.id as number;
       const body = req.body as TransactionCheckout;
 
-      const response = await TrasactionService.getPaymentStatusWaiting(
+      const response = await TransactionService.getPaymentStatusWaiting(
         id,
         body,
       );
 
-      return res.status(201).send(response);
+      return res.status(200).send(response);
     } catch (error) {
       next(error);
     }
   }
-  
+
   public async getEventTransactionSuccess(
     req: Request,
     res: Response,
@@ -32,7 +52,7 @@ export class TransactionController {
       const id = res.locals.decoded.id as number;
       const body = req.body as TransactionCheckout;
 
-      const response = await TrasactionService.getPaymentStatusSuccess(
+      const response = await TransactionService.getPaymentStatusSuccess(
         id,
         body,
       );
@@ -51,7 +71,7 @@ export class TransactionController {
       const id = res.locals.decoded.id as number;
       const body = req.body as TransactionCheckout;
 
-      const response = await TrasactionService.getPaymentStatusSuccessByDate(
+      const response = await TransactionService.getPaymentStatusSuccessByDate(
         id,
         body,
       );

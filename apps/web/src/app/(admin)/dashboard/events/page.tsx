@@ -12,18 +12,38 @@ import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import Cookie from "js-cookie";
 import { UserEventResponse } from "@/types/user";
+import axios from "axios";
+import { toast } from "sonner";
+import usePagination from "@/hooks/usePagination";
+import LoadingDashboard from "../../_components/loading";
 
 const EventPage: React.FC = () => {
   const searchParams = useSearchParams();
+  const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<
     ResponseDataPagination<UserEventResponse[]> | undefined
   >(undefined);
-  const [canNextPage, setCanNextPage] = useState<boolean>(false);
-  const [canPrevPage, setCanPrevPage] = useState<boolean>(false);
-  const [totalPages, setTotalPages] = useState(1);
+  const {
+    canNextPage,
+    canPrevPage,
+    setCanNextPage,
+    setCanPrevPage,
+    setTotalPages,
+    totalPages,
+  } = usePagination();
 
   useEffect(() => {
-    const getData = async () => {
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
+  const getData = async () => {
+    setIsLoading(true);
+
+    try {
+      const token = Cookie.get("admin-tkn")!;
+      if (!token) return;
+
       const page = searchParams.get("page")
         ? Number(searchParams.get("page"))
         : 1;
@@ -37,20 +57,27 @@ const EventPage: React.FC = () => {
         ? searchParams.get("order_by")!
         : "desc";
 
-      const userEvents = await getUserEvents(Cookie.get("admin-tkn")!, {
+      const userEvents = await getUserEvents(token, {
         page,
         limit,
         sort_by,
         order_by,
       });
+
       setData(userEvents);
       setCanNextPage(userEvents.total > userEvents.limit * userEvents.page);
       setCanPrevPage(userEvents.page > 1);
       setTotalPages(Math.ceil(userEvents.total / userEvents.limit));
-    };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data.message);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    getData();
-  }, [searchParams]);
+  if (isLoading) return <LoadingDashboard />;
 
   return (
     <DashboardTemplate>

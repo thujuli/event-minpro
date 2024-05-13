@@ -15,6 +15,7 @@ export class EventRepository {
       take: Number(query.limit), // Ambil sejumlah data sesuai limit
     });
   }
+
   static async getTotalEvents(query: EventQuery) {
     const filter: any = {
       price: query.price ? Number(query.price) : undefined,
