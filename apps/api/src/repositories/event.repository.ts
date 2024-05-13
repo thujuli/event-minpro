@@ -71,8 +71,8 @@ export class EventRepository {
     });
   }
 
-  static async getEventById (id:number){
-     return await prisma.event.findUnique({
+  static async getEventById(id: number) {
+    return await prisma.event.findUnique({
       where: { id },
     });
   }
@@ -97,6 +97,11 @@ export class EventRepository {
         location: { connect: { id: request.locationId } },
         category: { connect: { id: request.categoryId } },
       },
+    });
+  }
+  static async getEventByUser(id: number) {
+    return await prisma.event.findMany({
+      where: { id: id },
     });
   }
 }

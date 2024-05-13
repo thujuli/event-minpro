@@ -19,17 +19,3 @@ export const getUserEvents = async (token: string, pagination: Pagination) => {
   return res.data;
 };
 
-export const getUserProfile = async (token: string) => {
-
-  const res = await axios.get<ResponseWithData<any>>(
-    NEXT_PUBLIC_BASE_API_URL +
-      `/user/profile`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
-
-  return res.data;
-};

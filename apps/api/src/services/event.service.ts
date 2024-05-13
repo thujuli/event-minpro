@@ -64,4 +64,16 @@ export class EventService {
     await EventRepository.createEvent(id, eventRequest, validateFile);
     return responseWithoutData(201, true, 'Create event successfully');
   }
+
+  static async getEventByUser(id: number) {
+    // const eventQuery = Validation.validate(EventValidation.REQUESTBYIDUSER, body);
+
+    const response = await EventRepository.getEventByUser(id);
+    return responseWithData(
+      200,
+      true,
+      'Get events name successfully',
+      response,
+    );
+  }
 }

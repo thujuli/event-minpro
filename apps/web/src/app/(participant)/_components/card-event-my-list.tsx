@@ -16,7 +16,7 @@ const CardEventMyList: React.FunctionComponent<ICardEventMyListProps> = (
   props,
 ) => {
   return (
-    <Link href={`/detail/${props.id}`}>
+    <Link href={`/review/${props.id}`}>
       <div
         className="h-[278px] min-w-[188px] max-w-[188px] cursor-pointer overflow-hidden  rounded-lg border border-gray-400 bg-white md:h-[338px] md:min-w-[236px] md:max-w-[236px]"
         // onClick={() => router.push(`/detail/${props.id}`)}

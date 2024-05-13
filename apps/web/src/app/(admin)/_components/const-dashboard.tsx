@@ -1,10 +1,4 @@
-import {
-  ArrowRightLeft,
-  Calendar,
-  Home,
-  NotebookPen,
-  TicketPercent,
-} from "lucide-react";
+import { ArrowRightLeft, Calendar, Home } from "lucide-react";
 
 export const dashboardMenuItems = [
   {
@@ -21,15 +15,5 @@ export const dashboardMenuItems = [
     name: "Transactions",
     icon: ArrowRightLeft,
     link: "/dashboard/transactions",
-  },
-  {
-    name: "Registrations",
-    icon: NotebookPen,
-    link: "/dashboard/registrations",
-  },
-  {
-    name: "Promos",
-    icon: TicketPercent,
-    link: "/dashboard/promos",
   },
 ];

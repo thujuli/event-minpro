@@ -35,14 +35,4 @@ export class UserService {
       allUserEvents!.events.length,
     );
   }
-
-  static async getDataProfile(id: number) {
-    const response = await UserRepository.getUserProfile(id);
-    return responseWithData(
-      200,
-      true,
-      'Get user profile successfully',
-      response!,
-    );
-  }
 }

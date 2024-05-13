@@ -19,12 +19,6 @@ export class UserRouter {
       adminGuard,
       this.userController.getUserEvents,
     );
-
-    this.router.get(
-      '/profile',
-      verifyToken,
-      this.userController.getUserProfile,
-    );
   }
 
   public getRoutes(): Router {

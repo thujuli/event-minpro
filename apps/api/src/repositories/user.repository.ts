@@ -49,15 +49,4 @@ export class UserRepository {
       },
     });
   }
-
-  static async getUserProfile(id: number) {
-    const res = await prisma.user.findUnique({
-      where: { id: id },
-      include: {
-        vouchers: true,
-        point: true,
-      },
-    });
-    return res;
-  }
 }
