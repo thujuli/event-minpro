@@ -2,8 +2,14 @@ import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
 import {
   AdminEventResponse,
   AdminEventTransactionResponse,
+  AdminTotalSalesFilter,
+  AdminTotalSalesResponse,
 } from "@/types/admin";
-import { Pagination, ResponseDataPagination } from "@/types/global";
+import {
+  Pagination,
+  ResponseDataPagination,
+  ResponseWithData,
+} from "@/types/global";
 import axios from "axios";
 
 export const getAdminEvents = async (token: string, pagination: Pagination) => {
@@ -33,6 +39,25 @@ export const getAdminEventTransactions = async (
   >(
     NEXT_PUBLIC_BASE_API_URL +
       `/admin/events/transactions?page=${page}&limit=${limit}&sort_by=${sort_by}&order_by=${order_by}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  return res.data;
+};
+
+export const getAdminTotalSales = async (
+  token: string,
+  filter: AdminTotalSalesFilter,
+) => {
+  const { startDate, endDate } = filter;
+
+  const res = await axios.get<ResponseWithData<AdminTotalSalesResponse[]>>(
+    NEXT_PUBLIC_BASE_API_URL +
+      `/admin/total-sales?start_date=${startDate}&end_date=${endDate}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

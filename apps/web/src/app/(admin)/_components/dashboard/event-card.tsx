@@ -14,7 +14,7 @@ import EventTable from "./event-table";
 const EventCard: React.FC = () => {
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center">
+      <CardHeader className="flex flex-row items-center pb-0">
         <div className="grid gap-2">
           <CardTitle>Events</CardTitle>
           <CardDescription>Recent events from your store.</CardDescription>

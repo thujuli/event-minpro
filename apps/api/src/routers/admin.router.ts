@@ -26,6 +26,20 @@ export class AdminRouter {
       adminGuard,
       this.adminController.getEventTransactions,
     );
+
+    this.router.get(
+      '/total-sales',
+      verifyToken,
+      adminGuard,
+      this.adminController.getTotalSales,
+    );
+
+    this.router.get(
+      '/transactions/status',
+      verifyToken,
+      adminGuard,
+      this.adminController.getTransactionStatus,
+    );
   }
 
   public getRoutes(): Router {
