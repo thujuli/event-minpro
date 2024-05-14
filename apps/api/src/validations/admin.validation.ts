@@ -48,4 +48,32 @@ export class AdminValidation {
       .enum(['asc', 'desc'], { message: "Order must be 'asc' or 'desc'" })
       .optional(),
   });
+
+  static TOTAL_SALES_QUERY = z
+    .object({
+      start_date: z.coerce
+        .date({ invalid_type_error: 'Start date must be a date' })
+        .refine((date) => new Date(date) < new Date(), {
+          message: 'Start date cannot be in the future',
+        })
+        .optional(),
+      end_date: z.coerce
+        .date({ invalid_type_error: 'End date must be a date' })
+        .refine((date) => new Date(date) < new Date(), {
+          message: 'End date cannot be in the future',
+        })
+        .optional(),
+    })
+    .refine(
+      (data) => {
+        if (data.start_date && data.end_date) {
+          return new Date(data.end_date) >= new Date(data.start_date);
+        }
+        return true;
+      },
+      {
+        message: 'End date must be greater than start date',
+        path: ['end_date'],
+      },
+    );
 }

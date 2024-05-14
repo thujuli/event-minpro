@@ -33,3 +33,13 @@ export type AdminEventTransactionResponse = {
   event: { name: string };
   voucher: { name: string | null };
 };
+
+export type AdminTotalSalesFilter = {
+  startDate?: string;
+  endDate?: string;
+};
+
+export type AdminTotalSalesResponse = {
+  revenue: number;
+  date: string;
+};

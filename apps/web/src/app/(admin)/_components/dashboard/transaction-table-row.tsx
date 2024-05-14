@@ -30,7 +30,7 @@ const TransactionTableRow: React.FC = () => {
 
       const adminEventTransactions = await getAdminEventTransactions(token, {
         page: 1,
-        limit: 5,
+        limit: 3,
         sort_by: "createdAt",
         order_by: "desc",
       });

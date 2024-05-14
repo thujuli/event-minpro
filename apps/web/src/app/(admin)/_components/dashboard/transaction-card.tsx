@@ -14,7 +14,7 @@ import TransactionTable from "./transaction-table";
 const TransactionCard: React.FC = () => {
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center">
+      <CardHeader className="flex flex-row items-center pb-0">
         <div className="grid gap-2">
           <CardTitle>Transactions</CardTitle>
           <CardDescription>
