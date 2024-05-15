@@ -13,7 +13,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { DateRange } from "react-day-picker";
 
-const TotalRevenueDateRangePicker: React.FC = () => {
+const TransactionDateRangePicker: React.FC = () => {
   const [date, setDate] = React.useState<DateRange | undefined>({
     from: subDays(new Date(), 7),
     to: new Date(),
@@ -27,17 +27,17 @@ const TotalRevenueDateRangePicker: React.FC = () => {
     const params = new URLSearchParams(searchParams.toString());
 
     if (!date?.from && !date?.to) {
-      params.delete("revenue_from");
-      params.delete("revenue_to");
+      params.delete("transaction_from");
+      params.delete("transaction_to");
       return params.toString();
     }
 
     if (date?.from) {
-      params.set("revenue_from", new Date(date.from).toISOString());
+      params.set("transaction_from", new Date(date.from).toISOString());
     }
 
     if (date?.to) {
-      params.set("revenue_to", new Date(date.to).toISOString());
+      params.set("transaction_to", new Date(date.to).toISOString());
     }
     return params.toString();
   };
@@ -75,6 +75,8 @@ const TotalRevenueDateRangePicker: React.FC = () => {
             <Button
               type="button"
               onClick={() => {
+                console.log(date?.from, date?.to);
+
                 createQuery
                   ? router.push(`${pathname}?${createQuery()}`)
                   : router.push(pathname);
@@ -90,4 +92,4 @@ const TotalRevenueDateRangePicker: React.FC = () => {
   );
 };
 
-export default TotalRevenueDateRangePicker;
+export default TransactionDateRangePicker;

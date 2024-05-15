@@ -1,11 +1,11 @@
-import prisma from '@/prisma';
 import { TransactionRepository } from '@/repositories/transaction.repository';
 import { UserRepository } from '@/repositories/user.repository';
 import {
   AdminEventQuery,
   AdminEventTransactionQuery,
-  AdminTotalSalesQuery,
+  FilterDate,
 } from '@/types/admin.type';
+import { decrementDate, incrementDate } from '@/utils/generateDate';
 import { responseDataWithPagination, responseWithData } from '@/utils/response';
 import { AdminValidation } from '@/validations/admin.validation';
 import { Validation } from '@/validations/validation';
@@ -56,11 +56,13 @@ export class AdminService {
     if (!eventQuery.sort_by) eventQuery.sort_by = 'createdAt';
     if (!eventQuery.order_by) eventQuery.order_by = 'desc';
 
-    const eventTransactions =
-      await TransactionRepository.getAdminEventTransactions(id, eventQuery);
+    const eventTransactions = await TransactionRepository.getEventTransactions(
+      id,
+      eventQuery,
+    );
 
     const allEventTransactions =
-      await TransactionRepository.getAllAdminEventTransactions(id);
+      await TransactionRepository.getAllEventTransactions(id);
 
     const transactions = eventTransactions?.map(
       ({ userId, eventId, voucherId, ...rest }) => rest,
@@ -76,44 +78,30 @@ export class AdminService {
     );
   }
 
-  static async getAdminTotalSales(id: number, query: AdminTotalSalesQuery) {
+  static async getAdminTotalSales(id: number, query: FilterDate) {
     const { start_date: startDate, end_date: endDate } = Validation.validate(
-      AdminValidation.TOTAL_SALES_QUERY,
+      AdminValidation.FILTER_QUERY,
       query,
     );
 
     // handle date
     const currentDate = new Date();
-    currentDate.setDate(currentDate.getDate() + 1);
-    let lte = new Date(currentDate);
-
-    if (endDate) {
-      const newEndDate = new Date(endDate);
-      newEndDate.setDate(newEndDate.getDate() + 1);
-      lte = new Date(newEndDate);
-    }
+    let lte = incrementDate(currentDate, 1);
+    if (endDate) lte = incrementDate(new Date(endDate), 1);
 
     // 7 days ago
-    const pastDate = new Date();
-    pastDate.setDate(pastDate.getDate() - 7);
+    const past7Days = decrementDate(currentDate, 7);
 
-    const transactions = await prisma.transaction.groupBy({
-      by: ['updatedAt'],
-      where: {
-        event: { user: { id } },
-        paymentStatus: 'success',
-        updatedAt: {
-          gte: startDate ?? pastDate,
-          lte,
-        },
-      },
-      _sum: { discountedAmount: true },
-    });
+    const transactions =
+      await TransactionRepository.getTotalSalesGroupByUpdatedAt(id, {
+        gte: startDate ?? past7Days,
+        lte,
+      });
 
     const totalSales = transactions.map((transaction) => {
       return {
-        revenue: transaction._sum.discountedAmount,
-        date: transaction.updatedAt,
+        revenue: transaction.discountedAmount ?? transaction.originalAmount,
+        date: transaction.date,
       };
     });
 
@@ -122,6 +110,36 @@ export class AdminService {
       true,
       'Get admin total sales successfully',
       totalSales,
+    );
+  }
+
+  static async getAdminTransactionStatus(id: number, query: FilterDate) {
+    const { start_date: startDate, end_date: endDate } = Validation.validate(
+      AdminValidation.FILTER_QUERY,
+      query,
+    );
+
+    // handle date
+    const currentDate = new Date();
+    let lte = incrementDate(currentDate, 1);
+    if (endDate) lte = incrementDate(new Date(endDate), 1);
+
+    // 7 days ago
+    const past7Days = decrementDate(currentDate, 7);
+
+    console.log(new Date());
+
+    const statuses =
+      await TransactionRepository.getTransactionStatusByUpdatedAt(id, {
+        gte: startDate ?? past7Days,
+        lte,
+      });
+
+    return responseWithData(
+      200,
+      true,
+      'Get admin transaction status',
+      statuses,
     );
   }
 }

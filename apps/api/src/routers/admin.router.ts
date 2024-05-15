@@ -35,7 +35,7 @@ export class AdminRouter {
     );
 
     this.router.get(
-      '/transactions/status',
+      '/transaction-status',
       verifyToken,
       adminGuard,
       this.adminController.getTransactionStatus,

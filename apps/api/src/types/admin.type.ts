@@ -13,12 +13,7 @@ export type AdminEventTransactionQuery = {
   order_by?: string;
 };
 
-export type AdminTotalSalesQuery = {
-  start_date?: string;
-  end_date?: string;
-};
-
-export type AdminTransactionStatusQuery = {
+export type FilterDate = {
   start_date?: string;
   end_date?: string;
 };

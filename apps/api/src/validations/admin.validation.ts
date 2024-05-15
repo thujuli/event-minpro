@@ -49,7 +49,7 @@ export class AdminValidation {
       .optional(),
   });
 
-  static TOTAL_SALES_QUERY = z
+  static FILTER_QUERY = z
     .object({
       start_date: z.coerce
         .date({ invalid_type_error: 'Start date must be a date' })

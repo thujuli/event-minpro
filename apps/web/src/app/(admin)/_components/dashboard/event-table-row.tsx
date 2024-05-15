@@ -44,7 +44,7 @@ const EventTableRow: React.FC = () => {
   };
 
   if (isLoading) {
-    return Array(5)
+    return Array(3)
       .fill(0)
       .map((_, index) => (
         <TableRow key={index}>
