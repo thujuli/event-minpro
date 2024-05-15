@@ -39,17 +39,20 @@ const CategorySeminarSection: React.FunctionComponent<
     (event: any) => (event.categoryId = 4),
   );
   return (
-    <section className="bg-[#f4f7fe] py-[10px]">
+    <section
+      id="seminar"
+      className="bg-[url('https://asset.gecdesigns.com/img/wallpapers/aesthetic-nature-beautiful-forest-with-hills-river-background-image-sr10012411-1704896852800-cover.webp')]  bg-cover bg-center py-[10px] "
+    >
       <div className=" mx-[20px] my-[26px] md:mx-[140px] ">
         <div className=" flex flex-col justify-between">
-          <h1 className=" text-[14px] font-semibold md:text-[24px]">
+          <h1 className=" text-[14px] font-semibold text-white md:text-[24px]">
             Workshop & Seminar
           </h1>
-          <h1 className=" mt-[4px] text-[12px] md:mt-[14px] md:text-[14px] ">
-            Diskon 50% buat main Seminar bareng kita. 🎠
+          <h1 className=" mt-[4px] text-[12px] text-white md:mt-[14px] md:text-[14px]">
+            Kembangkan Keahlianmu di Workshop Eksklusif! 📚
           </h1>
         </div>
-        <div className="mt-[10px] space-x-4">
+        <div className="mt-[10px] hidden space-x-4 md:block">
           <Button
             className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "All" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
             type="button"

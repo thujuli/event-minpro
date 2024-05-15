@@ -11,6 +11,7 @@ import CategoryFestivalSection from "./views/home/category-festival";
 import CategorySportsSection from "./views/home/category-sport";
 import CategoryAttractionSection from "./views/home/category-attraction";
 import CategoryDramaSection from "./views/home/category-drama";
+import Footer from "./views/footer";
 
 const HomePage: React.FC = () => {
   return (
@@ -25,6 +26,7 @@ const HomePage: React.FC = () => {
       <CategorySeminarSection />
       <CategoryDramaSection />
       <CategoryAttractionSection />
+      {/* <Footer /> */}
     </section>
   );
 };

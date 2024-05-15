@@ -16,21 +16,10 @@ const CategoryFestivalSection: React.FunctionComponent<
   React.useEffect(() => {
     onHandleGet();
   }, []);
-  const [showLoadMoreFestival, setShowLoadMoreFestival] = React.useState(true);
   const [displayedEvents, setDisplayedEvents] = React.useState(5);
   const filterEventFestival = event.filter(
     (event: any) => event.categoryId === 1,
   );
-  const handleLoadMoreFestival = () => {
-    const loadMoreFestival = event.filter(
-      (event: any) => event.categoryId === 1,
-    );
-    const newDisplayedEvents = displayedEvents + 5;
-    setDisplayedEvents(newDisplayedEvents);
-    if (newDisplayedEvents >= loadMoreFestival.length) {
-      setShowLoadMoreFestival(false);
-    }
-  };
   const onHandleGet = async () => {
     try {
       let url = NEXT_PUBLIC_BASE_API_URL + "/events?categoryId=1";
@@ -42,16 +31,15 @@ const CategoryFestivalSection: React.FunctionComponent<
     }
   };
 
-
   return (
-    <section>
+    <section id="festival">
       <div className=" mx-[20px] my-[26px] md:mx-[140px] ">
         <div className=" flex flex-col justify-between">
           <h1 className=" text-[14px] font-semibold md:text-[24px]">
             Festival
           </h1>
           <h1 className=" mt-[4px] text-[12px] md:mt-[14px] md:text-[14px] ">
-            Diskon 50% buat main Festival bareng kita. 🎠
+            Meriahkan Festival dengan Diskon 50%! 🎉 
           </h1>
         </div>
         <div className="my-[18px] flex gap-4 overflow-hidden overflow-x-auto md:grid md:grid-cols-5">
@@ -70,17 +58,6 @@ const CategoryFestivalSection: React.FunctionComponent<
               </div>
             ))}
         </div>
-        {showLoadMoreFestival && (
-          <div className=" mx-auto flex">
-            <Button
-              className=" mx-auto h-[36px] w-[242px] bg-[#5CC8E4] text-[14px] text-white  md:h-[44px] "
-              type="button"
-              onClick={handleLoadMoreFestival}
-            >
-              Load more
-            </Button>
-          </div>
-        )}
       </div>
     </section>
   );

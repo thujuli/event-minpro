@@ -28,7 +28,7 @@ const Recomend: React.FunctionComponent<IRecomendProps> = (props) => {
           Mungkin kamu suka
         </h1>
       </div>
-      <div className="my-[18px] flex gap-4 overflow-hidden md:grid md:grid-cols-5 ">
+      <div className="my-[18px] flex overflow-x-auto gap-2 overflow-hidden md:grid md:grid-cols-5 ">
         {event?.slice(0, 5).map((event: any, index: number) => (
           <div key={index}>
             <CardEvent

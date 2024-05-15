@@ -16,19 +16,10 @@ const CategorySportsSection: React.FunctionComponent<
   React.useEffect(() => {
     onHandleGet();
   }, []);
-  const [showLoadMoreSports, setShowLoadMoreSports] = React.useState(true);
   const [displayedEvents, setDisplayedEvents] = React.useState(5);
   const filterEventSports = event.filter(
     (event: any) => event.categoryId === 3,
   );
-  const handleLoadMoreSports = () => {
-    const loadMoreSports = event.filter((event: any) => event.categoryId === 3);
-    const newDisplayedEvents = displayedEvents + 5;
-    setDisplayedEvents(newDisplayedEvents);
-    if (newDisplayedEvents >= loadMoreSports.length) {
-      setShowLoadMoreSports(false);
-    }
-  };
   const onHandleGet = async () => {
     try {
       let url = NEXT_PUBLIC_BASE_API_URL + "/events?categoryId=3";
@@ -40,12 +31,12 @@ const CategorySportsSection: React.FunctionComponent<
     }
   };
   return (
-    <section>
+    <section id="sport">
       <div className=" mx-[20px] my-[26px] md:mx-[140px] ">
         <div className=" flex flex-col justify-between">
           <h1 className=" text-[14px] font-semibold md:text-[24px]">Sports</h1>
           <h1 className=" mt-[4px] text-[12px] md:mt-[14px] md:text-[14px] ">
-            Diskon 50% buat main Sports bareng kita. 🎠
+            Ayo, Dukung Tim Favoritmu di Pertandingan Seru! 🏅
           </h1>
         </div>
         <div className="my-[18px] flex gap-4 overflow-hidden overflow-x-auto md:grid md:grid-cols-5">
@@ -64,17 +55,6 @@ const CategorySportsSection: React.FunctionComponent<
               </div>
             ))}
         </div>
-        {showLoadMoreSports && (
-          <div className=" mx-auto flex">
-            <Button
-              className=" mx-auto h-[36px] w-[242px] bg-[#5CC8E4] text-[14px] text-white  md:h-[44px] "
-              type="button"
-              onClick={handleLoadMoreSports}
-            >
-              Load more
-            </Button>
-          </div>
-        )}
       </div>
     </section>
   );

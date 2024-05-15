@@ -19,6 +19,13 @@ export class VoucherRouter {
       adminGuard,
       this.voucherController.createVoucher,
     );
+
+    this.router.get(
+      '/:eventId',
+      verifyToken,
+      adminGuard,
+      this.voucherController.getVoucherById,
+    );
   }
 
   public getRoutes(): Router {

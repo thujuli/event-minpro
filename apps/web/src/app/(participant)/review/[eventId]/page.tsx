@@ -8,6 +8,7 @@ import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useParams } from "next/navigation";
+import { AutosizeTextarea } from "@/components/shared/autosize-textarea";
 
 interface IReviewProps {}
 
@@ -30,22 +31,15 @@ const Review: React.FunctionComponent<IReviewProps> = (props) => {
       let url = NEXT_PUBLIC_BASE_API_URL + `/events/${params.eventId}`;
       const response = await axios.get(url);
       setEvent(response.data.result[0]);
-      // setDataProfile(UserProfile.result);
+
       console.log("INI DATA :", response.data.result[0]);
     } catch (err) {
       console.log("Error fetching profile:", err);
     }
   };
-
-  console.log("CEK LOG :", clickedStars);
-  console.log("CEK LOG :", textReview);
-
+  
   const postReview = async () => {
     try {
-      // const UserProfile = await getUserProfile(Cookies.get("user-tkn")!);
-      // setDataProfile(UserProfile.result);
-
-      // Handle  Token
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("user-tkn")}` },
       };
@@ -66,11 +60,11 @@ const Review: React.FunctionComponent<IReviewProps> = (props) => {
     }
   };
   return (
-    <section className=" w-full rounded-lg bg-white p-10">
-      <div className=" flex- flex-col space-y-4">
+    <section className="mx-auto w-fit rounded-lg bg-white p-10">
+      <div className=" flex  flex-col space-y-4">
         <Image
-          className="h-[400px] w-full rounded-md bg-cover bg-center"
-          src={ event.imageURL}
+          className="h-[400px] w-[400px] rounded-md  bg-center"
+          src={event.imageURL}
           width={1000}
           height={1000}
           alt=""
@@ -87,9 +81,9 @@ const Review: React.FunctionComponent<IReviewProps> = (props) => {
             />
           ))}
         </div>
-        <Textarea onChange={(e) => settextReview(e.target.value)} />
+        <AutosizeTextarea onChange={(e) => settextReview(e.target.value)} />
         <Button
-          className="block h-[36px] w-[300px] rounded-md  bg-[#53B253]  text-white md:block"
+          className="block h-[36px] w-full rounded-md  bg-[#53B253]  text-white md:block"
           type="button"
           onClick={postReview}
         >

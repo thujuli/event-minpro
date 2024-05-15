@@ -14,4 +14,15 @@ export class VoucherController {
       next(error);
     }
   }
+  public async getVoucherById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = res.locals.decoded.id as number;
+
+      const eventId = req.params.eventId;
+      const response = await VoucherService.getVoucherById(id, eventId);
+      return res.status(200).send(response);
+    } catch (error) {
+      next(error);
+    }
+  }
 }

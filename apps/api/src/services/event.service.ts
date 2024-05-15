@@ -10,7 +10,11 @@ import { Validation } from '@/validations/validation';
 
 export class EventService {
   static async getEvents(query: EventQuery) {
+    console.log('INI SERVICE', query);
+
     const eventQuery = Validation.validate(EventValidation.QUERY, query);
+    console.log("sudah validasi",eventQuery);
+
     if (!eventQuery.page) eventQuery.page = 1;
     if (!eventQuery.limit) eventQuery.limit = 10;
 
@@ -66,7 +70,6 @@ export class EventService {
   }
 
   static async getEventByUser(id: number) {
-    // const eventQuery = Validation.validate(EventValidation.REQUESTBYIDUSER, body);
 
     const response = await EventRepository.getEventByUser(id);
     return responseWithData(

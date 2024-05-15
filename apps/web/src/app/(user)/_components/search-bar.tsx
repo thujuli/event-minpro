@@ -1,7 +1,6 @@
 "use client";
 import * as React from "react";
 import { Input } from "@/components/ui/input";
-import SearchBar from "./handle-seachbar";
 import {
   Sheet,
   SheetContent,
@@ -60,20 +59,21 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
   React.useEffect(() => {
     onHandleGet();
     getCategories();
-  }, [searchDebouce, getData]);
+  }, [searchDebouce, getData, open]);
   const onHandleGet = async () => {
     try {
       let url = NEXT_PUBLIC_BASE_API_URL + "/events/search?";
       if (searchDebouce) {
-        url += `name=${searchDebouce}`;
+        url += `${getData.category || getData.location ? "&" : ""}name=${searchDebouce}`;
       }
       if (getData.category) {
-        url += `${searchDebouce ? "&" : ""}categoryId=${getData.category}`;
+        url += `${searchDebouce || getData.location ? "&" : ""}categoryId=${getData.category}`;
       }
       if (getData.location) {
-        url += `${searchDebouce ? "&" : ""}locationId=${getData.location.id}`;
+        url += `${searchDebouce || getData.category ? "&" : ""}locationId=${getData.location.id}`;
       }
       console.log("cek log url :", url);
+
       let response = await axios.get(url);
       setEvent(response.data.result);
     } catch (err) {
@@ -89,10 +89,9 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
       console.log("Error fetching categories:", error);
     }
   };
-  console.log("onChange", searchDebouce);
-  // console.log("onChange", getData.location.id);
-  console.log("onChange", getData.category);
-  console.log("onChange", getData.location.id);
+  console.log("search By Name :", searchDebouce);
+  console.log("search By category :", getData.category);
+  console.log("search By Location :", getData.location.id);
   return (
     <section className=" mx-auto flex">
       <Sheet>
@@ -115,7 +114,7 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
                 placeholder="Cari eventMu"
                 onChange={(e) => setSearch(e.target.value)}
               />
-              <div className=" mt-[10px] flex justify-between">
+              <div className=" mt-[10px] flex space-x-8">
                 <Select
                   onValueChange={(element: any) => {
                     const newData = {
@@ -144,7 +143,7 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
                       role="combobox"
                       aria-expanded={open}
                       className={cn(
-                        "w-full justify-between",
+                        "w-full ",
                         !selected && "text-muted-foreground",
                       )}
                     >
