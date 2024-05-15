@@ -37,16 +37,17 @@ const CategoryMusikSection: React.FunctionComponent<
     }
   };
   return (
-    <section>
+    <section id="music">
       <div className=" mx-[20px] my-[26px] md:mx-[140px] ">
         <div className=" flex flex-col justify-between">
           <h1 className=" text-[14px] font-semibold md:text-[24px]">Concert</h1>
           <h1 className=" mt-[4px] text-[12px] md:mt-[14px] md:text-[14px] ">
-            Diskon 50% buat main musik bareng kita. 🎠
+            Bergoyanglah bersama musisi favorit Anda dalam konser paling heboh
+            tahun ini🎸
           </h1>
         </div>
         <div className=" flex items-center justify-between">
-          <div className="mt-[10px] space-x-4">
+          <div className="mt-[10px] hidden space-x-4 md:block">
             <Button
               className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "All" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
               type="button"
@@ -91,7 +92,12 @@ const CategoryMusikSection: React.FunctionComponent<
             </Button>
           </div>
           <Link href={`/explore`}>
-            <p className=" cursor-pointer text-[12px]">Explore lebih banyak</p>
+            <Button
+              className={`hidden h-[30px] w-auto rounded-md border  bg-white px-4 text-black md:block`}
+              type="button"
+            >
+              Explore Lebih Banyak
+            </Button>
           </Link>
         </div>
         <div className="my-[18px] flex gap-4 overflow-hidden overflow-x-auto md:grid md:grid-cols-5">

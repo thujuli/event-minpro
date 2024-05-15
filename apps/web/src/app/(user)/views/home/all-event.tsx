@@ -1,35 +1,38 @@
 "use client";
 import * as React from "react";
-import { Input } from "@/components/ui/input";
-import CardEventPromo from "../../_components/home/card-event-promo";
 import CardEvent from "../../_components/card-event";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
-import { Slider } from "@/components/ui/slider";
+import { LocationResponse } from "@/types/location";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { ChevronsUpDown } from "lucide-react";
+import { LocationSearch } from "@/components/shared/location-search";
+import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
+import { useDebounce } from "use-debounce";
 
 interface IAllEventSectionProps {}
 
 const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
   props,
 ) => {
-  //FILTERING
-  const [showConfirmationModal, setShowConfirmationModal] =
-    React.useState(false);
-  const handleShowConfirmationModal = () => {
-    setShowConfirmationModal(true);
-  };
+  //FITUR LOCATION
+  //buat location
+  const handleSetActive = React.useCallback((item: LocationResponse) => {
+    setSelected(item);
+    setOpen(false);
+  }, []);
+  const [open, setOpen] = React.useState(false);
+  const [selected, setSelected] = React.useState<
+    LocationResponse | undefined
+  >();
+  const displayName = selected ? selected.name : "Select location";
 
-  const handleCloseConfirmationModal = () => {
-    setShowConfirmationModal(false);
-  };
   //fitur pagination
   const [currentPage, setCurrentPage] = React.useState(1);
   const [totalPages, setTotalPages] = React.useState(1);
@@ -38,27 +41,60 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
   const [events, setEvents] = React.useState([]);
   const [getData, setGetData] = React.useState<any>({
     categoryId: 0,
+    location: "",
   });
+
+  // FITUR DATE
+  const [startDate, setStartDate] = React.useState<string>("");
+  const [endDate, setEndDate] = React.useState<string>("");
+  console.log("startDate", startDate);
+  console.log("endDate", endDate);
+
+  //fitur search
+  const [search, setSearch] = React.useState("");
+  const [searchDebouce] = useDebounce(search, 1000);
+
   React.useEffect(() => {
     onHandleGet();
-  }, [getData, currentPage]);
+  }, [getData, currentPage, searchDebouce, startDate, endDate]);
   const onHandleGet = async () => {
     try {
-      let url = NEXT_PUBLIC_BASE_API_URL + "/events?";
-      if (getData.categoryId) {
-        url += `categoryId=${getData.categoryId}`;
-      }
-      if (getData.page) {
-        url += `${url ? "&" : ""}page=${currentPage}`;
+      // let url = NEXT_PUBLIC_BASE_API_URL + "/events?";
+
+      let params: string[] = [];
+      if (searchDebouce) {
+        params.push(`name=${searchDebouce}`);
       }
 
+      if (getData.categoryId) {
+        params.push(`categoryId=${getData.categoryId}`);
+      }
+
+      if (getData.location) {
+        params.push(`locationId=${getData.location.id}`);
+      }
+
+      if (currentPage) {
+        params.push(`page=${currentPage}`);
+      }
+
+      if (startDate) {
+        const isoStartDate = new Date(startDate).toISOString();
+        params.push(`startDate=${isoStartDate}`);
+      }
+
+      if (endDate) {
+        const isoEndDate = new Date(endDate).toISOString();
+        params.push(`endDate=${isoEndDate}`);
+      }
+
+      const queryString = params.length ? `?${params.join("&")}` : "";
+      const url = `${NEXT_PUBLIC_BASE_API_URL}/events${queryString}`;
       const response = await axios.get(url);
       setEvents(response.data.result);
-      setTotalPages(Math.ceil(response.data.total / response.data.limit));
-      console.log(Math.ceil(response.data.total / response.data.limit));
-      console.log("INI LOG DATA EVENTS", response.data.result[0]);
+      console.log("ini log url :", url);
 
-      console.log(response.data);
+      setTotalPages(Math.ceil(response.data.total / response.data.limit));
     } catch (err) {
       console.log(err);
     }
@@ -83,18 +119,17 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
     );
   }
 
+  console.log("search By Name :", searchDebouce);
+
   return (
-    <section>
-      <div className=" mx-[20px] my-[26px] md:mx-[140px] ">
-        <div className=" flex  justify-between">
+    <section className="">
+      <div className=" mx-[10px] my-[26px] md:mx-[140px] ">
+        <div className=" flex   justify-between  overflow-hidden overflow-x-auto ">
           <div>
             <h1 className=" text-[14px] font-semibold md:text-[24px]">
               All Event
             </h1>
-            {/* <h1 className=" mt-[4px] md:mt-[14px] text-[12px] md:text-[14px] font-semibold">
-          Menampilkan 62 hasil
-          </h1> */}
-            <div className="mt-[10px] space-x-4">
+            <div className="mt-[10px] flex  space-x-4 overflow-hidden overflow-x-auto ">
               <Button
                 className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "All" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
                 type="button"
@@ -201,30 +236,68 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
                 Attractions
               </Button>
             </div>
-            <Button className="  " onClick={handleShowConfirmationModal}>
-              Filtering
-            </Button>
-            {showConfirmationModal && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center">
-                <div className="rounded-lg bg-white p-8">
-                  <p>Apakah Anda yakin sudah melakukan pembayaran?</p>
-                  <div className="mt-4 flex justify-center space-x-4">
-                    {/* TINGGAL BUTTON YA NYA KASIH FUNCTION BUAT NGIRIM AXIOS */}
-                    {/* <Button>Ya</Button> */}
-                    {/* BUAT ON CHANGE FILTERING  BY PRICE */}
-                    <Slider defaultValue={[33]} max={100} step={1} />
-                    <div>
-                      <Button onClick={handleCloseConfirmationModal}>
-                        Batal
-                      </Button>
-                    </div>
-                  </div>
-                </div>
+            <div className="mt-6 flex space-x-4">
+              {/* SELECT LOCATION MULAI */}
+              <Popover open={open} onOpenChange={setOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={open}
+                    className={cn(
+                      " w-fit",
+                      !selected && "text-muted-foreground",
+                    )}
+                  >
+                    {displayName}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent align="start" className="p-0">
+                  <LocationSearch
+                    selectedResult={selected}
+                    onSelectResult={(result) => {
+                      setGetData({ ...getData, location: result });
+                      handleSetActive(result);
+                    }}
+                  />
+                </PopoverContent>
+              </Popover>
+              {/* SELECT LOCATION AKHIR */}
+              {/* SELECT NAME AWAL */}
+              <Input
+                className="h-[36px] w-[300px]  bg-[#f4f7fe]"
+                type="text"
+                placeholder="Cari eventMu"
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              {/* SELECT NAME AKHIR  */}
+              {/* SELECT DATE AWAL  */}
+              <div className=" flex items-center space-x-4 ">
+                <h1>Start Date :</h1>
+                <input
+                  type="date"
+                  className=" rounded-md border px-4 py-1"
+                  onChange={(e) => {
+                    setStartDate(e.target.value);
+                  }}
+                />
               </div>
-            )}
+              <div className=" flex items-center space-x-4 ">
+                <h1>End Date :</h1>
+                <input
+                  type="date"
+                  className=" rounded-md border px-4 py-1"
+                  onChange={(e) => {
+                    setEndDate(e.target.value);
+                  }}
+                />
+              </div>
+              {/* SELECT DATE AKHIR  */}
+            </div>
           </div>
         </div>
-        <div className="my-[18px] flex gap-4 overflow-hidden overflow-x-auto md:grid md:grid-cols-5">
+        <div className=" mx-auto my-[18px] grid grid-cols-2 gap-4  md:grid md:grid-cols-5">
           {events.map((event: any, index: number) => (
             <div key={index}>
               <CardEvent
@@ -238,7 +311,7 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
             </div>
           ))}
         </div>
-        <div className=" hidden space-x-4 md:block">{paginationButtons}</div>
+        <div className=" space-x-4 ">{paginationButtons}</div>
       </div>
     </section>
   );

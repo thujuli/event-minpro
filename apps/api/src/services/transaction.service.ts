@@ -1,5 +1,6 @@
 import prisma from '@/prisma';
 import { EventRepository } from '@/repositories/event.repository';
+import { ReviewRepository } from '@/repositories/review.repository';
 import { TransactionRepository } from '@/repositories/transaction.repository';
 import { UserRepository } from '@/repositories/user.repository';
 import { VoucherRepository } from '@/repositories/voucher.repository';
@@ -302,17 +303,22 @@ export class TransactionService {
       response,
     );
   }
+
   static async getPaymentStatusSuccessByDate(
     id: number,
     body: TransactionCheckout,
   ) {
+    
     const success = Validation.validate(TransactionValidation.GET, body);
-
+    
     const response = await TransactionRepository.getEventSuccessByDate(
       id,
-      success,
     );
+    console.log(response);
+    // for(let i = 0; i < response.eventsSuccess.length; i++){
+    //   if(response.eventsSuccess[i].eve)
 
+    // }
     return responseWithData(
       200,
       true,

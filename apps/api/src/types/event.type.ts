@@ -8,6 +8,8 @@ export type EventQuery = {
   name?: string;
   location?: string;
   id?: number;
+  startDate?: Date;
+  endDate?: Date;
 };
 
 export type EventRequest = {

@@ -2,17 +2,40 @@ import { EventQuery, EventRequest } from '@/types/event.type';
 import prisma from '@/prisma';
 export class EventRepository {
   static async getEvents(query: EventQuery) {
+    console.log(query);
+
     const filter: any = {
       price: query.price ? Number(query.price) : undefined,
       locationId: query.locationId ? Number(query.locationId) : undefined,
       categoryId: query.categoryId ? Number(query.categoryId) : undefined,
+      name: query.name ? String(query.name) : undefined,
+      startDate: query.startDate
+        ? new Date(query.startDate).toISOString()
+        : undefined,
+      endDate: query.endDate
+        ? new Date(query.endDate).toISOString()
+        : undefined,
     };
+    console.log('TEST :', query.startDate);
+    console.log('TEST :', filter.endDate);
 
     return await prisma.event.findMany({
-      where: filter,
+      where: {
+        name: { contains: query.name },
+        categoryId: filter.categoryId,
+        locationId: filter.locationId,
+        startDate:
+          filter.startDate || filter.endDate
+            ? {
+                ...(filter.startDate && { gte: filter.startDate }),
+                ...(filter.endDate && { lte: filter.endDate }),
+              }
+            : undefined,
+      },
       include: { category: true, location: true },
-      skip: (Number(query.page) - 1) * Number(query.limit), // Lewati data sejumlah offset
-      take: Number(query.limit), // Ambil sejumlah data sesuai limit
+      orderBy: { createdAt: 'desc' },
+      skip: (Number(query.page) - 1) * Number(query.limit),
+      take: Number(query.limit),
     });
   }
 
@@ -21,9 +44,29 @@ export class EventRepository {
       price: query.price ? Number(query.price) : undefined,
       locationId: query.locationId ? Number(query.locationId) : undefined,
       categoryId: query.categoryId ? Number(query.categoryId) : undefined,
+      startDate: query.startDate
+        ? new Date(query.startDate).toISOString()
+        : undefined,
+      endDate: query.endDate
+        ? new Date(query.endDate).toISOString()
+        : undefined,
     };
 
-    return await prisma.event.count({ where: filter });
+    return await prisma.event.count({
+      where: {
+        name: filter.name ? { contains: filter.name } : undefined,
+        categoryId: filter.categoryId,
+        locationId: filter.locationId,
+        ...(filter.startDate || filter.endDate
+          ? {
+              startDate: {
+                ...(filter.startDate && { gte: filter.startDate }),
+                ...(filter.endDate && { lte: filter.endDate }),
+              },
+            }
+          : {}),
+      },
+    });
   }
   static async getEventsBySearch(query: EventQuery) {
     const filter: any = {
@@ -68,7 +111,7 @@ export class EventRepository {
 
     return await prisma.event.findMany({
       where: { id: eventId },
-      include: { category: true, location: true },
+      include: { category: true, location: true, user: true },
     });
   }
 
@@ -107,9 +150,11 @@ export class EventRepository {
       },
     });
   }
+
   static async getEventByUser(id: number) {
     return await prisma.event.findMany({
-      where: { id: id },
+      where: { userId: id },
     });
   }
+
 }

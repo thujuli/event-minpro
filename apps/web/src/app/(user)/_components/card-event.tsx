@@ -9,15 +9,15 @@ interface ICardEventProps {
   judul: string;
   lokasi: string;
   waktu: string;
-  harga: string;
+  harga: number;
 }
 
 const CardEvent: React.FunctionComponent<ICardEventProps> = (props) => {
   return (
     <Link href={`/detail/${props.id}`}>
-      <div className="h-[278px] min-w-[188px] max-w-[188px] cursor-pointer overflow-hidden  rounded-lg border border-gray-400 bg-white md:h-[338px] md:min-w-[236px] md:max-w-[236px]">
+      <div className="h-[278px] min-w-[178px] max-w-[178px] cursor-pointer overflow-hidden  rounded-lg border border-gray-400 bg-white md:h-[288px] md:min-w-[236px] md:max-w-[236px]">
         <Image
-          className="h-[144px] w-[188px] md:h-[148px] md:w-[236px] bg-cover"
+          className="h-[144px] w-[188px]  md:h-[148px] md:w-full"
           src={props.urlImage}
           width={236}
           height={148}
@@ -30,11 +30,11 @@ const CardEvent: React.FunctionComponent<ICardEventProps> = (props) => {
           </h1>
           <h1 className="  mt-[10px]  text-[10px]">{props.lokasi}</h1>
           <h1 className="  mt-[4px]  text-[10px]">{props.waktu}</h1>
-          <h1 className="  mt-[20px] text-[10px] font-semibold  text-[#53B253] md:mt-[40px] md:text-[12px]">
+          <h1 className="  mt-[20px] text-[10px] font-semibold  text-[#53B253] md:mt-[20px] md:text-[12px]">
             Tersedia sekarang
           </h1>
           <h1 className="  text-[10px] font-semibold md:text-[12px]   ">
-            IDR. {props.harga.toLocaleString()}
+            {props.harga === 0 ? "Free" : `IDR. ${props.harga.toLocaleString()}`}
           </h1>
         </div>
       </div>

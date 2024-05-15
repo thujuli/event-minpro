@@ -1,16 +1,18 @@
 "use client";
 import * as React from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";;
+import InputSearch from "../_components/search-bar";
 import Link from "next/link";
 
-interface INavbarDesktopProps {}
+interface INavbarDetailProps {}
 
-const NavbarDesktop: React.FunctionComponent<INavbarDesktopProps> = (props) => {
+const NavbarDetail: React.FunctionComponent<INavbarDetailProps> = (props) => {
+  const [modalIsOpen, setModalIsOpen] = React.useState(false);
   return (
-    <section className=" hidden h-[80px] w-full border border-b-2   text-black md:block ">
-      <div className="mx-[168px] flex items-center justify-between pt-[20px]">
+    <section className=" hidden h-[152px] w-full border-b-2 bg-white  text-black md:block ">
+      <div className="mx-[168px] flex justify-between pt-[20px]">
         <Link href={`/`}>
-          <h1 className=" text-[20px] font-semibold text-black">NGIVENT</h1>
+          <h1 className=" text-[20px] font-semibold text-[#5cc8e4]">NGIVENT</h1>
         </Link>
         <div className=" flex space-x-2">
           <Link href={`/sign-in`}>
@@ -31,8 +33,12 @@ const NavbarDesktop: React.FunctionComponent<INavbarDesktopProps> = (props) => {
           </Link>
         </div>
       </div>
+      <div id="stroke" className=" mt-[20px] border "></div>
+      <div className="mx-[168px] ">
+        <InputSearch />
+      </div>
     </section>
   );
 };
 
-export default NavbarDesktop;
+export default NavbarDetail;

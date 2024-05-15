@@ -6,7 +6,9 @@ export class EventController {
     try {
       const query = req.query as EventQuery;
 
+      console.log(req.query);
       const response = await EventService.getEvents(query);
+      
       return res.status(200).send(response);
     } catch (error) {
       next(error);
@@ -49,5 +51,6 @@ export class EventController {
       next(error);
     }
   }
+
 
 }

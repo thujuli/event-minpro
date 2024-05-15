@@ -12,31 +12,22 @@ const MyEventList: React.FunctionComponent<IMyEventListProps> = (props) => {
   const [event, setEvent] = React.useState([]);
   const [eventFinish, setEventFinish] = React.useState([]);
   const [showOnGoing, setShowOnGoing] = React.useState(true);
-  const [stateStatus, setStateStatus] = React.useState(4);
-  const [dataProfile, setDataProfile] = React.useState<any[]>([]);
 
   React.useEffect(() => {
     onHandleGetOnGoing();
     onHadnleGetFInish();
-  }, [showOnGoing, stateStatus]);
+  }, [showOnGoing]);
   const onHandleGetOnGoing = async () => {
     try {
-      // Handle User Token
-      const UserProfile = await getUserProfile(Cookies.get("user-tkn")!);
-      setDataProfile(UserProfile.result);
-      console.log("data user", UserProfile.result);
-
-      // Handle  Token
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("user-tkn")}` },
       };
-      //route ini seharusnya diganti sama dengan transaction success dengan endDate yang udah selesei
-      // let urlOnGoing = NEXT_PUBLIC_BASE_API_URL + `/events?categoryId=${3}`; //ini seharusnya dibuatkan API baru
+
       let url = NEXT_PUBLIC_BASE_API_URL + `/transactions/success`;
       const response = await axios.get(url, config);
-      setEvent(response.data.result.eventsSuccess);
 
-      console.log("data event Ongoing", response.data.result.eventsSuccess);
+      setEvent(response.data.result.eventsSuccess);
+      console.log("data event Success", response.data.result.eventsSuccess);
     } catch (err) {
       console.log(err);
     }
@@ -44,11 +35,6 @@ const MyEventList: React.FunctionComponent<IMyEventListProps> = (props) => {
 
   const onHadnleGetFInish = async () => {
     try {
-      // Handle User Token
-      const UserProfile = await getUserProfile(Cookies.get("user-tkn")!);
-      setDataProfile(UserProfile.result);
-      console.log("data user", UserProfile.result);
-
       // Handle  Token
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("user-tkn")}` },
@@ -57,7 +43,7 @@ const MyEventList: React.FunctionComponent<IMyEventListProps> = (props) => {
 
       const response = await axios.get(url, config);
       setEventFinish(response.data.result.eventsSuccess);
-      console.log("data event Finish", response.data.result.eventsSuccess);
+      console.log("data event Finish", response.data.result[0].event);
     } catch (error) {
       console.log(error);
     }
@@ -80,7 +66,7 @@ const MyEventList: React.FunctionComponent<IMyEventListProps> = (props) => {
           Selesai
         </button>
       </div>
-      <div className="md:mx-10 my-[18px] grid grid-cols-2 md:grid-cols-4 gap-4  md:p-6">
+      <div className="my-[18px] grid grid-cols-2 gap-4 md:mx-10 md:grid-cols-4  md:p-6">
         {showOnGoing
           ? event.map((eventItem: any, index: number) => (
               <div key={index}>
@@ -102,7 +88,9 @@ const MyEventList: React.FunctionComponent<IMyEventListProps> = (props) => {
                   lokasi={eventFinishItem.event.locationId}
                   waktu={eventFinishItem.event.endDate}
                   harga={eventFinishItem.event.price}
-                  urlImage={NEXT_PUBLIC_BASE_API_URL + eventFinishItem.event.imageURL}
+                  urlImage={
+                    NEXT_PUBLIC_BASE_API_URL + eventFinishItem.event.imageURL
+                  }
                 />
               </div>
             ))}

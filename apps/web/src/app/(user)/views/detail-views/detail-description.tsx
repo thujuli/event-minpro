@@ -16,6 +16,9 @@ interface IDescriptionDetaillProps {
       name: string;
     };
     startDate: string;
+    user :{
+      username :string
+    }
   };
 }
 
@@ -51,7 +54,7 @@ const DescriptionDetaill: React.FunctionComponent<IDescriptionDetaillProps> = (
             <MdGroups3 className=" h-[20px] w-[20px] text-[#aeb2be] md:h-[24px] md:w-[24px]" />
             <p className="mx-[12px]  text-[14px] md:text-[14px]">
               Diselenggarakan oleh :{" "}
-              <span className=" font-semibold">FLASHBACK Motion</span>
+              <span className=" font-semibold">{props.data.user?.username}</span>
             </p>
           </div>
         </div>

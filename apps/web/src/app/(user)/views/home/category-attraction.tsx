@@ -17,7 +17,7 @@ const CategoryAttractionSection: React.FunctionComponent<
   const [getData, setGetData] = React.useState<any>({
     locationId: 0,
   });
-  const [event, setEvent] = React.useState([]);
+  const [event, setEvent] = React.useState<any>([]);
   React.useEffect(() => {
     onHandleGet();
   }, [getData]);
@@ -32,7 +32,6 @@ const CategoryAttractionSection: React.FunctionComponent<
       }
       const response = await axios.get(url);
       setEvent(response.data.result);
-      console.log(response.data);
     } catch (err) {
       console.log(err);
     }
@@ -40,29 +39,23 @@ const CategoryAttractionSection: React.FunctionComponent<
   const filterEventAttraction = event.filter(
     (event: any) => (event.categoryId = 6),
   );
-  // const handleLoadMoreAttraction = () => {
-  //   const loadMoreAttraction = event.filter(
-  //     (event: any) => (event.categoryId = 6),
-  //   );
-  //   const newDisplayedEvents = displayedEvents + 5;
-  //   setDisplayedEvents(newDisplayedEvents);
-  //   if (newDisplayedEvents >= loadMoreAttraction.length) {
-  //     setShowLoadMoreAttraction(false);
-  //   }
-  // };
+
   return (
-    <section className="bg-[#f4f7fe] py-[10px]">
+    <section
+      id="attraction"
+      className="bg-[url('https://asset.gecdesigns.com/img/wallpapers/fairytale-valley-at-night-glowing-flowers-nature-wallpaper-sr10012422-1706504489805-cover.webp')]  bg-cover bg-center py-[10px]"
+    >
       <div className=" mx-[20px] my-[26px] md:mx-[140px] ">
         <div className=" flex flex-col justify-between">
-          <h1 className=" text-[14px] font-semibold md:text-[24px]">
-            Workshop & Attraction
+          <h1 className=" text-[14px] font-semibold text-white md:text-[24px]">
+            Attraction
           </h1>
-          <h1 className=" mt-[4px] text-[12px] md:mt-[14px] md:text-[14px] ">
-            Diskon 50% buat main Attraction bareng kita. 🎠
+          <h1 className=" mt-[4px] text-[12px] text-white md:mt-[14px] md:text-[14px]">
+            Petualangan Seru Menunggu di Setiap Sudut! 🎡
           </h1>
         </div>
         <div className=" flex items-center justify-between">
-          <div className="mt-[10px] space-x-4">
+          <div className="mt-[10px] hidden space-x-4 md:block">
             <Button
               className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Online" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
               type="button"
@@ -92,22 +85,27 @@ const CategoryAttractionSection: React.FunctionComponent<
               Surabaya
             </Button>
             <Button
-              className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Bogor" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
+              className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Balikpapan" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
               type="button"
               onClick={(element: any) => {
                 const newData = {
                   ...getData,
-                  locationId: 162,
+                  locationId: 364,
                 };
                 setGetData(newData);
-                setActiveButton("Bogor");
+                setActiveButton("Balikpapan");
               }}
             >
-              Bogor
+              Balikpapan
             </Button>
           </div>
           <Link href={`/explore`}>
-            <p className=" cursor-pointer text-[12px]">Explore lebih banyak</p>
+            <Button
+              className={`hidden h-[30px] w-auto rounded-md border  bg-white px-4 text-black md:block`}
+              type="button"
+            >
+              Explore Lebih Banyak
+            </Button>
           </Link>
         </div>
         <div className="my-[18px] flex gap-4 overflow-hidden overflow-x-auto md:grid md:grid-cols-5 ">
@@ -120,23 +118,12 @@ const CategoryAttractionSection: React.FunctionComponent<
                   judul={event.name}
                   lokasi={event.location.name}
                   waktu={event.endDate}
-                  harga={event.price}
+                  harga={ event.price}
                   urlImage={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
                 />
               </div>
             ))}
         </div>
-        {/* {showLoadMoreAttraction && (
-          <div className=" mx-auto flex">
-            <Button
-              className=" mx-auto h-[36px] w-[242px] bg-[#5CC8E4] text-[14px] text-white  md:h-[44px] "
-              type="button"
-              onClick={handleLoadMoreAttraction}
-            >
-              Load more
-            </Button>
-          </div>
-        )} */}
       </div>
     </section>
   );

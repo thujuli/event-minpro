@@ -58,6 +58,8 @@ export class EventValidation {
       .optional(),
     name: z.string().optional(),
     id: z.coerce.string().optional(),
+    startDate : z.string().optional(),
+    endDate : z.string().optional()
   });
 
   static CREATE = z
