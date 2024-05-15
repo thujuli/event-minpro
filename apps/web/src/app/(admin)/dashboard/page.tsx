@@ -5,6 +5,7 @@ import ChartCard from "../_components/dashboard/chart-card";
 import TotalRevenueChart from "../_components/dashboard/total-revenue-chart";
 import TransactionChart from "../_components/dashboard/transaction-chart";
 import TotalRevenueDateRangePicker from "../_components/dashboard/total-revenue-date-picker";
+import TransactionDateRangePicker from "../_components/dashboard/transaction-date-picker";
 
 const DashboardPage: React.FC = async () => {
   return (
@@ -14,7 +15,7 @@ const DashboardPage: React.FC = async () => {
           <ChartCard title="Total Revenue" Filter={TotalRevenueDateRangePicker}>
             <TotalRevenueChart />
           </ChartCard>
-          <ChartCard title="Transactions">
+          <ChartCard title="Transactions" Filter={TransactionDateRangePicker}>
             <TransactionChart />
           </ChartCard>
         </div>

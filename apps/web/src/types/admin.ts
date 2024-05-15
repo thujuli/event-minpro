@@ -34,7 +34,7 @@ export type AdminEventTransactionResponse = {
   voucher: { name: string | null };
 };
 
-export type AdminTotalSalesFilter = {
+export type FilterDate = {
   startDate?: string;
   endDate?: string;
 };
@@ -42,4 +42,12 @@ export type AdminTotalSalesFilter = {
 export type AdminTotalSalesResponse = {
   revenue: number;
   date: string;
+};
+
+export type AdminTransactionStatusResponse = {
+  date: string;
+  waiting: number;
+  paid: number;
+  success: number;
+  failed: number;
 };
