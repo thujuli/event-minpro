@@ -1,25 +1,22 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import DashboardTemplate from "../../_components/template";
 import { useSearchParams } from "next/navigation";
-import { ResponseDataPagination } from "@/types/global";
-import { AdminEventTransactionResponse } from "@/types/admin";
 import usePagination from "@/hooks/usePagination";
-import Cookie from "js-cookie";
-import { getAdminEventTransactions } from "@/data/admin";
-import axios from "axios";
 import { toast } from "sonner";
 import LoadingDashboard from "../../_components/loading";
 import { TransactionDataTable } from "../../_components/transactions/transaction-data-table";
 import { transactionColumns } from "../../_components/transactions/transaction-columns";
+import { useAdminEventTransactions } from "@/services/admin/queries";
 
 const TransactionsPage: React.FC = () => {
   const searchParams = useSearchParams();
-  const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState<
-    ResponseDataPagination<AdminEventTransactionResponse[]> | undefined
-  >(undefined);
+  const page = Number(searchParams.get("page")) ?? 1;
+  const limit = Number(searchParams.get("limit")) ?? 10;
+  const sort_by = searchParams.get("sort_by") ?? "createdAt";
+  const order_by = searchParams.get("order_by") ?? "desc";
+
   const {
     canNextPage,
     canPrevPage,
@@ -29,57 +26,21 @@ const TransactionsPage: React.FC = () => {
     totalPages,
   } = usePagination();
 
+  const { isPending, isError, data, error } = useAdminEventTransactions({
+    pagination: { page, limit, sort_by, order_by },
+  });
+
   useEffect(() => {
-    getData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
-
-  const getData = async () => {
-    setIsLoading(true);
-
-    try {
-      const token = Cookie.get("admin-tkn")!;
-      if (!token) return;
-
-      const page = searchParams.get("page")
-        ? Number(searchParams.get("page"))
-        : 1;
-      const limit = searchParams.get("limit")
-        ? Number(searchParams.get("limit"))
-        : 10;
-      const sort_by = searchParams.get("sort_by")
-        ? searchParams.get("sort_by")!
-        : "createdAt";
-      const order_by = searchParams.get("order_by")
-        ? searchParams.get("order_by")!
-        : "desc";
-
-      const eventTransactions = await getAdminEventTransactions(token, {
-        page,
-        limit,
-        sort_by,
-        order_by,
-      });
-
-      setData(eventTransactions);
-      setCanNextPage(
-        eventTransactions.total >
-          eventTransactions.limit * eventTransactions.page,
-      );
-      setCanPrevPage(eventTransactions.page > 1);
-      setTotalPages(
-        Math.ceil(eventTransactions.total / eventTransactions.limit),
-      );
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data.message);
-      }
-    } finally {
-      setIsLoading(false);
+    if (data) {
+      setCanNextPage(data.total > data.limit * data.page);
+      setCanPrevPage(data.page > 1);
+      setTotalPages(Math.ceil(data.total / data.limit));
     }
-  };
+  }, [data, setCanNextPage, setCanPrevPage, setTotalPages]);
 
-  if (isLoading) return <LoadingDashboard />;
+  if (isPending) return <LoadingDashboard />;
+
+  if (isError) toast.error(error?.message);
 
   return (
     <DashboardTemplate>

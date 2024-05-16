@@ -1,12 +1,17 @@
 export type TransactionCheckout = {
   paymentStatus: PaymentStatus;
 };
+
 export enum PaymentStatus {
   WAITING = 'waiting',
   PAID = 'paid',
   SUCCESS = 'success',
   FAILED = 'failed',
 }
+
+export type TransactionStatus = {
+  status: PaymentStatus.SUCCESS | PaymentStatus.FAILED;
+};
 
 export type TransactionRequest = {
   eventId: number;

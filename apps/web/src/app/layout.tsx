@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "sonner";
-import NavbarDesktop from "./(user)/views/navbar-desktop";
 import { TanstackQueryProvider } from "@/providers/tanstack-query-provider";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -19,18 +18,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <TanstackQueryProvider>
-      <html lang="en" className="scroll-smooth">
-        <body
-          className={cn(
-            "min-h-screen bg-background antialiased",
-            inter.className,
-          )}
-        >
+    <html lang="en" className="scroll-smooth">
+      <body
+        className={cn(
+          "min-h-screen bg-background antialiased",
+          inter.className,
+        )}
+      >
+        <TanstackQueryProvider>
           {children}
           <Toaster richColors position="top-right" />
-        </body>
-      </html>
-    </TanstackQueryProvider>
+        </TanstackQueryProvider>
+      </body>
+    </html>
   );
 }

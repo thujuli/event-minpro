@@ -1,3 +1,4 @@
+import { PaymentStatus } from '@/types/transaction.type';
 import { z } from 'zod';
 
 const EventSortEnum = [
@@ -76,4 +77,15 @@ export class AdminValidation {
         path: ['end_date'],
       },
     );
+
+  static TRANSACTION_ID = z.coerce
+    .number({ invalid_type_error: 'Transaction ID must be a number' })
+    .int({ message: 'Transaction ID must be an integer' })
+    .positive({ message: 'Transaction ID must be a positive number' });
+
+  static UPDATE_TRANSACTION_STATUS = z.object({
+    status: z.enum([PaymentStatus.SUCCESS, PaymentStatus.FAILED], {
+      message: "Status must be 'success' or 'failed'",
+    }),
+  });
 }
