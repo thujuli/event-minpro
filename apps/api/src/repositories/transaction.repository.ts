@@ -159,4 +159,21 @@ export class TransactionRepository {
 
     return await prisma.$queryRaw(query);
   }
+
+  static async getTransactionHasUser(transactionId: number) {
+    return await prisma.transaction.findUnique({
+      where: { id: transactionId },
+      include: { event: { include: { user: true } } },
+    });
+  }
+
+  static async updateTransactionStatus(
+    transactionId: number,
+    status: PaymentStatus,
+  ) {
+    return await prisma.transaction.update({
+      where: { id: transactionId },
+      data: { paymentStatus: status },
+    });
+  }
 }

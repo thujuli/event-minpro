@@ -5,24 +5,21 @@ import { PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { eventColumns } from "../../_components/events/event-columns";
 import DashboardTemplate from "../../_components/template";
-import { getAdminEvents } from "@/data/admin";
 import { EventDataTable } from "../../_components/events/event-data-table";
-import { ResponseDataPagination } from "@/types/global";
 import { useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import Cookie from "js-cookie";
-import { AdminEventResponse } from "@/types/admin";
-import axios from "axios";
+import React, { useEffect } from "react";
 import { toast } from "sonner";
 import usePagination from "@/hooks/usePagination";
 import LoadingDashboard from "../../_components/loading";
+import { useAdminEvents } from "@/services/admin/queries";
 
 const EventPage: React.FC = () => {
   const searchParams = useSearchParams();
-  const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState<
-    ResponseDataPagination<AdminEventResponse[]> | undefined
-  >(undefined);
+  const page = Number(searchParams.get("page")) ?? 1;
+  const limit = Number(searchParams.get("limit")) ?? 10;
+  const sort_by = searchParams.get("sort_by") ?? "createdAt";
+  const order_by = searchParams.get("order_by") ?? "desc";
+
   const {
     canNextPage,
     canPrevPage,
@@ -32,52 +29,21 @@ const EventPage: React.FC = () => {
     totalPages,
   } = usePagination();
 
+  const { isPending, isError, data, error } = useAdminEvents({
+    pagination: { limit, order_by, page, sort_by },
+  });
+
   useEffect(() => {
-    getData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
-
-  const getData = async () => {
-    setIsLoading(true);
-
-    try {
-      const token = Cookie.get("admin-tkn")!;
-      if (!token) return;
-
-      const page = searchParams.get("page")
-        ? Number(searchParams.get("page"))
-        : 1;
-      const limit = searchParams.get("limit")
-        ? Number(searchParams.get("limit"))
-        : 10;
-      const sort_by = searchParams.get("sort_by")
-        ? searchParams.get("sort_by")!
-        : "createdAt";
-      const order_by = searchParams.get("order_by")
-        ? searchParams.get("order_by")!
-        : "desc";
-
-      const adminEvents = await getAdminEvents(token, {
-        page,
-        limit,
-        sort_by,
-        order_by,
-      });
-
-      setData(adminEvents);
-      setCanNextPage(adminEvents.total > adminEvents.limit * adminEvents.page);
-      setCanPrevPage(adminEvents.page > 1);
-      setTotalPages(Math.ceil(adminEvents.total / adminEvents.limit));
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data.message);
-      }
-    } finally {
-      setIsLoading(false);
+    if (data) {
+      setCanNextPage(data.total > data.limit * data.page);
+      setCanPrevPage(data.page > 1);
+      setTotalPages(Math.ceil(data.total / data.limit));
     }
-  };
+  }, [data, setCanNextPage, setCanPrevPage, setTotalPages]);
 
-  if (isLoading) return <LoadingDashboard />;
+  if (isPending) return <LoadingDashboard />;
+
+  if (isError) toast.error(error.message);
 
   return (
     <DashboardTemplate>

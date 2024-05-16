@@ -1,3 +1,4 @@
+import prisma from '@/prisma';
 import { TransactionRepository } from '@/repositories/transaction.repository';
 import { UserRepository } from '@/repositories/user.repository';
 import {
@@ -5,8 +6,14 @@ import {
   AdminEventTransactionQuery,
   FilterDate,
 } from '@/types/admin.type';
+import { TransactionStatus } from '@/types/transaction.type';
+import { ErrorResponse } from '@/utils/error';
 import { decrementDate, incrementDate } from '@/utils/generateDate';
-import { responseDataWithPagination, responseWithData } from '@/utils/response';
+import {
+  responseDataWithPagination,
+  responseWithData,
+  responseWithoutData,
+} from '@/utils/response';
 import { AdminValidation } from '@/validations/admin.validation';
 import { Validation } from '@/validations/validation';
 
@@ -140,6 +147,41 @@ export class AdminService {
       true,
       'Get admin transaction status',
       statuses,
+    );
+  }
+
+  static async updateAdminTransactionStatus(
+    id: number,
+    transId: string,
+    request: TransactionStatus,
+  ) {
+    const transactionId = Validation.validate(
+      AdminValidation.TRANSACTION_ID,
+      transId,
+    );
+    const { status } = Validation.validate(
+      AdminValidation.UPDATE_TRANSACTION_STATUS,
+      request,
+    );
+
+    const transaction = await TransactionRepository.getTransactionHasUser(
+      Number(transactionId),
+    );
+
+    if (!transaction) throw new ErrorResponse(404, 'Transaction not found!');
+
+    if (transaction.event.user.id !== id)
+      throw new ErrorResponse(401, 'This event is not yours!');
+
+    await TransactionRepository.updateTransactionStatus(
+      Number(transactionId),
+      status,
+    );
+
+    return responseWithoutData(
+      200,
+      true,
+      'Update transaction status successfully',
     );
   }
 }
