@@ -105,18 +105,11 @@ export class AdminService {
         lte,
       });
 
-    const totalSales = transactions.map((transaction) => {
-      return {
-        revenue: transaction.discountedAmount ?? transaction.originalAmount,
-        date: transaction.date,
-      };
-    });
-
     return responseWithData(
       200,
       true,
       'Get admin total sales successfully',
-      totalSales,
+      transactions,
     );
   }
 

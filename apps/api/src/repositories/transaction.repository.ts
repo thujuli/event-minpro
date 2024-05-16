@@ -124,8 +124,7 @@ export class TransactionRepository {
   ): Promise<TotalSaleResponse[]> {
     const query = Prisma.sql`
     SELECT DATE(transactions.updatedAt) as date,
-      SUM(transactions.discountedAmount) as discountedAmount,
-      SUM(transactions.originalAmount) as originalAmount
+      SUM(CASE WHEN transactions.discountedAmount IS NULL THEN transactions.originalAmount ELSE transactions.discountedAmount END) as revenue
     FROM transactions
     JOIN events ON events.id = transactions.eventId
     WHERE events.userId = ${id}
