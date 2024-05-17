@@ -5,7 +5,7 @@ import {
   FilterDate,
 } from '@/types/admin.type';
 import { PaymentStatus, TransactionStatus } from '@/types/transaction.type';
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request, response, Response } from 'express';
 
 export class AdminController {
   public async getAdminEvents(req: Request, res: Response, next: NextFunction) {
@@ -71,13 +71,34 @@ export class AdminController {
   ) {
     try {
       const id = res.locals.decoded.id as number;
-      const transactionId = req.params.id;
+      const transactionId = req.params.transactionId;
       const request = req.body as TransactionStatus;
 
       const response = await AdminService.updateAdminTransactionStatus(
         id,
         transactionId,
         request,
+      );
+      return res.status(200).send(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async getEventParticipations(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      const id = res.locals.decoded.id as number;
+      const eventId = req.params.eventId;
+      const query = req.query as AdminEventQuery;
+
+      const response = await AdminService.getAdminEventParticipations(
+        id,
+        eventId,
+        query,
       );
       return res.status(200).send(response);
     } catch (error) {

@@ -23,4 +23,9 @@ export class TransactionValidation {
       .min(0, { message: 'Redeemed Points must be at least 0!' })
       .optional(),
   });
+
+  static TRANSACTION_ID = z.coerce
+    .number({ invalid_type_error: 'Transaction ID must be a number' })
+    .int({ message: 'Transaction ID must be an integer' })
+    .positive({ message: 'Transaction ID must be a positive number' });
 }

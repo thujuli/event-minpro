@@ -58,8 +58,8 @@ export class EventValidation {
       .optional(),
     name: z.string().optional(),
     id: z.coerce.string().optional(),
-    startDate : z.string().optional(),
-    endDate : z.string().optional()
+    startDate: z.string().optional(),
+    endDate: z.string().optional(),
   });
 
   static CREATE = z
@@ -150,4 +150,9 @@ export class EventValidation {
         path: ['limitCheckout'],
       },
     );
+
+  static EVENT_ID = z.coerce
+    .number({ invalid_type_error: 'Event ID must be a number' })
+    .int({ message: 'Event ID must be an integer' })
+    .positive({ message: 'Event ID must be a positive number' });
 }

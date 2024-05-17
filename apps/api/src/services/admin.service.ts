@@ -1,4 +1,4 @@
-import prisma from '@/prisma';
+import { EventRepository } from '@/repositories/event.repository';
 import { TransactionRepository } from '@/repositories/transaction.repository';
 import { UserRepository } from '@/repositories/user.repository';
 import {
@@ -15,6 +15,8 @@ import {
   responseWithoutData,
 } from '@/utils/response';
 import { AdminValidation } from '@/validations/admin.validation';
+import { EventValidation } from '@/validations/event.validation';
+import { TransactionValidation } from '@/validations/transaction.validation';
 import { Validation } from '@/validations/validation';
 
 export class AdminService {
@@ -145,12 +147,12 @@ export class AdminService {
 
   static async updateAdminTransactionStatus(
     id: number,
-    transId: string,
+    transactionId: string,
     request: TransactionStatus,
   ) {
-    const transactionId = Validation.validate(
-      AdminValidation.TRANSACTION_ID,
-      transId,
+    const newTransactionId = Validation.validate(
+      TransactionValidation.TRANSACTION_ID,
+      transactionId,
     );
     const { status } = Validation.validate(
       AdminValidation.UPDATE_TRANSACTION_STATUS,
@@ -158,16 +160,17 @@ export class AdminService {
     );
 
     const transaction = await TransactionRepository.getTransactionHasUser(
-      Number(transactionId),
+      Number(newTransactionId),
     );
 
     if (!transaction) throw new ErrorResponse(404, 'Transaction not found!');
 
-    if (transaction.event.user.id !== id)
+    if (transaction.event.user.id !== id) {
       throw new ErrorResponse(401, 'This event is not yours!');
+    }
 
     await TransactionRepository.updateTransactionStatus(
-      Number(transactionId),
+      Number(newTransactionId),
       status,
     );
 
@@ -175,6 +178,57 @@ export class AdminService {
       200,
       true,
       'Update transaction status successfully',
+    );
+  }
+
+  static async getAdminEventParticipations(
+    id: number,
+    eventId: string,
+    query: AdminEventQuery,
+  ) {
+    const newEventId = Validation.validate(EventValidation.EVENT_ID, eventId);
+    const adminEventQuery = Validation.validate(
+      AdminValidation.EVENT_QUERY,
+      query,
+    );
+
+    if (!adminEventQuery.page) adminEventQuery.page = 1;
+    if (!adminEventQuery.limit) adminEventQuery.limit = 10;
+    if (!adminEventQuery.sort_by) adminEventQuery.sort_by = 'createdAt';
+    if (!adminEventQuery.order_by) adminEventQuery.order_by = 'desc';
+
+    const event =
+      await EventRepository.getEventIncludeTransactionWithPagination(
+        Number(newEventId),
+        {
+          limit: Number(adminEventQuery.limit),
+          page: Number(adminEventQuery.page),
+          sort_by: adminEventQuery.sort_by,
+          order_by: adminEventQuery.order_by,
+        },
+      );
+
+    if (!event) throw new ErrorResponse(404, 'Event not found!');
+
+    if (event.userId !== id) {
+      throw new ErrorResponse(401, 'This event is not yours!');
+    }
+
+    const transactions = event.transactions.map((transaction) => {
+      return {
+        username: transaction.user.username,
+        email: transaction.user.email,
+        quantity: transaction.quantity,
+        paymentStatus: transaction.paymentStatus,
+        createdAt: transaction.createdAt,
+      };
+    });
+
+    return responseWithData(
+      200,
+      true,
+      'Get event participations successfully',
+      transactions,
     );
   }
 }
