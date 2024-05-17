@@ -2,6 +2,7 @@ import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
 import {
   AdminEventResponse,
   AdminEventTransactionResponse,
+  AdminTotalParticipationResponse,
 } from "@/types/admin";
 import {
   Pagination,
@@ -47,6 +48,24 @@ export const updateTransactionStatus = async (
   const res = await axios.patch<ResponseWithoutData>(
     NEXT_PUBLIC_BASE_API_URL + `/admin/transactions/${transactionId}/status`,
     data,
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+
+  return res.data;
+};
+
+export const getEventParticipation = async (
+  token: string,
+  eventId: string,
+  pagination: Pagination,
+) => {
+  const { page, limit, sort_by, order_by } = pagination;
+
+  const res = await axios.get<
+    ResponseDataPagination<AdminTotalParticipationResponse[]>
+  >(
+    NEXT_PUBLIC_BASE_API_URL +
+      `/admin/events/${eventId}/participations?page=${page}&limit=${limit}&sort_by=${sort_by}&order_by=${order_by}`,
     { headers: { Authorization: `Bearer ${token}` } },
   );
 

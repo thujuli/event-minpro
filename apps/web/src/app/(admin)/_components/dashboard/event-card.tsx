@@ -20,7 +20,7 @@ const EventCard: React.FC = () => {
           <CardDescription>Recent events from your store.</CardDescription>
         </div>
         <Button asChild size="sm" className="ml-auto gap-1">
-          <Link href="/dashboard/transactions">
+          <Link href="/dashboard/events">
             View All
             <ArrowUpRight className="h-4 w-4" />
           </Link>

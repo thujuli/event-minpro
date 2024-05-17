@@ -51,3 +51,11 @@ export type AdminTransactionStatusResponse = {
   success: number;
   failed: number;
 };
+
+export type AdminTotalParticipationResponse = {
+  username: string;
+  email: string;
+  quantity: number;
+  paymentStatus: PaymentStatus;
+  createdAt: string;
+};

@@ -24,6 +24,7 @@ export const eventColumns: ColumnDef<AdminEventResponse>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="px-0"
         >
           Name
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -38,6 +39,7 @@ export const eventColumns: ColumnDef<AdminEventResponse>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="px-0"
         >
           Price
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -53,19 +55,27 @@ export const eventColumns: ColumnDef<AdminEventResponse>[] = [
     accessorKey: "availableSeats",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Available Seats
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+        <div className="flex items-center justify-center">
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Available Seats
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
       );
     },
     cell: ({ row }) => {
       const value: number = row.getValue("availableSeats");
       return (
-        <div>{!value ? <Badge>Sold Out!</Badge> : formatNumber(value)}</div>
+        <div className="flex items-center justify-center">
+          {!value ? (
+            <Badge>Sold Out!</Badge>
+          ) : (
+            <Badge variant="secondary">{formatNumber(value)}</Badge>
+          )}
+        </div>
       );
     },
   },
@@ -73,18 +83,24 @@ export const eventColumns: ColumnDef<AdminEventResponse>[] = [
     accessorKey: "maxCapacity",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Max Capacity
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+        <div className="flex items-center justify-center">
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Max Capacity
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
       );
     },
     cell: ({ row }) => {
       const value: number = row.getValue("maxCapacity");
-      return <div>{formatNumber(value)}</div>;
+      return (
+        <div className="flex items-center justify-center">
+          <Badge variant="secondary">{formatNumber(value)}</Badge>
+        </div>
+      );
     },
   },
   {
@@ -94,6 +110,7 @@ export const eventColumns: ColumnDef<AdminEventResponse>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="px-0"
         >
           Start Date
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -102,7 +119,7 @@ export const eventColumns: ColumnDef<AdminEventResponse>[] = [
     },
     cell: ({ row }) => {
       const date: string = row.getValue("startDate");
-      return <div>{formatDate(date)}</div>;
+      return <div className="text-nowrap font-medium">{formatDate(date)}</div>;
     },
   },
 
@@ -113,6 +130,7 @@ export const eventColumns: ColumnDef<AdminEventResponse>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="px-0"
         >
           End Date
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -121,7 +139,7 @@ export const eventColumns: ColumnDef<AdminEventResponse>[] = [
     },
     cell: ({ row }) => {
       const date: string = row.getValue("endDate");
-      return <div>{formatDate(date)}</div>;
+      return <div className="text-nowrap font-medium">{formatDate(date)}</div>;
     },
   },
   {
@@ -131,6 +149,7 @@ export const eventColumns: ColumnDef<AdminEventResponse>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="px-0"
         >
           Created At
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -139,13 +158,13 @@ export const eventColumns: ColumnDef<AdminEventResponse>[] = [
     },
     cell: ({ row }) => {
       const date: string = row.getValue("createdAt");
-      return <div>{formatDate(date)}</div>;
+      return <div className="text-nowrap font-medium">{formatDate(date)}</div>;
     },
   },
   {
     id: "actions",
     cell: ({ row }) => {
-      const name = row.original;
+      const event = row.original;
 
       return (
         <DropdownMenu>
@@ -158,11 +177,11 @@ export const eventColumns: ColumnDef<AdminEventResponse>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem asChild className="cursor-pointer">
-              <Link href={`/dashboard/events/${name.id}/promo`}>Promo</Link>
+              <Link href={`/dashboard/events/${event.id}/promo`}>Promo</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild className="cursor-pointer">
-              <Link href={`/dashboard/events/${name.id}/participants`}>
-                Participants
+              <Link href={`/dashboard/events/${event.id}/participations`}>
+                Participations
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -170,7 +189,7 @@ export const eventColumns: ColumnDef<AdminEventResponse>[] = [
               asChild
               className="cursor-pointer text-blue-500 focus:text-blue-600"
             >
-              <Link href={`/dashboard/events/${name.id}/edit`}>Edit</Link>
+              <Link href={`/dashboard/events/${event.id}/edit`}>Edit</Link>
             </DropdownMenuItem>
             <DropdownMenuItem
               asChild

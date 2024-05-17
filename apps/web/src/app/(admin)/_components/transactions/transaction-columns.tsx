@@ -8,7 +8,7 @@ import { AdminEventTransactionResponse } from "@/types/admin";
 import { formatNumber, formatPrice } from "@/lib/formatter";
 import { Badge } from "@/components/ui/badge";
 import { PaymentStatus } from "@/types/transaction";
-import StatusBadge from "./status-badge";
+import StatusBadge from "../status-badge";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import TransactionDialogContent from "./transaction-dialog-content";
 
@@ -21,6 +21,7 @@ export const transactionColumns: ColumnDef<AdminEventTransactionResponse>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="px-0"
         >
           Event
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -35,6 +36,7 @@ export const transactionColumns: ColumnDef<AdminEventTransactionResponse>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="px-0"
         >
           Price To Pay
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -54,6 +56,7 @@ export const transactionColumns: ColumnDef<AdminEventTransactionResponse>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="px-0"
         >
           Original Amount
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -72,6 +75,7 @@ export const transactionColumns: ColumnDef<AdminEventTransactionResponse>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="px-0"
         >
           Redeemed Points
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -98,7 +102,13 @@ export const transactionColumns: ColumnDef<AdminEventTransactionResponse>[] = [
     cell: ({ row }) => {
       const voucher: string | undefined = row.getValue("voucher_name");
       return (
-        <div>{!voucher ? "No voucher provided" : <Badge>{voucher}</Badge>}</div>
+        <div>
+          {!voucher ? (
+            "No voucher provided"
+          ) : (
+            <Badge className="text-nowrap">{voucher}</Badge>
+          )}
+        </div>
       );
     },
   },
