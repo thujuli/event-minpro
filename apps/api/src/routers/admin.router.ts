@@ -28,6 +28,13 @@ export class AdminRouter {
     );
 
     this.router.get(
+      '/events/:eventId/participations',
+      verifyToken,
+      adminGuard,
+      this.adminController.getEventParticipations,
+    );
+
+    this.router.get(
       '/total-sales',
       verifyToken,
       adminGuard,
@@ -42,7 +49,7 @@ export class AdminRouter {
     );
 
     this.router.patch(
-      '/transactions/:id/status',
+      '/transactions/:transactionId/status',
       verifyToken,
       adminGuard,
       this.adminController.updateTransactionStatus,

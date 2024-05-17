@@ -6,6 +6,14 @@ export type AdminEventQuery = {
   order_by?: string;
 };
 
+export type AdminEventQueryValidated = {
+  name?: string;
+  page: number;
+  limit: number;
+  sort_by: string;
+  order_by: string;
+};
+
 export type AdminEventTransactionQuery = {
   page?: string | number;
   limit?: string | number;

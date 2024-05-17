@@ -1,5 +1,6 @@
 import { EventQuery, EventRequest } from '@/types/event.type';
 import prisma from '@/prisma';
+import { AdminEventQueryValidated } from '@/types/admin.type';
 export class EventRepository {
   static async getEvents(query: EventQuery) {
     console.log(query);
@@ -68,6 +69,7 @@ export class EventRepository {
       },
     });
   }
+
   static async getEventsBySearch(query: EventQuery) {
     const filter: any = {
       name: query.name ? String(query.name) : undefined,
@@ -157,4 +159,22 @@ export class EventRepository {
     });
   }
 
+  static async getEventIncludeTransactionWithPagination(
+    id: number,
+    query: AdminEventQueryValidated,
+  ) {
+    const { limit, order_by, page, sort_by } = query;
+
+    return await prisma.event.findUnique({
+      where: { id },
+      include: {
+        transactions: {
+          include: { user: true },
+          skip: (page - 1) * limit,
+          take: limit,
+          orderBy: { [sort_by]: order_by },
+        },
+      },
+    });
+  }
 }
