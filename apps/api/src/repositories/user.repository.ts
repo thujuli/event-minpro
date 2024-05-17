@@ -39,13 +39,12 @@ export class UserRepository {
     });
   }
 
-  static async getAllAdminEvents(id: number, query: AdminEventQuery) {
+  static async countAdminEvents(id: number, query: AdminEventQuery) {
     return await prisma.user.findUnique({
       where: { id },
-      include: {
-        events: {
-          where: { name: { contains: query.name } },
-          select: { id: true },
+      select: {
+        _count: {
+          select: { events: { where: { name: { contains: query.name } } } },
         },
       },
     });

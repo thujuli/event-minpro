@@ -1,3 +1,4 @@
+import prisma from '@/prisma';
 import { EventRepository } from '@/repositories/event.repository';
 import { TransactionRepository } from '@/repositories/transaction.repository';
 import { UserRepository } from '@/repositories/user.repository';
@@ -32,7 +33,8 @@ export class AdminService {
     if (!adminEventQuery.order_by) adminEventQuery.order_by = 'desc';
 
     const user = await UserRepository.getAdminEvents(id, adminEventQuery);
-    const allUserEvents = await UserRepository.getAllAdminEvents(
+
+    const allEvents = await UserRepository.countAdminEvents(
       id,
       adminEventQuery,
     );
@@ -47,7 +49,7 @@ export class AdminService {
       events!,
       Number(adminEventQuery.page),
       Number(adminEventQuery.limit),
-      allUserEvents!.events.length,
+      allEvents?._count.events || 0,
     );
   }
 
@@ -70,8 +72,8 @@ export class AdminService {
       eventQuery,
     );
 
-    const allEventTransactions =
-      await TransactionRepository.getAllEventTransactions(id);
+    const allTransactions =
+      await TransactionRepository.countEventTransactions(id);
 
     const transactions = eventTransactions?.map(
       ({ userId, eventId, voucherId, ...rest }) => rest,
@@ -83,7 +85,7 @@ export class AdminService {
       transactions,
       Number(eventQuery.page),
       Number(eventQuery.limit),
-      allEventTransactions.length,
+      allTransactions._count,
     );
   }
 
@@ -224,11 +226,17 @@ export class AdminService {
       };
     });
 
-    return responseWithData(
+    const allEventTransactions = await EventRepository.countEventTransactions(
+      Number(eventId),
+    );
+
+    return responseDataWithPagination(
       200,
-      true,
-      'Get event participations successfully',
+      'Get admin event participations successfully',
       transactions,
+      Number(adminEventQuery.page),
+      Number(adminEventQuery.limit),
+      allEventTransactions?._count.transactions || 0,
     );
   }
 }
