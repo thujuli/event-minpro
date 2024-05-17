@@ -3,34 +3,44 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import ButtonBeliDes from "@/app/(user)/_components/detail/button-buy-des";
+import { formatDate, numberShortener } from "@/lib/formatter";
 
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 interface ICardCheckoutProps {
   id?: number;
   urlImage: string;
   judul: string;
   lokasi: string;
   waktu: string;
-  harga: string;
+  harga: number;
 }
 
 const CardCheckout: React.FunctionComponent<ICardCheckoutProps> = (props) => {
   const [showConfirmationModal, setShowConfirmationModal] =
     React.useState(false);
-    const handleShowConfirmationModal = () => {
-      setShowConfirmationModal(true);
-    };
-  
-    const handleCloseConfirmationModal = () => {
-      setShowConfirmationModal(false);
-    };
+  const handleShowConfirmationModal = () => {
+    setShowConfirmationModal(true);
+  };
+
+  const handleCloseConfirmationModal = () => {
+    setShowConfirmationModal(false);
+  };
   return (
     <div
-      className="h-[278px] min-w-[188px] max-w-[188px] cursor-pointer overflow-hidden  rounded-lg border border-gray-400 bg-white md:h-[338px] md:min-w-[236px] md:max-w-[236px]"
+      className="h-[298px] min-w-[178px] max-w-[178px] cursor-pointer overflow-hidden  rounded-lg border border-gray-400 bg-white md:h-[308px] md:min-w-[236px] md:max-w-[236px]"
       // onClick={() => router.push(`/detail/${props.id}`)}
     >
       <Image
-        className="h-[144px] w-[188px] md:h-[148px] md:w-[236px] "
+        className="h-[144px] w-[188px]  md:h-[148px] md:w-full"
         src={props.urlImage}
         width={236}
         height={148}
@@ -42,21 +52,26 @@ const CardCheckout: React.FunctionComponent<ICardCheckoutProps> = (props) => {
           {props.judul}
         </h1>
         <h1 className="  mt-[10px]  text-[10px]">{props.lokasi}</h1>
-        <h1 className="  mt-[4px]  text-[10px]">{props.waktu}</h1>
+        <h1 className="  mt-[4px]  text-[10px]">{formatDate(props.waktu)}</h1>
         <h1 className="  mt-[4px]  text-[10px]">
-          IDR. {props.harga.toLocaleString()}
+          {props.harga === 0 ? "Free" : `IDR. ${numberShortener(props.harga)}`}
         </h1>
         {/* BUTTON REVIEW */}
-        <Button className="w-full md:mt-[48px] " onClick={handleShowConfirmationModal}>Konfimasi sudah bayar</Button>
+        <Button
+          className="w-full p-0 text-[12px] mt-[16px]"
+          onClick={handleShowConfirmationModal}
+        >
+          Konfimasi sudah bayar
+        </Button>
       </div>
-       {/* Modal Konfirmasi */}
-       {showConfirmationModal && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-          <div className="bg-white p-8 rounded-lg">
+      {/* Modal Konfirmasi */}
+      {showConfirmationModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="rounded-lg bg-white p-8">
             <p>Apakah Anda yakin sudah melakukan pembayaran?</p>
-            <div className="flex justify-center space-x-4 mt-4">
-              {/* TINGGAL BUTTON YA NYA KASIH FUNCTION BUAT NGIRIM AXIOS */}
-              <Button  >Ya</Button>
+            <div className="mt-4 flex justify-center space-x-4">
+              <Input placeholder="0" type="file" />
+              <Button>Ya</Button>
               <Button onClick={handleCloseConfirmationModal}>Batal</Button>
             </div>
           </div>

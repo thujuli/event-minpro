@@ -6,13 +6,16 @@ import CardEvent from "../../_components/card-event";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
-
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 interface ICategorySportsSectionProps {}
 
 const CategorySportsSection: React.FunctionComponent<
   ICategorySportsSectionProps
 > = (props) => {
   const [event, setEvent] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+
   React.useEffect(() => {
     onHandleGet();
   }, []);
@@ -22,12 +25,15 @@ const CategorySportsSection: React.FunctionComponent<
   );
   const onHandleGet = async () => {
     try {
+      setLoading(true);
       let url = NEXT_PUBLIC_BASE_API_URL + "/events?categoryId=3";
       const response = await axios.get(url);
       setEvent(response.data.result);
       // console.log("HASIL RESPONSE DATA :",response.data.result);
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -40,20 +46,26 @@ const CategorySportsSection: React.FunctionComponent<
           </h1>
         </div>
         <div className="my-[18px] flex gap-4 overflow-hidden overflow-x-auto md:grid md:grid-cols-5">
-          {filterEventSports
-            .slice(0, displayedEvents)
-            .map((event: any, index: number) => (
-              <div key={index}>
-                <CardEvent
-                  id={event.id}
-                  judul={event.name}
-                  lokasi={event.location.name}
-                  waktu={event.createdAt}
-                  harga={event.price}
-                  urlImage={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
-                />
-              </div>
-            ))}
+          {loading
+            ? Array.from({ length: 5 }).map((_, index) => (
+                <div key={index} className="col-span-1">
+                  <Skeleton height={288} />
+                </div>
+              ))
+            : filterEventSports
+                .slice(0, displayedEvents)
+                .map((event: any, index: number) => (
+                  <div key={index}>
+                    <CardEvent
+                      id={event.id}
+                      judul={event.name}
+                      lokasi={event.location.name}
+                      waktu={event.createdAt}
+                      harga={event.price}
+                      urlImage={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
+                    />
+                  </div>
+                ))}
         </div>
       </div>
     </section>

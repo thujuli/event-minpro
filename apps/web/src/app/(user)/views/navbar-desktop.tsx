@@ -2,6 +2,8 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import Image from "next/image";
+import InputSearch from "../_components/search-bar";
 
 interface INavbarDesktopProps {}
 
@@ -9,9 +11,18 @@ const NavbarDesktop: React.FunctionComponent<INavbarDesktopProps> = (props) => {
   return (
     <section className=" hidden h-[80px] w-full border border-b-2   text-black md:block ">
       <div className="mx-[168px] flex items-center justify-between pt-[20px]">
-        <Link href={`/`}>
-          <h1 className=" text-[20px] font-semibold text-black">NGIVENT</h1>
-        </Link>
+        <div className=" flex items-center space-x-4">
+          <Link href={`/`}>
+            <Image
+              className=" h-fit w-full"
+              src="/images/logo.png"
+              width={90}
+              height={30}
+              alt=""
+            />
+          </Link>
+          <InputSearch />
+        </div>
         <div className=" flex space-x-2">
           <Link href={`/sign-in`}>
             <Button

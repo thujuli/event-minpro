@@ -3,21 +3,27 @@ import * as React from "react";
 import CardEvent from "@/app/(user)/_components/card-event";
 import axios from "axios";
 import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
-
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 interface IRecomendProps {}
 
 const Recomend: React.FunctionComponent<IRecomendProps> = (props) => {
+  const [loading, setLoading] = React.useState(true);
+
   const [event, setEvent] = React.useState<any>([]);
   React.useEffect(() => {
     onHandleGet();
   }, []);
   const onHandleGet = async () => {
     try {
+      setLoading(true);
       let url = NEXT_PUBLIC_BASE_API_URL + "/events?";
       const response = await axios.get(url);
       setEvent(response.data.result);
     } catch (err) {
       console.log(err);
+    }finally {
+      setLoading(false);
     }
   };
   return (
@@ -29,7 +35,13 @@ const Recomend: React.FunctionComponent<IRecomendProps> = (props) => {
         </h1>
       </div>
       <div className="my-[18px] flex overflow-x-auto gap-2 overflow-hidden md:grid md:grid-cols-5 ">
-        {event?.slice(0, 5).map((event: any, index: number) => (
+        {loading
+            ? Array.from({ length: 5 }).map((_, index) => (
+                <div key={index} className="col-span-1">
+                  <Skeleton height={288} />
+                </div>
+              ))
+            : event?.slice(0, 5).map((event: any, index: number) => (
           <div key={index}>
             <CardEvent
               id={event.id}

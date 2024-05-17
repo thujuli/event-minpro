@@ -18,6 +18,8 @@ import Cookies from "js-cookie";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import Image from "next/image";
+import { useParams } from "next/navigation";
+import { formatNumber, numberShortener } from "@/lib/formatter";
 
 interface IBayarPageProps {
   points: {
@@ -25,8 +27,16 @@ interface IBayarPageProps {
   };
 }
 
+const formatDate = (isoDateString: string) => {
+  const date = new Date(isoDateString);
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+};
+
 const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
-  // Voucher EO (Belum)
+  const id = useParams();
   const [totalPayment, setTotalPayment] = React.useState<number>(0);
   const [selectedVoucher, setSelectedVoucher] = React.useState<any>(null);
   const [dataProfile, setDataProfile] = React.useState<any[]>([]);
@@ -34,55 +44,117 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
   const [voucher, setVoucher] = React.useState<any[]>([]);
   const [point, setPoint] = React.useState<number>(0);
   const [switchOn, setSwitchOn] = React.useState<boolean>(false);
-  const [eventId, setEventId] = React.useState<string>(
-    window.location.href.split("/")[4],
-  );
+  const [creatorVoucher, setCreatorVoucher] = React.useState<any>([]);
+  const seatReq = localStorage.getItem("seat");
+  const [dataTransaction, setDataTransaction] = React.useState<any>({
+    seatRequests: Number(seatReq),
+    redeemedPoints: 0,
+    eventId: 0,
+  });
+
   React.useEffect(() => {
-    getApiDetail();
-    countTotalPayment();
-  }, [event.price, selectedVoucher, switchOn]);
-  // Handle getAPi
+    setDataTransaction((prev: any) => {
+      const updatedTransaction = {
+        ...prev,
+        eventId: Number(id.eventId),
+        redeemedPoints: switchOn ? point : 0,
+      };
+
+      if (selectedVoucher !== null) {
+        updatedTransaction.voucherId = Number(selectedVoucher);
+      } else {
+        delete updatedTransaction.voucherId;
+      }
+
+      return updatedTransaction;
+    });
+  }, [selectedVoucher, switchOn, point]);
+
+  console.log("cek data yang mau dikirim :", dataTransaction);
+
+  // Handle getAPi user (data voucher, data point, voucher EO)
   const getApiDetail = async () => {
     try {
       const UserProfile = await getUserProfile(Cookies.get("user-tkn")!);
-      let url = NEXT_PUBLIC_BASE_API_URL + `/events/${eventId}`;
+      let url = NEXT_PUBLIC_BASE_API_URL + `/events/${id.eventId}`;
       const response = await axios.get(url);
+      let voucherAfterFilter = [];
+      for (let i = 0; i < UserProfile.result.vouchers.length; i++) {
+        if (
+          UserProfile.result.vouchers[i].usage <
+          UserProfile.result.vouchers[i].maxUsage
+        ) {
+          voucherAfterFilter.push(UserProfile.result.vouchers[i]);
+        }
+      }
       setEvent(response.data.result[0]);
-      setDataProfile(UserProfile.result);
-      setVoucher(UserProfile.result.vouchers);
+      setTotalPayment(
+        response.data.result[0].price * dataTransaction.seatRequests,
+      );
+      setVoucher(voucherAfterFilter);
       setPoint(UserProfile.result.point.balance);
     } catch (err) {
       console.log("Error fetching profile:", err);
     }
   };
+
+  const onHandleVoucher = async () => {
+    try {
+      //CREATOR
+      let creatorUrl =
+        NEXT_PUBLIC_BASE_API_URL + `/vouchers/voucher-creator/${id.eventId}`;
+
+      const creatorResponse = await axios.get(creatorUrl);
+      let voucherAfterFilterCreator = [];
+
+      for (let i = 0; i < creatorResponse.data.result.length; i++) {
+        if (
+          creatorResponse.data.result[i].usage <
+          creatorResponse.data.result[i].maxUsage
+        ) {
+          voucherAfterFilterCreator.push(creatorResponse.data.result[i]);
+        }
+      }
+      setCreatorVoucher(voucherAfterFilterCreator);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   //Handle Voucher Select
   const handleSelectVoucher = (voucher: any) => {
-    setSelectedVoucher(voucher);
+    setSelectedVoucher(voucher ? Number(voucher) : null);
   };
   // Handle Switch Change
   const handleSwitchChange = () => {
     setSwitchOn(!switchOn);
   };
 
-  // Handle total Discount
-  let discount = (event.price * selectedVoucher) / 100;
+  // Handle total Front End
+  let discount = (totalPayment * selectedVoucher) / 100;
+  let points =
+    point > totalPayment - discount ? totalPayment - discount : point;
+  let handlePoint = switchOn ? points : 0;
 
-  // Handle Total
-  const countTotalPayment = () => {
-    let total = event.price;
+  React.useEffect(() => {
+    getApiDetail();
+    onHandleVoucher();
+  }, []);
 
-    if (selectedVoucher) {
-      total -= (event.price * selectedVoucher) / 100;
+  // handle Post Transaction
+  const ticketBuy = async () => {
+    try {
+      let url = NEXT_PUBLIC_BASE_API_URL + `/transactions`;
+
+      const config = {
+        headers: { Authorization: `Bearer ${Cookies.get("user-tkn")}` },
+      };
+      const response = await axios.post(url, dataTransaction, config);
+      localStorage.removeItem("seat");
+    } catch (error) {
+      console.log(error);
     }
-
-    if (switchOn) {
-      total -= point;
-    }
-
-    total = total >= 0 ? total : 0;
-    setTotalPayment(total);
   };
-  console.log(dataProfile);
 
   return (
     <section className="  h-[1000px] bg-[#f4f7fe]">
@@ -104,10 +176,14 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {/* MAPPING VOUCHER DARI EONYA */}
-                    {voucher.map((voucher: any) => (
-                      <SelectItem key={voucher.id} value={voucher.discount}>
-                        Discount {voucher.discount}%
+                    {creatorVoucher.map((voucher: any, index: number) => (
+                      <SelectItem key={index} value={voucher.id}>
+                        {voucher.name}
+                      </SelectItem>
+                    ))}
+                    {voucher.map((voucher: any, index: number) => (
+                      <SelectItem key={index} value={voucher.id}>
+                        {voucher.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -122,7 +198,7 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
                 <div className=" flex items-center space-x-4">
                   <FaCoins className="h-[20px] w-[20px] text-[#aeb2be] md:h-[24px] md:w-[24px]" />
                   <p className=" text-[12px] text-gray-500">
-                    Redeem Point : IDR. {point}
+                    Redeem Point : IDR. {numberShortener(point)}
                   </p>
                 </div>
                 <Switch
@@ -135,7 +211,7 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
           <PaymentSection />
         </div>
         {/* <DetailOrder /> */}
-        <div className=" relative flex flex-col">
+        <div className=" relative mx-[10px] flex flex-col md:mx-0 pb-[11vh] md:pb-0">
           <div className="ml-0 mt-[24px] h-auto w-full rounded-lg bg-white  p-[20px] shadow md:fixed md:ml-[48px]  md:h-auto md:w-[392px]">
             <div className=" flex">
               <Image
@@ -152,39 +228,43 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
             <div id="stroke" className=" mt-[10px] border"></div>
             <div className="my-[24px] space-y-3  text-[12px] text-gray-800">
               <h1>REGULAR</h1>
-              <h1 className="text-[14px] text-black">1 Tiket</h1>
+              <h1 className="text-[14px] text-black">
+                {dataTransaction.seatRequests} Tiket
+              </h1>
             </div>
             <div id="stroke" className=" border "></div>
             <div className="my-[24px] space-y-3  text-[12px] text-gray-800">
               <h1>Tanggal dipilih</h1>
-              <h1 className="text-[14px] text-black">{event.startDate}</h1>
+              <h1 className="text-[14px] text-black">
+                {formatDate(event.startDate)}
+              </h1>
             </div>
             <div id="stroke" className=" border "></div>
             <div className="my-[24px] space-y-3  text-[12px] text-gray-800">
               <h1>Total Diskon</h1>
-              <h1 className="text-[14px] text-black">IDR. {discount}</h1>
+              <h1 className="text-[14px] text-black">
+                IDR. {formatNumber(discount)}
+              </h1>
             </div>
             <div id="stroke" className=" border "></div>
             <div className="my-[24px] space-y-3  text-[12px] text-gray-800">
               <h1>Total Point dipakai</h1>
               <h1 className="text-[14px] text-black">
-                IDR.{" "}
-                {switchOn
-                  ? point >= event.price
-                    ? event.price - discount
-                    : event.price - point - discount
-                  : 0}
+                IDR. {formatNumber(handlePoint)}{" "}
               </h1>
             </div>
             <div id="stroke" className=" mb-10 border "></div>
             <div className=" my-[16px] flex justify-between  text-[12px] text-gray-800">
               <p className=" font-semibold">Total Pembayaran</p>
-              <p className=" text-[16px] font-semibold">IDR. {totalPayment}</p>
+              <p className=" text-[16px] font-semibold">
+                IDR. {formatNumber(totalPayment - discount - handlePoint)}
+              </p>
             </div>
             <div>
               <Button
                 className="hidden h-[36px] w-full rounded-md  bg-[#53B253]  text-white md:block"
                 type="button"
+                onClick={ticketBuy}
               >
                 Beli Tiket
               </Button>
@@ -199,6 +279,7 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
           <Button
             className=" h-[8vh] w-full  bg-[#53B253]  text-white md:hidden"
             type="button"
+            onClick={ticketBuy}
           >
             Beli Tiket
           </Button>

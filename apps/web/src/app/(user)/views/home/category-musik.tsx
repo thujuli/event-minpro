@@ -7,13 +7,16 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
 import Link from "next/link";
-
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 interface ICategoryMusikSectionProps {}
 
 const CategoryMusikSection: React.FunctionComponent<
   ICategoryMusikSectionProps
 > = (props) => {
   const [event, setEvent] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+
   const [activeButton, setActiveButton] = React.useState("Online");
   const [getData, setGetData] = React.useState<any>({
     locationId: 0,
@@ -25,6 +28,7 @@ const CategoryMusikSection: React.FunctionComponent<
   const filterEventMusik = event.filter((event: any) => event.categoryId === 2);
   const onHandleGet = async () => {
     try {
+      setLoading(true);
       let url = NEXT_PUBLIC_BASE_API_URL + "/events?categoryId=2";
       if (getData.locationId) {
         url += `&locationId=${getData.locationId}`;
@@ -34,6 +38,8 @@ const CategoryMusikSection: React.FunctionComponent<
       // console.log("HASIL RESPONSE DATA :",response.data.result);
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -93,7 +99,7 @@ const CategoryMusikSection: React.FunctionComponent<
           </div>
           <Link href={`/explore`}>
             <Button
-              className={`hidden h-[30px] w-auto rounded-md border  bg-white px-4 text-black md:block`}
+              className={`hidden h-fit w-fit rounded-md border  bg-white px-4 text-black md:block`}
               type="button"
             >
               Explore Lebih Banyak
@@ -101,20 +107,26 @@ const CategoryMusikSection: React.FunctionComponent<
           </Link>
         </div>
         <div className="my-[18px] flex gap-4 overflow-hidden overflow-x-auto md:grid md:grid-cols-5">
-          {filterEventMusik
-            .slice(0, displayedEvents)
-            .map((event: any, index: number) => (
-              <div key={index}>
-                <CardEvent
-                  id={event.id}
-                  judul={event.name}
-                  lokasi={event.location.name}
-                  waktu={event.createdAt}
-                  harga={event.price}
-                  urlImage={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
-                />
-              </div>
-            ))}
+          {loading
+            ? Array.from({ length: 5 }).map((_, index) => (
+                <div key={index} className="col-span-1">
+                  <Skeleton height={288} />
+                </div>
+              ))
+            : filterEventMusik
+                .slice(0, displayedEvents)
+                .map((event: any, index: number) => (
+                  <div key={index}>
+                    <CardEvent
+                      id={event.id}
+                      judul={event.name}
+                      lokasi={event.location.name}
+                      waktu={event.createdAt}
+                      harga={event.price}
+                      urlImage={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
+                    />
+                  </div>
+                ))}
         </div>
       </div>
     </section>

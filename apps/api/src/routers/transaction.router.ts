@@ -16,18 +16,21 @@ export class TransactionRouter {
     this.router.get(
       '/waiting',
       verifyToken,
+      userGuard,
       this.transactionController.getEventTransactionWaiting,
     );
 
     this.router.get(
       '/success',
       verifyToken,
+      userGuard,
       this.transactionController.getEventTransactionSuccess,
     );
 
     this.router.get(
       '/finish',
       verifyToken,
+      userGuard,
       this.transactionController.getEventTransactionSuccessByDate,
     );
 

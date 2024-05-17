@@ -72,7 +72,6 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
       if (getData.location) {
         url += `${searchDebouce || getData.category ? "&" : ""}locationId=${getData.location.id}`;
       }
-      console.log("cek log url :", url);
 
       let response = await axios.get(url);
       setEvent(response.data.result);
@@ -89,9 +88,6 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
       console.log("Error fetching categories:", error);
     }
   };
-  console.log("search By Name :", searchDebouce);
-  console.log("search By category :", getData.category);
-  console.log("search By Location :", getData.location.id);
   return (
     <section className=" mx-auto flex">
       <Sheet>

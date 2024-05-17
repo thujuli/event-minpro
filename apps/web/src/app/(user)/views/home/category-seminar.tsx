@@ -6,7 +6,8 @@ import CardEvent from "../../_components/card-event";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
-
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 interface ICategorySeminarSectionProps {}
 
 const CategorySeminarSection: React.FunctionComponent<
@@ -17,6 +18,8 @@ const CategorySeminarSection: React.FunctionComponent<
     locationId: 0,
   });
   const [event, setEvent] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+
   React.useEffect(() => {
     onHandleGet();
   }, [getData]);
@@ -24,6 +27,8 @@ const CategorySeminarSection: React.FunctionComponent<
   const [displayedEvents, setDisplayedEvents] = React.useState(5);
   const onHandleGet = async () => {
     try {
+      setLoading(true);
+
       let url = NEXT_PUBLIC_BASE_API_URL + "/events?categoryId=4";
       if (getData.locationId) {
         url += `&locationId=${getData.locationId}`;
@@ -33,6 +38,8 @@ const CategorySeminarSection: React.FunctionComponent<
       console.log(response.data);
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
   const filterEventSeminar = event.filter(
@@ -111,20 +118,26 @@ const CategorySeminarSection: React.FunctionComponent<
           </Button>
         </div>
         <div className="my-[18px] flex gap-4 overflow-hidden overflow-x-auto md:grid md:grid-cols-5 ">
-          {filterEventSeminar
-            .slice(0, displayedEvents)
-            .map((event: any, index: number) => (
-              <div key={index}>
-                <CardEvent
-                  id={event.id}
-                  judul={event.name}
-                  lokasi={event.location.name}
-                  waktu={event.endDate}
-                  harga={event.price}
-                  urlImage={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
-                />
-              </div>
-            ))}
+          {loading
+            ? Array.from({ length: 5 }).map((_, index) => (
+                <div key={index} className="col-span-1">
+                  <Skeleton height={288} />
+                </div>
+              ))
+            : filterEventSeminar
+                .slice(0, displayedEvents)
+                .map((event: any, index: number) => (
+                  <div key={index}>
+                    <CardEvent
+                      id={event.id}
+                      judul={event.name}
+                      lokasi={event.location.name}
+                      waktu={event.endDate}
+                      harga={event.price}
+                      urlImage={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
+                    />
+                  </div>
+                ))}
         </div>
       </div>
     </section>

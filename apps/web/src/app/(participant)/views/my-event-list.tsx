@@ -73,7 +73,7 @@ const MyEventList: React.FunctionComponent<IMyEventListProps> = (props) => {
                 <CardEventMyList
                   id={eventItem.event.id}
                   judul={eventItem.event.name}
-                  lokasi={eventItem.event.locationId}
+                  lokasi={eventItem.event.location.name}
                   waktu={eventItem.event.endDate}
                   harga={eventItem.event.price}
                   urlImage={NEXT_PUBLIC_BASE_API_URL + eventItem.event.imageURL}
@@ -85,7 +85,7 @@ const MyEventList: React.FunctionComponent<IMyEventListProps> = (props) => {
                 <CardBeforeReview
                   id={eventFinishItem.event.id}
                   judul={eventFinishItem.event.name}
-                  lokasi={eventFinishItem.event.locationId}
+                  lokasi={eventFinishItem.event.location.name}
                   waktu={eventFinishItem.event.endDate}
                   harga={eventFinishItem.event.price}
                   urlImage={

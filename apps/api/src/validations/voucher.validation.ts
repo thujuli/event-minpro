@@ -31,7 +31,9 @@ export class VoucherValidation {
   });
 
   static EVENT_ID = z.coerce
-    .number({ invalid_type_error: 'Page must be a Number!' })
-    .int({ message: 'Page must be an integer' })
+    .number({ invalid_type_error: 'Event AAAAAID must be a Number!' })
+    .int({ message: 'Event ID must be an integer' })
     .positive();
+
+
 }

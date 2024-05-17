@@ -4,6 +4,10 @@ import { Button } from "@/components/ui/button";
 interface IButtonBeliDesProps {}
 
 const ButtonBeliDes: React.FunctionComponent<IButtonBeliDesProps> = (props) => {
+
+  const onHandleSeatReq = async () =>{
+    
+  }
   return (
     <div>
       <Button
