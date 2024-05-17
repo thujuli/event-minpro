@@ -1,20 +1,18 @@
 "use client";
-
-import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
-import Link from "next/link";
-import { eventColumns } from "../../_components/events/event-columns";
-import DashboardTemplate from "../../_components/template";
-import { EventDataTable } from "../../_components/events/event-data-table";
-import { useSearchParams } from "next/navigation";
+import { participationColumns } from "@/app/(admin)/_components/events/[eventId]/participations/participation-column";
+import { EventParticipationDataTable } from "@/app/(admin)/_components/events/[eventId]/participations/participation-data-table";
+import LoadingDashboard from "@/app/(admin)/_components/loading";
+import DashboardTemplate from "@/app/(admin)/_components/template";
+import usePagination from "@/hooks/usePagination";
+import { useEventParticipation } from "@/services/admin/queries";
+import { useParams, useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
 import { toast } from "sonner";
-import usePagination from "@/hooks/usePagination";
-import LoadingDashboard from "../../_components/loading";
-import { useAdminEvents } from "@/services/admin/queries";
 
-const EventPage: React.FC = () => {
+const EventParticipation: React.FC = () => {
+  const params = useParams();
   const searchParams = useSearchParams();
+
   const page = Number(searchParams.get("page")) ?? 1;
   const limit = Number(searchParams.get("limit")) ?? 10;
   const sort_by = searchParams.get("sort_by") ?? "createdAt";
@@ -29,7 +27,8 @@ const EventPage: React.FC = () => {
     totalPages,
   } = usePagination();
 
-  const { isPending, isError, data, error } = useAdminEvents({
+  const { isPending, isError, data, error } = useEventParticipation({
+    eventId: params.eventId as string,
     pagination: { limit, order_by, page, sort_by },
   });
 
@@ -47,22 +46,13 @@ const EventPage: React.FC = () => {
 
   return (
     <DashboardTemplate>
-      <div>
-        <Button asChild size="sm" className="h-8 gap-1">
-          <Link href="/dashboard/events/create">
-            <PlusCircle className="h-3.5 w-3.5" />
-            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-              Add Event
-            </span>
-          </Link>
-        </Button>
-      </div>
       <div className="flex flex-1 justify-center">
         {data && data.result.length > 0 ? (
           <div className="w-full">
-            <EventDataTable
-              columns={eventColumns}
+            <EventParticipationDataTable
+              columns={participationColumns}
               data={data.result}
+              eventId={params.eventId as string}
               page={data.page}
               totalPages={totalPages}
               canNextPage={canNextPage}
@@ -72,12 +62,11 @@ const EventPage: React.FC = () => {
         ) : (
           <div className="flex min-h-full flex-col items-center justify-center gap-1 text-center">
             <h3 className="text-3xl font-bold tracking-tight">
-              You have no events
+              You have no participations
             </h3>
             <p className="text-sm text-muted-foreground">
-              Set up an event and proceed to sell tickets.
+              This event has no participations
             </p>
-            <Button className="mt-4">Add Event</Button>
           </div>
         )}
       </div>
@@ -85,4 +74,4 @@ const EventPage: React.FC = () => {
   );
 };
 
-export default EventPage;
+export default EventParticipation;

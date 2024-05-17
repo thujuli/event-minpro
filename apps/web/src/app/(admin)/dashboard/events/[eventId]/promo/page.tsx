@@ -15,6 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import DashboardTemplate from "@/app/(admin)/_components/template";
 
 interface IPromoSectionProps {}
 
@@ -58,7 +59,7 @@ const PromoSection: React.FunctionComponent<IPromoSectionProps> = (props) => {
     return print;
   };
   return (
-    <section>
+    <DashboardTemplate>
       <Link href={`/dashboard/events/${id.eventId}/promo/create`}>
         <Button>Create Promo</Button>
       </Link>
@@ -74,7 +75,7 @@ const PromoSection: React.FunctionComponent<IPromoSectionProps> = (props) => {
         </TableHeader>
         <TableBody>{printTable()}</TableBody>
       </Table>
-    </section>
+    </DashboardTemplate>
   );
 };
 

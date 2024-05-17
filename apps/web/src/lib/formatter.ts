@@ -16,9 +16,8 @@ export const formatDate = (date: string | number | Date) => {
 };
 
 export const formatDateTime = (date: string | number | Date) => {
-  return format(date, "d LLL y HHH:mm");
+  return format(date, "d LLL y HH:mm");
 };
-
 
 export const numberShortener = (number: number) => {
   if (number < 1000) {

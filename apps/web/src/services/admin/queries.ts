@@ -1,6 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import Cookie from "js-cookie";
-import { getAdminEvents, getAdminEventTransactions } from "./fetchers";
+import {
+  getAdminEvents,
+  getAdminEventTransactions,
+  getEventParticipation,
+} from "./fetchers";
 import { Pagination } from "@/types/global";
 
 export const useAdminEventTransactions = ({
@@ -22,5 +26,20 @@ export const useAdminEvents = ({ pagination }: { pagination: Pagination }) => {
   return useQuery({
     queryKey: ["adminEvents", { token, pagination }],
     queryFn: () => getAdminEvents(token!, pagination),
+  });
+};
+
+export const useEventParticipation = ({
+  eventId,
+  pagination,
+}: {
+  eventId: string;
+  pagination: Pagination;
+}) => {
+  const token = Cookie.get("admin-tkn");
+
+  return useQuery({
+    queryKey: ["eventParticipation", { token, eventId, pagination }],
+    queryFn: () => getEventParticipation(token!, eventId, pagination),
   });
 };
