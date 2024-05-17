@@ -17,7 +17,7 @@ const HeroDetails: React.FunctionComponent<IHeroDetailsProps> = (props) => {
       <div className=" relative">
         <Image
           className="mx-auto flex h-[250px] w-full flex-col bg-cover bg-center md:h-[555px]  md:w-fit"
-          src={NEXT_PUBLIC_BASE_API_URL + props.data.imageURL}
+          src={ props.data.imageURL}
           width={555}
           height={1400}
           alt=""

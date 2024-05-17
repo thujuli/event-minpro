@@ -16,7 +16,12 @@ export class TransactionRepository {
         userId: id,
       },
       include: {
-        event: true,
+        event: {
+          include: {
+            category: true,
+            location: true,
+          },
+        },
       },
     });
     // Group events by userId
@@ -47,7 +52,12 @@ export class TransactionRepository {
         },
       },
       include: {
-        event: true,
+        event: {
+          include: {
+            category: true,
+            location: true,
+          },
+        },
       },
     });
     // Group events by userId
@@ -77,7 +87,15 @@ export class TransactionRepository {
           },
         },
       },
-      include: { event: { include: { feedbacks: true } } },
+      include: {
+        event: {
+          include: {
+            category: true,
+            location: true,
+            feedbacks: true,
+          },
+        },
+      },
     });
 
     // Group events by userId
@@ -173,6 +191,16 @@ export class TransactionRepository {
     return await prisma.transaction.update({
       where: { id: transactionId },
       data: { paymentStatus: status },
+    });
+  }
+
+  static async checkoutUser(transactionId: number, file: Express.Multer.File) {
+    await prisma.transaction.update({
+      where: { id: transactionId },
+      data: {
+        paymentStatus: PaymentStatus.PAID,
+        paymentProof: `/assets/events/${file}`,
+      },
     });
   }
 }

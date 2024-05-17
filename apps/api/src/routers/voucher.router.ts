@@ -23,8 +23,12 @@ export class VoucherRouter {
     this.router.get(
       '/:eventId',
       verifyToken,
-      adminGuard,
       this.voucherController.getVoucherById,
+    );
+
+    this.router.get(
+      '/voucher-creator/:eventId',
+      this.voucherController.getVoucherByCreator,
     );
   }
 

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import ButtonBeliDes from "../../_components/detail/button-buy-des";
 import ButtonBeliMobile from "../../_components/detail/button-buy-mobile";
 import Link from "next/link";
+import { useAppDispatch } from "@/lib/hooks";
 
 interface ITicketProps {
   id: number;
@@ -11,11 +12,14 @@ interface ITicketProps {
     id: number;
     price: number;
     availableSeats: number;
-    maxCapacity: number
+    maxCapacity: number;
   };
 }
 
 const Ticket: React.FunctionComponent<ITicketProps> = (props) => {
+  //GLOBAL STATE
+  const dispatch = useAppDispatch();
+  // dispatch(setSuccesLoginAction(response.data[0]));
   const [jumlahTiket, setJumlahTiket] = React.useState(1);
 
   const countHarga = (counter: string) => {
@@ -65,7 +69,10 @@ const Ticket: React.FunctionComponent<ITicketProps> = (props) => {
               className=" mt-[10px] border-[0.2px] md:border"
             ></div>
             <div className=" flex items-center justify-between py-[18px] text-[14px] md:text-[14px]">
-              <p>Available Seat : {props.data.availableSeats} / {props.data.maxCapacity}</p>
+              <p>
+                Available Seat : {props.data.availableSeats} /{" "}
+                {props.data.maxCapacity}
+              </p>
               <Link href={`/transaction/${props.id}`}>
                 <ButtonBeliDes />
               </Link>

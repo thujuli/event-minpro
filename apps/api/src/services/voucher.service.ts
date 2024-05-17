@@ -33,13 +33,18 @@ export class VoucherService {
       );
     }
 
-    if(event.maxCapacity < maxUsage){
+    if (event.maxCapacity < maxUsage) {
       throw new ErrorResponse(
         400,
         'Capacity event is the request for making vouchers exceeds the event capacity',
       );
     }
-    await VoucherRepository.createVoucher(id, { discount, eventId, maxUsage, name });
+    await VoucherRepository.createVoucher(id, {
+      discount,
+      eventId,
+      maxUsage,
+      name,
+    });
     return responseWithoutData(201, true, 'Success create a promo event');
   }
 
@@ -50,6 +55,18 @@ export class VoucherService {
       id,
       Number(newEventId),
     );
+    return responseWithData(200, true, 'Success get Data Promo', response);
+  }
+
+  static async getVoucherByCreator(eventId: string) {
+    console.log('ini log servis', eventId);
+
+    const newEventId = Validation.validate(VoucherValidation.EVENT_ID, eventId);
+
+    const response = await VoucherRepository.getVoucherByCreator(
+      Number(eventId),
+    );
+
     return responseWithData(200, true, 'Success get Data Promo', response);
   }
 }

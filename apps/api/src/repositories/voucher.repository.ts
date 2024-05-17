@@ -25,4 +25,11 @@ export class VoucherRepository {
       where: { userId : id, eventId },
     });
   }
+
+  static async getVoucherByCreator (eventId: number){
+    return await prisma.voucher.findMany({
+      where: {eventId: eventId}
+    })
+    
+  }
 }

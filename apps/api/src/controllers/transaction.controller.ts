@@ -81,4 +81,10 @@ export class TransactionController {
       next(error);
     }
   }
+
+  public async checkoutUser(req: Request, res: Response, next: NextFunction) {
+    const id = res.locals.decoded.id as number;
+    const request = req.body
+    const file = req.file as Express.Multer.File;
+  }
 }

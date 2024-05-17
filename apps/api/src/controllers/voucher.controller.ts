@@ -25,4 +25,19 @@ export class VoucherController {
       next(error);
     }
   }
+
+  public async getVoucherByCreator(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      const eventId = req.params.eventId
+
+      const response = await VoucherService.getVoucherByCreator(eventId);
+      return res.status(200).send(response);
+    } catch (error) {
+      next(error);
+    }
+  }
 }

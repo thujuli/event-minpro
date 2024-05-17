@@ -28,7 +28,7 @@ const PaymentSection: React.FunctionComponent<IPaymentSectionProps> = (
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="21persen">
+                <SelectItem value="1persen">
                   <div className="flex items-center ">
                     <img
                       src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Bank_Mandiri_logo_2016.svg/2560px-Bank_Mandiri_logo_2016.svg.png"
@@ -38,7 +38,7 @@ const PaymentSection: React.FunctionComponent<IPaymentSectionProps> = (
                     <span>Mandiri</span>
                   </div>
                 </SelectItem>
-                <SelectItem value="21persen">
+                <SelectItem value="2persen">
                   <div className="flex items-center ">
                     <img
                       src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Logo_dana_blue.svg/1280px-Logo_dana_blue.svg.png"
@@ -48,7 +48,7 @@ const PaymentSection: React.FunctionComponent<IPaymentSectionProps> = (
                     <span>DANA</span>
                   </div>
                 </SelectItem>
-                <SelectItem value="21persen">
+                <SelectItem value="3persen">
                   <div className="flex items-center ">
                     <img
                       src="https://bewara.co.id/wp-content/uploads/2023/05/link-aja-e1684593519358.png"
@@ -58,7 +58,7 @@ const PaymentSection: React.FunctionComponent<IPaymentSectionProps> = (
                     <span>Link Aja</span>
                   </div>
                 </SelectItem>
-                <SelectItem value="21persen">
+                <SelectItem value="4persen">
                   <div className="flex items-center ">
                     <img
                       src="https://upload.wikimedia.org/wikipedia/commons/9/9d/Logo_Indomaret.png"

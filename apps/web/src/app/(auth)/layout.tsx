@@ -7,7 +7,7 @@ type Props = {
 const AuthLayout: React.FC<Props> = (props) => {
   const { children } = props;
 
-  return <main className="mx-auto max-w-[1536px]">{children}</main>;
+  return <main className="mx-auto">{children}</main>;
 };
 
 export default AuthLayout;

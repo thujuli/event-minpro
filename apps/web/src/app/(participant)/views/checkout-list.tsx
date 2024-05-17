@@ -36,13 +36,13 @@ const MyChecoutList: React.FunctionComponent<IMyChecoutListProps> = (props) => {
 
   return (
     <section>
-      <div className="mx-10 my-[18px] md:grid md:grid-cols-4 md:gap-4 md:p-6">
+      <div className="my-[18px] grid grid-cols-2 gap-4 md:mx-10 md:grid-cols-4 md:p-6">
         {event.map((event: any, index: number) => (
           <div key={index}>
             <CardCheckout
               id={event.event.id}
               judul={event.event.name}
-              lokasi={event.event.locationId}
+              lokasi={event.event.location.name}
               waktu={event.event.createdAt}
               harga={event.event.price}
               urlImage={NEXT_PUBLIC_BASE_API_URL + event.event.imageURL}

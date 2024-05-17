@@ -2,14 +2,14 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-
+import { formatDate, numberShortener } from "@/lib/formatter";
 interface ICardEventMyListProps {
   id?: number;
   urlImage: string;
   judul: string;
   lokasi: string;
   waktu: string;
-  harga: string;
+  harga: number;
 }
 
 const CardEventMyList: React.FunctionComponent<ICardEventMyListProps> = (
@@ -18,11 +18,11 @@ const CardEventMyList: React.FunctionComponent<ICardEventMyListProps> = (
   return (
     <Link href={`/review/${props.id}`}>
       <div
-        className="h-[278px] min-w-[188px] max-w-[188px] cursor-pointer overflow-hidden  rounded-lg border border-gray-400 bg-white md:h-[338px] md:min-w-[236px] md:max-w-[236px]"
+        className="h-[278px] min-w-[178px] max-w-[178px] cursor-pointer overflow-hidden  rounded-lg border border-gray-400 bg-white md:h-[288px] md:min-w-[236px] md:max-w-[236px]"
         // onClick={() => router.push(`/detail/${props.id}`)}
       >
         <Image
-          className="h-[144px] w-[188px] md:h-[148px] md:w-[236px] "
+          className="h-[144px] w-[188px]  md:h-[148px] md:w-full"
           src={props.urlImage}
           width={236}
           height={148}
@@ -34,11 +34,13 @@ const CardEventMyList: React.FunctionComponent<ICardEventMyListProps> = (
             {props.judul}
           </h1>
           <h1 className="  mt-[10px]  text-[10px]">{props.lokasi}</h1>
-          <h1 className="  mt-[4px]  text-[10px]">{props.waktu}</h1>
+          <h1 className="  mt-[4px]  text-[10px]">{formatDate(props.waktu)}</h1>
           <h1 className="  mt-[4px]  text-[10px]">
-            IDR. {props.harga.toLocaleString()}
+            {props.harga === 0
+              ? "Free"
+              : `IDR. ${numberShortener(props.harga)}`}
           </h1>
-          <h1 className=" text-[10px] font-semibold  text-green-700 md:mt-[58px] md:text-[14px]   ">
+          <h1 className=" mt-[20px] text-[10px]  font-semibold text-green-700 md:text-[12px]   ">
             Sudah Bayar
           </h1>
         </div>

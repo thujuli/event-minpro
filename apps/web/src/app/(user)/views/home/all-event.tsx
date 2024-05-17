@@ -15,7 +15,8 @@ import { LocationSearch } from "@/components/shared/location-search";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { useDebounce } from "use-debounce";
-
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 interface IAllEventSectionProps {}
 
 const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
@@ -53,14 +54,14 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
   //fitur search
   const [search, setSearch] = React.useState("");
   const [searchDebouce] = useDebounce(search, 1000);
-
+  const [loading, setLoading] = React.useState(true);
   React.useEffect(() => {
     onHandleGet();
   }, [getData, currentPage, searchDebouce, startDate, endDate]);
   const onHandleGet = async () => {
     try {
       // let url = NEXT_PUBLIC_BASE_API_URL + "/events?";
-
+      setLoading(true);
       let params: string[] = [];
       if (searchDebouce) {
         params.push(`name=${searchDebouce}`);
@@ -97,6 +98,8 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
       setTotalPages(Math.ceil(response.data.total / response.data.limit));
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false); // Set loading to false after fetch is complete
     }
   };
   const handlePageChange = (page: any) => {
@@ -237,6 +240,14 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
               </Button>
             </div>
             <div className="mt-6 flex space-x-4">
+              {/* SELECT NAME AWAL */}
+              <Input
+                className="h-[36px] w-[300px]  bg-[#f4f7fe]"
+                type="text"
+                placeholder="Cari eventMu"
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              {/* SELECT NAME AKHIR  */}
               {/* SELECT LOCATION MULAI */}
               <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
@@ -264,14 +275,7 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
                 </PopoverContent>
               </Popover>
               {/* SELECT LOCATION AKHIR */}
-              {/* SELECT NAME AWAL */}
-              <Input
-                className="h-[36px] w-[300px]  bg-[#f4f7fe]"
-                type="text"
-                placeholder="Cari eventMu"
-                onChange={(e) => setSearch(e.target.value)}
-              />
-              {/* SELECT NAME AKHIR  */}
+
               {/* SELECT DATE AWAL  */}
               <div className=" flex items-center space-x-4 ">
                 <h1>Start Date :</h1>
@@ -298,18 +302,25 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
           </div>
         </div>
         <div className=" mx-auto my-[18px] grid grid-cols-2 gap-4  md:grid md:grid-cols-5">
-          {events.map((event: any, index: number) => (
-            <div key={index}>
-              <CardEvent
-                id={event.id}
-                urlImage={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
-                judul={event.name}
-                lokasi={event.location.name}
-                waktu={event.createdAt}
-                harga={event.price}
-              />
-            </div>
-          ))}
+          {loading
+            ? Array.from({ length: 10 }).map((_, index) => (
+                <div key={index} className="col-span-1">
+                  <Skeleton height={250} />
+                  <Skeleton count={3} />
+                </div>
+              ))
+            : events.map((event: any, index: number) => (
+                <div key={index}>
+                  <CardEvent
+                    id={event.id}
+                    urlImage={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
+                    judul={event.name}
+                    lokasi={event.location.name}
+                    waktu={event.createdAt}
+                    harga={event.price}
+                  />
+                </div>
+              ))}
         </div>
         <div className=" space-x-4 ">{paginationButtons}</div>
       </div>
