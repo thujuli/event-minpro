@@ -163,10 +163,10 @@ export class TransactionRepository {
     const query = Prisma.sql`
     SELECT
       DATE(transactions.updatedAt) as date,
-      SUM(CASE WHEN transactions.paymentStatus = 'waiting' THEN transactions.quantity ELSE 0 END) as waiting,
-      SUM(CASE WHEN transactions.paymentStatus = 'paid' THEN transactions.quantity ELSE 0 END) as paid,
-      SUM(CASE WHEN transactions.paymentStatus = 'success' THEN transactions.quantity ELSE 0 END) as success,
-      SUM(CASE WHEN transactions.paymentStatus = 'failed' THEN transactions.quantity ELSE 0 END) as failed
+      SUM(CASE WHEN transactions.paymentStatus = 'waiting' THEN 1 ELSE 0 END) as waiting,
+      SUM(CASE WHEN transactions.paymentStatus = 'paid' THEN 1 ELSE 0 END) as paid,
+      SUM(CASE WHEN transactions.paymentStatus = 'success' THEN 1 ELSE 0 END) as success,
+      SUM(CASE WHEN transactions.paymentStatus = 'failed' THEN 1 ELSE 0 END) as failed
     FROM transactions
     JOIN events ON events.id = transactions.eventId
     WHERE events.userId = ${id}

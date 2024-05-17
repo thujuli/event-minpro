@@ -5,7 +5,7 @@ import { ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 import { AdminEventTransactionResponse } from "@/types/admin";
-import { formatNumber, formatPrice } from "@/lib/formatter";
+import { formatDate, formatNumber, formatPrice } from "@/lib/formatter";
 import { Badge } from "@/components/ui/badge";
 import { PaymentStatus } from "@/types/transaction";
 import StatusBadge from "../status-badge";
@@ -131,6 +131,25 @@ export const transactionColumns: ColumnDef<AdminEventTransactionResponse>[] = [
           )}
         </div>
       );
+    },
+  },
+  {
+    accessorKey: "updatedAt",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="px-0"
+        >
+          Date
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const date: string = row.getValue("updatedAt");
+      return <div className="text-nowrap font-medium">{formatDate(date)}</div>;
     },
   },
   {
