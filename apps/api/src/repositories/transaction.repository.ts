@@ -130,8 +130,9 @@ export class TransactionRepository {
     });
   }
 
-  static async getAllEventTransactions(id: number) {
-    return await prisma.transaction.findMany({
+  static async countEventTransactions(id: number) {
+    return await prisma.transaction.aggregate({
+      _count: true,
       where: { event: { user: { id: id } } },
     });
   }

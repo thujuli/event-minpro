@@ -177,4 +177,11 @@ export class EventRepository {
       },
     });
   }
+
+  static async countEventTransactions(eventId: number) {
+    return await prisma.event.findUnique({
+      where: { id: eventId },
+      select: { _count: { select: { transactions: true } } },
+    });
+  }
 }
