@@ -1,7 +1,6 @@
 import { ErrorResponse } from '@/utils/error';
 import { z } from 'zod';
-import { join } from 'path';
-import fs from 'fs';
+import { deleteFile } from '@/utils/file';
 
 const MIN_CATEGORY_ID = 1;
 const MAX_CATEGORY_ID = 6;
@@ -20,12 +19,12 @@ export class EventValidation {
     if (!file) throw new ErrorResponse(400, 'Image is required!');
 
     if (file.size > MAX_FILE_SIZE) {
-      fs.unlinkSync(join(__dirname, '../../public/events', file.filename));
+      deleteFile('../../public/assets/events', file.filename);
       throw new ErrorResponse(400, 'Image must be less than 2MB!');
     }
 
     if (!ACCEPTED_IMAGE_TYPES.includes(file.mimetype)) {
-      fs.unlinkSync(join(__dirname, '../../public/events', file.filename));
+      deleteFile('../../public/assets/events', file.filename);
       throw new ErrorResponse(
         400,
         '.jpg, .jpeg, .png and .webp files are accepted.',

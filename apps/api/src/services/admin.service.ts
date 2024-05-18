@@ -131,15 +131,11 @@ export class AdminService {
     // 7 days ago
     const past7Days = decrementDate(currentDate, 7);
 
-    console.log(new Date());
-
     const statuses =
       await TransactionRepository.getTransactionStatusByUpdatedAt(id, {
         gte: startDate ?? past7Days,
         lte,
       });
-
-    console.log(statuses);
 
     return responseWithData(
       200,
