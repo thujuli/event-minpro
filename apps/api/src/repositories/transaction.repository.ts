@@ -204,7 +204,7 @@ export class TransactionRepository {
       },
     });
   }
-  
+
   static async postPaidCheckout(
     transactionId: number,
     file: Express.Multer.File,
@@ -215,6 +215,13 @@ export class TransactionRepository {
         paymentStatus: PaymentStatus.PAID,
         paymentProof: `/assets/transactions/${file.filename}`,
       },
+    });
+  }
+  
+  static async getDataCheckout(transactionId: number) {
+    return await prisma.transaction.findUnique({
+      where: { id: Number(transactionId) },
+      include: { event: true },
     });
   }
 }
