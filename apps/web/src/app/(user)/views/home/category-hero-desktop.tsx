@@ -18,7 +18,7 @@ const CategoryDesktop: React.FunctionComponent<ICategoryDesktopProps> = (
       {/* <div className="  h-auto  flex overflow-x-auto overflow-hidden gap-5 bg-red-400 mx-96"> */}
       <div className="  flex justify-center  space-x-5">
         <Link href={`/explore`}>
-          <div className=" flex flex-col items-center justify-center">
+          <div className=" flex flex-col items-center justify-center ">
             <div className="h-[50px] w-[50px] rounded-lg border border-slate-400 bg-white p-4">
               <FaWindows className=" text-black" />
             </div>

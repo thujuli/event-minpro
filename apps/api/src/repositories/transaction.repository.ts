@@ -204,4 +204,17 @@ export class TransactionRepository {
       },
     });
   }
+  
+  static async postPaidCheckout(
+    transactionId: number,
+    file: Express.Multer.File,
+  ) {
+    await prisma.transaction.update({
+      where: { id: Number(transactionId) },
+      data: {
+        paymentStatus: PaymentStatus.PAID,
+        paymentProof: `/assets/transactions/${file.filename}`,
+      },
+    });
+  }
 }

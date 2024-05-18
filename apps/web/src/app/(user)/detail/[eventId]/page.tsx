@@ -20,7 +20,7 @@ import { MdOutlineDateRange } from "react-icons/md";
 import { BiBookmarks } from "react-icons/bi";
 import { MdGroups3 } from "react-icons/md";
 import { Button } from "@/components/ui/button";
-import { numberShortener, formatDate, formatNumber } from "@/lib/formatter";
+import { formatDate, formatNumber, formatPrice } from "@/lib/formatter";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ButtonBeliDes from "../../_components/detail/button-buy-des";
@@ -93,13 +93,6 @@ const DetailEvent: React.FunctionComponent<IDetailEventProps> = (props) => {
     localStorage.setItem("seat", transaction.seatRequests);
   };
 
-  const formatDate = (isoDateString: string) => {
-    const date = new Date(isoDateString);
-    const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-  };
   return (
     <section className="bg-[#f4f7fe] md:bg-white ">
       <NavbarDesktop />
@@ -206,7 +199,7 @@ const DetailEvent: React.FunctionComponent<IDetailEventProps> = (props) => {
             <div className="">
               <h1 className="text-[14px] md:text-[14px]">Price</h1>
               <h1 className="text-[18px] font-semibold text-[#FFA24B] md:text-[16px]">
-                IDR. {formatNumber(event.price * transaction.seatRequests)}
+                {formatPrice(event.price * transaction.seatRequests)}
               </h1>
             </div>
             <div

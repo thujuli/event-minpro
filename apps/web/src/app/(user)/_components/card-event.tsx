@@ -2,7 +2,7 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { formatDate, numberShortener, formatNumber } from "@/lib/formatter";
+import { formatDate, numberShortener, formatNumber, formatPrice } from "@/lib/formatter";
 interface ICardEventProps {
   id?: number;
   urlImage: string;
@@ -36,9 +36,7 @@ const CardEvent: React.FunctionComponent<ICardEventProps> = (props) => {
             Tersedia sekarang
           </h1>
           <h1 className="  text-[10px] font-semibold md:text-[12px]   ">
-            {props.harga === 0
-              ? "Free"
-              : `IDR. ${formatNumber(props.harga)}`}
+            {props.harga === 0 ? "Free" : `${formatPrice(props.harga)}`}
           </h1>
         </div>
       </div>

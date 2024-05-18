@@ -13,6 +13,8 @@ import { generateTicketCode } from '@/utils/randomGenerator';
 import { responseWithData, responseWithoutData } from '@/utils/response';
 import { TransactionValidation } from '@/validations/transaction.validation';
 import { Validation } from '@/validations/validation';
+import { PaymentStatus } from '@prisma/client';
+import multer from 'multer';
 
 export class TransactionService {
   static async createTransaction(id: number, request: TransactionRequest) {
@@ -308,12 +310,9 @@ export class TransactionService {
     id: number,
     body: TransactionCheckout,
   ) {
-    
     const success = Validation.validate(TransactionValidation.GET, body);
-    
-    const response = await TransactionRepository.getEventSuccessByDate(
-      id,
-    );
+
+    const response = await TransactionRepository.getEventSuccessByDate(id);
     console.log(response);
     // for(let i = 0; i < response.eventsSuccess.length; i++){
     //   if(response.eventsSuccess[i].eve)
@@ -325,5 +324,48 @@ export class TransactionService {
       'success get event status  By Date',
       response,
     );
+  }
+
+  static async checkoutUser(
+    id: number,
+    transactionId: string,
+    file: Express.Multer.File,
+  ) {
+    const newTransactionId = Validation.validate(
+      TransactionValidation.TRANSACTION_ID,
+      transactionId,
+    );
+    const validateFile = TransactionValidation.fileValidation(file);
+
+    const userTransactions = await TransactionRepository.getDataCheckout(
+      Number(newTransactionId),
+    );
+    console.log('TEST', userTransactions);
+    if (!userTransactions) {
+      throw new ErrorResponse(404, 'Transaction not found!');
+    }
+
+    if (userTransactions.userId !== id) {
+      throw new ErrorResponse(401, 'Transaction is not yours');
+    }
+
+    if (userTransactions.paymentStatus !== PaymentStatus.waiting) {
+      throw new ErrorResponse(
+        401,
+        'Transaction has been paid or the transaction status is complete',
+      );
+    }
+
+    const today = new Date().getTime();
+    if (userTransactions.event.endDate.getTime() < today) {
+      throw new ErrorResponse(400, 'Event time has passed');
+    }
+
+    await TransactionRepository.postPaidCheckout(
+      Number(newTransactionId),
+      validateFile,
+    );
+    
+    return responseWithoutData(200, true, 'Payment successful');
   }
 }

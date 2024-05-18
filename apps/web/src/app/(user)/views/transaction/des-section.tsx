@@ -34,13 +34,6 @@ const DesSection: React.FunctionComponent<IDesSectionProps> = (props) => {
     }
   };
 
-  const formatDate = (isoDateString: string) => {
-    const date = new Date(isoDateString);
-    const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-  };
   return (
     <section className="mx-[10px] md:mx-0">
       <div className="  mx-[10px] mt-[24px] space-y-2  md:ml-[120px]">
@@ -64,7 +57,7 @@ const DesSection: React.FunctionComponent<IDesSectionProps> = (props) => {
                 <div className=" flex items-center">
                   <MdOutlineDateRange className=" h-[20px] w-[20px] text-[#aeb2be] md:h-[24px] md:w-[24px]" />
                   <p className="mx-[12px] text-[14px] md:mx-[30px] md:text-[12px]">
-                    {formatDate(event.createdAt)}
+                    {event.startDate}
                   </p>
                 </div>
                 <div className=" flex items-center">
