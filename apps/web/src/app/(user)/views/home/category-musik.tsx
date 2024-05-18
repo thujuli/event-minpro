@@ -55,7 +55,7 @@ const CategoryMusikSection: React.FunctionComponent<
         <div className=" flex items-center justify-between">
           <div className="mt-[10px] hidden space-x-4 md:block">
             <Button
-              className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "All" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
+              className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "All" ? "border-blue-500" : "border-gray-400"} hover:bg-[#53b253] hover:text-white rounded-md text-black`}
               type="button"
               onClick={(element: any) => {
                 const newData = {
@@ -69,7 +69,7 @@ const CategoryMusikSection: React.FunctionComponent<
               All
             </Button>
             <Button
-              className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Jakarta" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
+              className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Jakarta" ? "border-blue-500" : "border-gray-400"} hover:bg-[#53b253] hover:text-white rounded-md text-black`}
               type="button"
               onClick={(element: any) => {
                 const newData = {
@@ -83,7 +83,7 @@ const CategoryMusikSection: React.FunctionComponent<
               Jakarta
             </Button>
             <Button
-              className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Denpasar" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
+              className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Denpasar" ? "border-blue-500" : "border-gray-400"} hover:bg-[#53b253] hover:text-white rounded-md text-black`}
               type="button"
               onClick={(element: any) => {
                 const newData = {
@@ -99,7 +99,7 @@ const CategoryMusikSection: React.FunctionComponent<
           </div>
           <Link href={`/explore`}>
             <Button
-              className={`hidden h-fit w-fit rounded-md border  bg-white px-4 text-black md:block`}
+              className={`hidden h-fit w-fit rounded-md border  bg-white px-4 text-black md:block hover:bg-[#53b253] hover:text-white`}
               type="button"
             >
               Explore Lebih Banyak

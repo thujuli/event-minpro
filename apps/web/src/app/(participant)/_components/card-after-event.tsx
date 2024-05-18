@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import ButtonBeliDes from "@/app/(user)/_components/detail/button-buy-des";
-import {formatDate, numberShortener} from "@/lib/formatter"
+import {formatDate, formatPrice, numberShortener} from "@/lib/formatter"
 
 interface ICardBeforeReviewProps {
   id?: number;
@@ -38,7 +38,7 @@ const CardBeforeReview: React.FunctionComponent<ICardBeforeReviewProps> = (
         <h1 className="  mt-[10px]  text-[10px]">{props.lokasi}</h1>
         <h1 className="  mt-[4px]  text-[10px]">{formatDate(props.waktu)}</h1>
         <h1 className="  mt-[4px]  text-[10px]">
-          {props.harga === 0 ? "Free" : `IDR. ${numberShortener(props.harga)}`}
+          {props.harga === 0 ? "Free" : `${formatPrice(props.harga)}`}
         </h1>
         <Link href={`/review/${props.id}`}>
           <Button className="w-full text-[12px] mt-[10px]">Review</Button>

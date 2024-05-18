@@ -1,5 +1,6 @@
 import { TransactionController } from '@/controllers/transaction.controller';
 import { userGuard, verifyToken } from '@/middlewares/auth.middleware';
+import { uploader } from '@/middlewares/uploader.middleware';
 import { Router } from 'express';
 
 export class TransactionRouter {
@@ -40,6 +41,16 @@ export class TransactionRouter {
       userGuard,
       this.transactionController.createTransaction,
     );
+
+    this.router.patch(
+      '/:transactionId',
+      verifyToken,
+      userGuard,
+      uploader('/transactions', 'TRANS').single('image'),
+      this.transactionController.checkoutUser,
+    );
+
+
   }
 
   public getRoutes(): Router {

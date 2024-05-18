@@ -61,7 +61,7 @@ const CategorySeminarSection: React.FunctionComponent<
         </div>
         <div className="mt-[10px] hidden space-x-4 md:block">
           <Button
-            className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "All" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
+            className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "All" ? "border-white" : "border-gray-400"} rounded-md text-black hover:bg-[#53b253] hover:text-white`}
             type="button"
             onClick={(element: any) => {
               const newData = {
@@ -75,7 +75,7 @@ const CategorySeminarSection: React.FunctionComponent<
             All
           </Button>
           <Button
-            className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Online" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
+            className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Online" ? "border-white" : "border-gray-400"} rounded-md text-black hover:bg-[#53b253] hover:text-white`}
             type="button"
             onClick={(element: any) => {
               const newData = {
@@ -89,7 +89,7 @@ const CategorySeminarSection: React.FunctionComponent<
             Online
           </Button>
           <Button
-            className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Balikpapan" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
+            className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Balikpapan" ? "border-white" : "border-gray-400"} rounded-md text-black hover:bg-[#53b253] hover:text-white`}
             type="button"
             onClick={(element: any) => {
               const newData = {
@@ -103,7 +103,7 @@ const CategorySeminarSection: React.FunctionComponent<
             Balikpapan
           </Button>
           <Button
-            className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Denpasar" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
+            className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Denpasar" ? "border-white" : "border-gray-400"} rounded-md text-black hover:bg-[#53b253] hover:text-white`}
             type="button"
             onClick={(element: any) => {
               const newData = {

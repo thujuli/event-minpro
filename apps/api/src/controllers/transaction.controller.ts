@@ -83,8 +83,21 @@ export class TransactionController {
   }
 
   public async checkoutUser(req: Request, res: Response, next: NextFunction) {
-    const id = res.locals.decoded.id as number;
-    const request = req.body
-    const file = req.file as Express.Multer.File;
+    try {
+      const id = res.locals.decoded.id as number;
+      const transactionId = req.params.transactionId;
+      const file = req.file as Express.Multer.File;
+
+      console.log('cek file name:', file);
+
+      const response = await TransactionService.checkoutUser(
+        id,
+        transactionId,
+        file,
+      );
+      return res.status(200).send(response);
+    } catch (error) {
+      next(error);
+    }
   }
 }

@@ -2,25 +2,19 @@
 import * as React from "react";
 import axios from "axios";
 import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
-import CardEventMyList from "../_components/card-event-my-list";
 import CardCheckout from "../_components/card-checkout";
-import { getUserProfile } from "@/data/user";
 import Cookies from "js-cookie";
 
 interface IMyChecoutListProps {}
 
 const MyChecoutList: React.FunctionComponent<IMyChecoutListProps> = (props) => {
   const [event, setEvent] = React.useState([]);
-  const [dataProfile, setDataProfile] = React.useState<any[]>([]);
+
   React.useEffect(() => {
     onHandleGet();
   }, []);
   const onHandleGet = async () => {
     try {
-      const UserProfile = await getUserProfile(Cookies.get("user-tkn")!);
-      setDataProfile(UserProfile.result);
-      console.log(UserProfile.result);
-
       const config = {
         headers: { Authorization: `Bearer ${Cookies.get("user-tkn")}` },
       };
@@ -40,7 +34,7 @@ const MyChecoutList: React.FunctionComponent<IMyChecoutListProps> = (props) => {
         {event.map((event: any, index: number) => (
           <div key={index}>
             <CardCheckout
-              id={event.event.id}
+              id={event.id}
               judul={event.event.name}
               lokasi={event.event.location.name}
               waktu={event.event.createdAt}

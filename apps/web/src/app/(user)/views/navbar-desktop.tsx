@@ -26,7 +26,7 @@ const NavbarDesktop: React.FunctionComponent<INavbarDesktopProps> = (props) => {
         <div className=" flex space-x-2">
           <Link href={`/sign-in`}>
             <Button
-              className=" mx-auto h-[40px] w-[78px] border border-gray-400 bg-white text-black"
+              className=" mx-auto h-[40px] w-[78px] border border-gray-400 bg-white text-black hover:bg-[#53b253] hover:text-white"
               type="button"
             >
               Sign In
@@ -34,7 +34,7 @@ const NavbarDesktop: React.FunctionComponent<INavbarDesktopProps> = (props) => {
           </Link>
           <Link href={`/sign-up`}>
             <Button
-              className=" mx-auto h-[40px] w-[78px] border border-gray-400 bg-white text-black"
+              className=" mx-auto h-[40px] w-[78px] border border-gray-400 bg-white text-black hover:bg-[#53b253] hover:text-white"
               type="button"
             >
               Sign Up

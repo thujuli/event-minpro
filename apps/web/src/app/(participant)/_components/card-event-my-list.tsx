@@ -2,7 +2,7 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { formatDate, numberShortener } from "@/lib/formatter";
+import { formatDate, formatPrice, numberShortener } from "@/lib/formatter";
 interface ICardEventMyListProps {
   id?: number;
   urlImage: string;
@@ -38,7 +38,7 @@ const CardEventMyList: React.FunctionComponent<ICardEventMyListProps> = (
           <h1 className="  mt-[4px]  text-[10px]">
             {props.harga === 0
               ? "Free"
-              : `IDR. ${numberShortener(props.harga)}`}
+              : `${formatPrice(props.harga)}`}
           </h1>
           <h1 className=" mt-[20px] text-[10px]  font-semibold text-green-700 md:text-[12px]   ">
             Sudah Bayar

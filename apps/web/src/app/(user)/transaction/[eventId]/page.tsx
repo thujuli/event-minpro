@@ -1,4 +1,5 @@
 "use client";
+import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
 import * as React from "react";
 import { FaTicketAlt } from "react-icons/fa";
 import {
@@ -12,28 +13,19 @@ import { FaCoins } from "react-icons/fa6";
 import DesSection from "../../views/transaction/des-section";
 import axios from "axios";
 import PaymentSection from "../../views/transaction/payment-section";
-import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
 import { getUserProfile } from "@/data/user";
 import Cookies from "js-cookie";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { formatNumber, numberShortener } from "@/lib/formatter";
+import { formatDate, formatDateTime, formatNumber, formatPrice, numberShortener } from "@/lib/formatter";
 
 interface IBayarPageProps {
   points: {
     balance: number;
   };
 }
-
-const formatDate = (isoDateString: string) => {
-  const date = new Date(isoDateString);
-  const day = date.getDate().toString().padStart(2, "0");
-  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
-  const year = date.getFullYear();
-  return `${day}/${month}/${year}`;
-};
 
 const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
   const id = useParams();
@@ -198,7 +190,7 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
                 <div className=" flex items-center space-x-4">
                   <FaCoins className="h-[20px] w-[20px] text-[#aeb2be] md:h-[24px] md:w-[24px]" />
                   <p className=" text-[12px] text-gray-500">
-                    Redeem Point : IDR. {numberShortener(point)}
+                    Redeem Point : {formatPrice(point)}
                   </p>
                 </div>
                 <Switch
@@ -236,28 +228,28 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
             <div className="my-[24px] space-y-3  text-[12px] text-gray-800">
               <h1>Tanggal dipilih</h1>
               <h1 className="text-[14px] text-black">
-                {formatDate(event.startDate)}
+                {event.startDate}
               </h1>
             </div>
             <div id="stroke" className=" border "></div>
             <div className="my-[24px] space-y-3  text-[12px] text-gray-800">
               <h1>Total Diskon</h1>
               <h1 className="text-[14px] text-black">
-                IDR. {formatNumber(discount)}
+                {formatPrice(discount)}
               </h1>
             </div>
             <div id="stroke" className=" border "></div>
             <div className="my-[24px] space-y-3  text-[12px] text-gray-800">
               <h1>Total Point dipakai</h1>
               <h1 className="text-[14px] text-black">
-                IDR. {formatNumber(handlePoint)}{" "}
+                {formatPrice(handlePoint)}{" "}
               </h1>
             </div>
             <div id="stroke" className=" mb-10 border "></div>
             <div className=" my-[16px] flex justify-between  text-[12px] text-gray-800">
               <p className=" font-semibold">Total Pembayaran</p>
               <p className=" text-[16px] font-semibold">
-                IDR. {formatNumber(totalPayment - discount - handlePoint)}
+                {formatPrice(totalPayment - discount - handlePoint)}
               </p>
             </div>
             <div>

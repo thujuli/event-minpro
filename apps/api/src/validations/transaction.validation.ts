@@ -1,4 +1,15 @@
+import { ErrorResponse } from '@/utils/error';
 import { z } from 'zod';
+import { join } from 'path';
+import fs from 'fs';
+
+const MAX_FILE_SIZE = 2 * 1024 * 1024;
+const ACCEPTED_IMAGE_TYPES = [
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp',
+];
 
 export class TransactionValidation {
   static GET = z.object({});
@@ -28,4 +39,27 @@ export class TransactionValidation {
     .number({ invalid_type_error: 'Transaction ID must be a number' })
     .int({ message: 'Transaction ID must be an integer' })
     .positive({ message: 'Transaction ID must be a positive number' });
+
+  static fileValidation(file: Express.Multer.File) {
+    if (!file) throw new ErrorResponse(400, 'Image is required!');
+
+    if (file.size > MAX_FILE_SIZE) {
+      fs.unlinkSync(
+        join(__dirname, '../../public/transactions', file.filename),
+      );
+      throw new ErrorResponse(400, 'Image must be less than 2MB!');
+    }
+
+    if (!ACCEPTED_IMAGE_TYPES.includes(file.mimetype)) {
+      fs.unlinkSync(
+        join(__dirname, '../../public/transactions', file.filename),
+      );
+      throw new ErrorResponse(
+        400,
+        '.jpg, .jpeg, .png and .webp files are accepted.',
+      );
+    }
+
+    return file;
+  }
 }
