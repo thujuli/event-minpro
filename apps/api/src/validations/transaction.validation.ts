@@ -1,7 +1,6 @@
 import { ErrorResponse } from '@/utils/error';
 import { z } from 'zod';
-import { join } from 'path';
-import fs from 'fs';
+import { deleteFile } from '@/utils/file';
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024;
 const ACCEPTED_IMAGE_TYPES = [
@@ -44,16 +43,12 @@ export class TransactionValidation {
     if (!file) throw new ErrorResponse(400, 'Image is required!');
 
     if (file.size > MAX_FILE_SIZE) {
-      fs.unlinkSync(
-        join(__dirname, '../../public/transactions', file.filename),
-      );
+      deleteFile('../../public/assets/transactions', file.filename);
       throw new ErrorResponse(400, 'Image must be less than 2MB!');
     }
 
     if (!ACCEPTED_IMAGE_TYPES.includes(file.mimetype)) {
-      fs.unlinkSync(
-        join(__dirname, '../../public/transactions', file.filename),
-      );
+      deleteFile('../../public/assets/transactions', file.filename);
       throw new ErrorResponse(
         400,
         '.jpg, .jpeg, .png and .webp files are accepted.',

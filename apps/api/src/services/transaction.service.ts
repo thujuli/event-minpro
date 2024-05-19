@@ -284,6 +284,7 @@ export class TransactionService {
     const waiting = Validation.validate(TransactionValidation.GET, body);
 
     const response = await TransactionRepository.getEventWaiting(id, waiting);
+    console.log(response);
 
     return responseWithData(
       200,
@@ -365,7 +366,7 @@ export class TransactionService {
       Number(newTransactionId),
       validateFile,
     );
-    
+
     return responseWithoutData(200, true, 'Payment successful');
   }
 }
