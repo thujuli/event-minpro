@@ -48,18 +48,25 @@ export class AdminRouter {
       this.adminController.getTransactionStatus,
     );
 
-    this.router.patch(
-      '/transactions/:transactionId/status',
-      verifyToken,
-      adminGuard,
-      this.adminController.updateTransactionStatus,
-    );
-
     this.router.get(
       '/transactions/:transactionId',
       verifyToken,
       adminGuard,
       this.adminController.getTransaction,
+    );
+
+    this.router.get(
+      '/transactions/:transactionId/details',
+      verifyToken,
+      adminGuard,
+      this.adminController.getTransactionDetails,
+    );
+
+    this.router.patch(
+      '/transactions/:transactionId/status',
+      verifyToken,
+      adminGuard,
+      this.adminController.updateTransactionStatus,
     );
   }
 
