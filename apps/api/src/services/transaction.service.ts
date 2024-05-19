@@ -280,11 +280,12 @@ export class TransactionService {
     return responseWithoutData(201, true, 'Transaction created!');
   }
 
-  static async getPaymentStatusWaiting(id: number, body: TransactionCheckout) {
-    const waiting = Validation.validate(TransactionValidation.GET, body);
+  static async getPaymentStatusWaiting(id: number) {
+    const transactions = await TransactionRepository.getEventWaiting(id);
 
-    const response = await TransactionRepository.getEventWaiting(id, waiting);
-    console.log(response);
+    const response = transactions.map((transaction) => {
+      return { transactionId: transaction.id, ...transaction.event };
+    });
 
     return responseWithData(
       200,
@@ -294,10 +295,12 @@ export class TransactionService {
     );
   }
 
-  static async getPaymentStatusSuccess(id: number, body: TransactionCheckout) {
-    const success = Validation.validate(TransactionValidation.GET, body);
+  static async getPaymentStatusSuccess(id: number) {
+    const transactions = await TransactionRepository.getEventSuccess(id);
 
-    const response = await TransactionRepository.getEventSuccess(id, success);
+    const response = transactions.map((transaction) => {
+      return { ...transaction.event };
+    });
 
     return responseWithData(
       200,
@@ -307,18 +310,13 @@ export class TransactionService {
     );
   }
 
-  static async getPaymentStatusSuccessByDate(
-    id: number,
-    body: TransactionCheckout,
-  ) {
-    const success = Validation.validate(TransactionValidation.GET, body);
+  static async getPaymentStatusSuccessByDate(id: number) {
+    const transactions = await TransactionRepository.getEventSuccessByDate(id);
 
-    const response = await TransactionRepository.getEventSuccessByDate(id);
-    console.log(response);
-    // for(let i = 0; i < response.eventsSuccess.length; i++){
-    //   if(response.eventsSuccess[i].eve)
+    const response = transactions.map((transaction) => {
+      return { ...transaction.event };
+    });
 
-    // }
     return responseWithData(
       200,
       true,

@@ -22,8 +22,6 @@ interface IAllEventSectionProps {}
 const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
   props,
 ) => {
-  //FITUR LOCATION
-  //buat location
   const handleSetActive = React.useCallback((item: LocationResponse) => {
     setSelected(item);
     setOpen(false);
@@ -48,8 +46,6 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
   // FITUR DATE
   const [startDate, setStartDate] = React.useState<string>("");
   const [endDate, setEndDate] = React.useState<string>("");
-  console.log("startDate", startDate);
-  console.log("endDate", endDate);
 
   //fitur search
   const [search, setSearch] = React.useState("");
@@ -60,7 +56,6 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
   }, [getData, currentPage, searchDebouce, startDate, endDate]);
   const onHandleGet = async () => {
     try {
-      // let url = NEXT_PUBLIC_BASE_API_URL + "/events?";
       setLoading(true);
       let params: string[] = [];
       if (searchDebouce) {
@@ -92,9 +87,8 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
       const queryString = params.length ? `?${params.join("&")}` : "";
       const url = `${NEXT_PUBLIC_BASE_API_URL}/events${queryString}`;
       const response = await axios.get(url);
-      setEvents(response.data.result);
-      console.log("ini log url :", url);
 
+      setEvents(response.data.result);
       setTotalPages(Math.ceil(response.data.total / response.data.limit));
     } catch (err) {
       console.log(err);
@@ -134,7 +128,7 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
             </h1>
             <div className="mt-[10px] flex  space-x-4 overflow-hidden overflow-x-auto ">
               <Button
-                className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "All" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
+                className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "All" ? "border-blue-500" : "border-gray-400"} rounded-md text-black hover:bg-[#53b253] hover:text-white`}
                 type="button"
                 onClick={(element: any) => {
                   const newData = {
@@ -149,7 +143,7 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
                 All
               </Button>
               <Button
-                className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Festival" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
+                className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Festival" ? "border-blue-500" : "border-gray-400"} rounded-md text-black hover:bg-[#53b253] hover:text-white`}
                 type="button"
                 onClick={(element: any) => {
                   const newData = {
@@ -164,7 +158,7 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
                 Festival
               </Button>
               <Button
-                className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Concert" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
+                className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Concert" ? "border-blue-500" : "border-gray-400"} rounded-md text-black hover:bg-[#53b253] hover:text-white`}
                 type="button"
                 onClick={(element: any) => {
                   const newData = {
@@ -179,7 +173,7 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
                 Concert
               </Button>
               <Button
-                className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Sport" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
+                className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Sport" ? "border-blue-500" : "border-gray-400"} rounded-md text-black hover:bg-[#53b253] hover:text-white`}
                 type="button"
                 onClick={(element: any) => {
                   const newData = {
@@ -194,7 +188,7 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
                 Sport
               </Button>
               <Button
-                className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Workshop & Seminar" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
+                className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Workshop & Seminar" ? "border-blue-500" : "border-gray-400"} rounded-md text-black hover:bg-[#53b253] hover:text-white`}
                 type="button"
                 onClick={(element: any) => {
                   const newData = {
@@ -209,7 +203,7 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
                 Workshop & Seminar
               </Button>
               <Button
-                className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Theater & Drama" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
+                className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Theater & Drama" ? "border-blue-500" : "border-gray-400"} rounded-md text-black hover:bg-[#53b253] hover:text-white`}
                 type="button"
                 onClick={(element: any) => {
                   const newData = {
@@ -224,7 +218,7 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
                 Theater & Drama
               </Button>
               <Button
-                className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Attractions" ? "border-blue-500" : "border-gray-400"} rounded-md text-black`}
+                className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Attractions" ? "border-blue-500" : "border-gray-400"} rounded-md text-black hover:bg-[#53b253] hover:text-white`}
                 type="button"
                 onClick={(element: any) => {
                   const newData = {
@@ -244,7 +238,7 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
               <Input
                 className="h-[36px] w-[300px]  bg-[#f4f7fe]"
                 type="text"
-                placeholder="Cari eventMu"
+                placeholder="Search for your event"
                 onChange={(e) => setSearch(e.target.value)}
               />
               {/* SELECT NAME AKHIR  */}
@@ -302,25 +296,31 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
           </div>
         </div>
         <div className=" mx-auto my-[18px] grid grid-cols-2 gap-4  md:grid md:grid-cols-5">
-          {loading
-            ? Array.from({ length: 10 }).map((_, index) => (
-                <div key={index} className="col-span-1">
-                  <Skeleton height={250} />
-                  <Skeleton count={3} />
-                </div>
-              ))
-            : events.map((event: any, index: number) => (
-                <div key={index}>
-                  <CardEvent
-                    id={event.id}
-                    urlImage={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
-                    judul={event.name}
-                    lokasi={event.location.name}
-                    waktu={event.createdAt}
-                    harga={event.price}
-                  />
-                </div>
-              ))}
+          {loading ? (
+            Array.from({ length: 10 }).map((_, index) => (
+              <div key={index} className="col-span-1">
+                <Skeleton height={250} />
+                <Skeleton count={3} />
+              </div>
+            ))
+          ) : events.length === 0 ? (
+            <div className="col-span-2 flex  items-center justify-center md:col-span-5">
+              Event not found
+            </div>
+          ) : (
+            events.map((event: any, index: number) => (
+              <div key={index}>
+                <CardEvent
+                  id={event.id}
+                  urlImage={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
+                  judul={event.name}
+                  lokasi={event.location.name}
+                  waktu={event.createdAt}
+                  harga={event.price}
+                />
+              </div>
+            ))
+          )}
         </div>
         <div className=" space-x-4 ">{paginationButtons}</div>
       </div>

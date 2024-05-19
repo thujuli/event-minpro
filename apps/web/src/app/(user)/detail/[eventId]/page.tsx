@@ -1,14 +1,7 @@
 "use client";
 import * as React from "react";
-import ButtonBeliMobile from "../../_components/detail/button-buy-mobile";
-import HeroDetails from "../../views/detail-views/detail-hero";
 import NavbarDesktop from "../../views/navbar-desktop";
-import DescriptionDetaill from "../../views/detail-views/detail-description";
-import MainDescription from "../../views/detail-views/main-description";
-import Ticket from "../../views/detail-views/ticket";
 import Recomend from "../../views/recomend";
-import { getEventById } from "@/data/event";
-import NavbarDetail from "../../views/navbar-detail";
 import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
 import axios from "axios";
 import { useParams } from "next/navigation";
@@ -20,10 +13,8 @@ import { MdOutlineDateRange } from "react-icons/md";
 import { BiBookmarks } from "react-icons/bi";
 import { MdGroups3 } from "react-icons/md";
 import { Button } from "@/components/ui/button";
-import { formatDate, formatNumber, formatPrice } from "@/lib/formatter";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import ButtonBeliDes from "../../_components/detail/button-buy-des";
+import { formatDate, formatPrice } from "@/lib/formatter";
+import { toast } from "sonner";
 import Link from "next/link";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -52,17 +43,14 @@ const DetailEvent: React.FunctionComponent<IDetailEventProps> = (props) => {
 
   const countHarga = (counter: string) => {
     setTransaction((previewTransaction: any) => {
-      // Konversi seatRequests dari string ke angka
       const currentQuantity = parseInt(previewTransaction.seatRequests, 10);
 
-      // Hitung nilai baru
       const newQuantity =
         counter === "+" ? currentQuantity + 1 : currentQuantity - 1;
 
       if (newQuantity > event.limitCheckout) {
         return previewTransaction;
       }
-      // Pastikan nilai tidak kurang dari 1 dan konversi kembali ke string
       const newQuantityString = (newQuantity < 1 ? 1 : newQuantity).toString();
 
       return {
@@ -81,16 +69,15 @@ const DetailEvent: React.FunctionComponent<IDetailEventProps> = (props) => {
       let url = NEXT_PUBLIC_BASE_API_URL + `/events/${id.eventId}`;
       const response = await axios.get(url);
       setEvent(response.data.result[0]);
-      console.log(response.data.result[0]);
     } catch (err) {
-      console.log("Error fetching event data:", err);
+      console.log(err);
     } finally {
       setLoading(false);
     }
   };
 
   const handleSeatReq = async () => {
-    localStorage.setItem("seat", transaction.seatRequests);
+    localStorage.setItem(`seat_${id.eventId}`, transaction.seatRequests);
   };
 
   return (
@@ -141,7 +128,7 @@ const DetailEvent: React.FunctionComponent<IDetailEventProps> = (props) => {
           <div className=" flex items-center">
             <MdGroups3 className=" h-[20px] w-[20px] text-[#aeb2be] md:h-[24px] md:w-[24px]" />
             <p className="mx-[12px]  text-[14px] md:text-[14px]">
-              Diselenggarakan oleh :{" "}
+              Hosted by :{" "}
               <span className=" font-semibold">
                 {loading ? <Skeleton width={100} /> : event.user?.username}
               </span>
@@ -152,7 +139,7 @@ const DetailEvent: React.FunctionComponent<IDetailEventProps> = (props) => {
       {/* DESKRIPSI ACARA */}
       <div className="mx-[0px] h-[300] w-full rounded-lg bg-white p-[20px] md:mx-auto md:mt-[10px] md:w-[700px]  md:px-[28px] md:py-[28px]">
         <div className=" ">
-          <h1 className="text-[18px]  font-semibold ">Deskripsi</h1>
+          <h1 className="text-[18px]  font-semibold ">Description</h1>
           <p className="mt-[12px] text-justify text-[14px] md:mt-[10px] md:text-[14px]">
             {loading ? <Skeleton count={5} /> : event.description}
           </p>
@@ -162,12 +149,12 @@ const DetailEvent: React.FunctionComponent<IDetailEventProps> = (props) => {
       <div className="mx-[0px] h-auto w-full rounded-lg bg-white p-[20px] md:mx-auto md:h-[300] md:w-fit md:bg-[#f4f7fe] md:px-[28px] md:py-[28px]">
         <div className="mx-0  ">
           <h1 className="text-[18px] font-semibold md:text-[18px]">
-            Pilih tiket
+            Select a ticket
           </h1>
           <div className="my-[20px] h-full w-full rounded-xl border border-slate-400 bg-white px-[28px] py-[20px] md:my-[32px] md:h-[210px] md:w-[704px]">
             <div className=" flex justify-between text-[14px] md:text-[14px]">
               <h1 className=" font-semibold">REGULAR</h1>
-              <h1 className=" text-[14px] ">Jumlah Tiket</h1>
+              <h1 className=" text-[14px] ">Number of Tickets</h1>
             </div>
             <div className=" mt-[10px] flex justify-end space-x-4   text-[14px] md:space-x-10 md:text-[16px]">
               <Button
@@ -216,7 +203,7 @@ const DetailEvent: React.FunctionComponent<IDetailEventProps> = (props) => {
                   type="button"
                   onClick={handleSeatReq}
                 >
-                  Beli Tiket
+                  Buy Ticket
                 </Button>
               </Link>
             </div>
@@ -228,7 +215,7 @@ const DetailEvent: React.FunctionComponent<IDetailEventProps> = (props) => {
                 type="button"
                 onClick={handleSeatReq}
               >
-                Beli Tiket
+                Buy Ticket
               </Button>
             </Link>
           </div>
@@ -237,7 +224,6 @@ const DetailEvent: React.FunctionComponent<IDetailEventProps> = (props) => {
       <div className="mx-0 md:mx-[120px]">
         <Recomend />
       </div>
-      <ToastContainer />
     </section>
   );
 };

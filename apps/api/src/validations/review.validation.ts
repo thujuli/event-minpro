@@ -12,7 +12,7 @@ export class ReviewValidation {
         required_error: 'Rating must be required!',
       })
       .int({ message: 'Rating must be Integer!' })
-      .min(1, { message: 'Rating must be at least 1' })
+      .min(1, { message:'Rating must be at least 1'})
       .max(5, { message: 'Rating must be less than 100!' }),
     eventId: z
       .number({

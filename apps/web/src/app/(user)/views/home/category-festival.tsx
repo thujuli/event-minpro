@@ -44,7 +44,7 @@ const CategoryFestivalSection: React.FunctionComponent<
             Festival
           </h1>
           <h1 className=" mt-[4px] text-[12px] md:mt-[14px] md:text-[14px] ">
-            Meriahkan Festival dengan Diskon 50%! 🎉
+          Enjoy the Festival with a 50% Discount! 🎉
           </h1>
         </div>
         <div className="my-[18px] flex gap-4 overflow-hidden overflow-x-auto md:grid md:grid-cols-5">

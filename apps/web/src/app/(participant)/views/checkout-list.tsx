@@ -21,8 +21,8 @@ const MyChecoutList: React.FunctionComponent<IMyChecoutListProps> = (props) => {
       // route ini nanti diganti sesuai event? id pengggna, status
       let url = NEXT_PUBLIC_BASE_API_URL + `/transactions/waiting`;
       const response = await axios.get(url, config);
-      setEvent(response.data.result.eventsWaiting);
-      console.log(response.data.result.eventsWaiting);
+      setEvent(response.data.result);
+      console.log(response.data.result);
     } catch (err) {
       console.log(err);
     }
@@ -31,15 +31,15 @@ const MyChecoutList: React.FunctionComponent<IMyChecoutListProps> = (props) => {
   return (
     <section>
       <div className="my-[18px] grid grid-cols-2 gap-4 md:mx-10 md:grid-cols-4 md:p-6">
-        {event.map((event: any, index: number) => (
+        {event?.map((event: any, index: number) => (
           <div key={index}>
             <CardCheckout
-              id={event.id}
-              judul={event.event.name}
-              lokasi={event.event.location.name}
-              waktu={event.event.createdAt}
-              harga={event.event.price}
-              urlImage={NEXT_PUBLIC_BASE_API_URL + event.event.imageURL}
+              id={event.transactionId}
+              judul={event.name}
+              lokasi={event.location.name}
+              waktu={event.createdAt}
+              harga={event.price}
+              urlImage={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
             />
           </div>
         ))}

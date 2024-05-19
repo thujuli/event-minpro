@@ -95,7 +95,7 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
           <Input
             className="mx-auto mt-[10px] h-[36px] w-[300px]"
             type="text"
-            placeholder="Cari eventMu"
+            placeholder="Search for your event"
           />
         </SheetTrigger>
         <SheetContent
@@ -107,7 +107,7 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
               <Input
                 className="h-[36px] w-[300px]  bg-[#f4f7fe]"
                 type="text"
-                placeholder="Cari eventMu"
+                placeholder="Search for your event"
                 onChange={(e) => setSearch(e.target.value)}
               />
               <div className=" mt-[10px] flex space-x-8">
@@ -115,7 +115,7 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
                   onValueChange={(element: any) => {
                     const newData = {
                       ...getData,
-                      category: element,
+                      category: element === "all" ? "" : element,
                     };
                     setGetData(newData);
                   }}
@@ -124,6 +124,9 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
                     <SelectValue placeholder="Category" />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem key="all" value="all">
+                      All Category
+                    </SelectItem>
                     {categories.map((category: any) => (
                       <SelectItem key={category.id} value={category.id}>
                         {category.name}
@@ -139,15 +142,15 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
                       role="combobox"
                       aria-expanded={open}
                       className={cn(
-                        "w-full ",
+                        "w-[216px] overflow-hidden overflow-ellipsis whitespace-nowrap",
                         !selected && "text-muted-foreground",
                       )}
                     >
                       {displayName}
-                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50 " />
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent align="start" className="p-0">
+                  <PopoverContent align="start" className="p-0 ">
                     <LocationSearch
                       selectedResult={selected}
                       onSelectResult={(result) => {
@@ -159,19 +162,22 @@ const InputSearch: React.FunctionComponent<IInputSearchProps> = (props) => {
                 </Popover>
                 {/* SELECT LOCATION AKHIR */}
               </div>
-              <div className=" flex overflow-auto rounded-b-lg p-4">
-                {/*  INI DIKASI H nya yang bener*/}
+              <div className="flex overflow-auto rounded-b-lg p-4">
                 <div className="mt-[12px] h-[320px] space-y-1">
-                  {event.map((event: any, index: number) => (
-                    <div key={index}>
-                      <CardSearch
-                        id={event.id}
-                        judul={event.name}
-                        lokasi={event.location?.name}
-                        imageURL={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
-                      />
-                    </div>
-                  ))}
+                  {event.length === 0 ? (
+                    <div className="text-center">Event not found</div>
+                  ) : (
+                    event.map((event: any, index: number) => (
+                      <div key={index}>
+                        <CardSearch
+                          id={event.id}
+                          judul={event.name}
+                          lokasi={event.location?.name}
+                          imageURL={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
+                        />
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             </SheetDescription>

@@ -22,7 +22,7 @@ const Recomend: React.FunctionComponent<IRecomendProps> = (props) => {
       setEvent(response.data.result);
     } catch (err) {
       console.log(err);
-    }finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -31,28 +31,28 @@ const Recomend: React.FunctionComponent<IRecomendProps> = (props) => {
       <div id="stroke" className=" mb-[40px] hidden border md:block"></div>
       <div className=" mt-[10px]">
         <h1 className=" text-[18px] font-semibold md:text-[18px] ">
-          Mungkin kamu suka
+          Maybe you like it 🩷
         </h1>
       </div>
-      <div className="my-[18px] flex overflow-x-auto gap-2 overflow-hidden md:grid md:grid-cols-5 ">
+      <div className="my-[18px] flex gap-2 overflow-hidden overflow-x-auto md:grid md:grid-cols-5 ">
         {loading
-            ? Array.from({ length: 5 }).map((_, index) => (
-                <div key={index} className="col-span-1">
-                  <Skeleton height={288} />
-                </div>
-              ))
-            : event?.slice(0, 5).map((event: any, index: number) => (
-          <div key={index}>
-            <CardEvent
-              id={event.id}
-              judul={event.name}
-              lokasi={event.location.name ? event.location.name : ""}
-              waktu={event.createdAt}
-              harga={event.price}
-              urlImage={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
-            />
-          </div>
-        ))}
+          ? Array.from({ length: 5 }).map((_, index) => (
+              <div key={index} className="col-span-1">
+                <Skeleton height={288} />
+              </div>
+            ))
+          : event?.slice(0, 5).map((event: any, index: number) => (
+              <div key={index}>
+                <CardEvent
+                  id={event.id}
+                  judul={event.name}
+                  lokasi={event.location.name ? event.location.name : ""}
+                  waktu={event.createdAt}
+                  harga={event.price}
+                  urlImage={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
+                />
+              </div>
+            ))}
       </div>
       <div id="stroke" className=" mt-[40px] hidden border md:block"></div>
     </section>

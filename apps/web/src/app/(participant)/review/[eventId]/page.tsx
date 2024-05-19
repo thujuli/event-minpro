@@ -6,13 +6,15 @@ import { FaStar } from "react-icons/fa";
 import Image from "next/image";
 import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
 import Cookies from "js-cookie";
-import axios from "axios";
-import { useParams } from "next/navigation";
+import axios, { AxiosError } from "axios";
+import { useParams, useRouter } from "next/navigation";
 import { AutosizeTextarea } from "@/components/shared/autosize-textarea";
-
+import { toast } from "sonner";
 interface IReviewProps {}
 
 const Review: React.FunctionComponent<IReviewProps> = (props) => {
+  const router = useRouter();
+
   const [clickedStars, setClickedStars] = React.useState(0);
 
   const handleClick = (starIndex: number) => {
@@ -30,14 +32,13 @@ const Review: React.FunctionComponent<IReviewProps> = (props) => {
     try {
       let url = NEXT_PUBLIC_BASE_API_URL + `/events/${params.eventId}`;
       const response = await axios.get(url);
-      setEvent(response.data.result[0]);
 
-      console.log("INI DATA :", response.data.result[0]);
+      setEvent(response.data.result[0]);
     } catch (err) {
       console.log("Error fetching profile:", err);
     }
   };
-  
+
   const postReview = async () => {
     try {
       const config = {
@@ -49,14 +50,15 @@ const Review: React.FunctionComponent<IReviewProps> = (props) => {
         url,
         {
           rating: clickedStars,
-          message: textReview,
+          message: textReview ? textReview : undefined,
           eventId: Number(params.eventId),
         },
         config,
       );
-      console.log(response);
-    } catch (error) {
-      console.log(error);
+      toast.success("Successful writing a review");
+      router.push("/my-event");
+    } catch (error: any) {
+      toast.error(error.response?.data.message);
     }
   };
   return (

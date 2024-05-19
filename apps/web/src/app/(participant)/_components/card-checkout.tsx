@@ -9,8 +9,9 @@ import { formatDate, formatPrice, numberShortener } from "@/lib/formatter";
 import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
 import Cookies from "js-cookie";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import { ToastContainer, toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
+import { toast } from "sonner";
 interface ICardCheckoutProps {
   id?: number;
   urlImage: string;
@@ -50,13 +51,7 @@ const CardCheckout: React.FunctionComponent<ICardCheckoutProps> = (props) => {
         window.location.reload();
       }, 2000);
     } catch (error: any) {
-      toast.error(error.response.data.message, {
-        autoClose: 1000,
-      });
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
-      console.log(error.response.data.message);
+      toast.error(error.response.data.message);
     }
   };
   console.log(props.id);
@@ -85,7 +80,7 @@ const CardCheckout: React.FunctionComponent<ICardCheckoutProps> = (props) => {
           className="mt-[16px] w-full p-0 text-[12px]"
           onClick={handleShowConfirmationModal}
         >
-          Konfimasi sudah bayar
+          Payment Confirmation
         </Button>
       </div>
       {/* Modal Konfirmasi */}
@@ -109,7 +104,7 @@ const CardCheckout: React.FunctionComponent<ICardCheckoutProps> = (props) => {
           </div>
         </div>
       )}
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </div>
   );
 };

@@ -30,11 +30,9 @@ export class TransactionController {
   ) {
     try {
       const id = res.locals.decoded.id as number;
-      const body = req.body as TransactionCheckout;
 
       const response = await TransactionService.getPaymentStatusWaiting(
         id,
-        body,
       );
 
       return res.status(200).send(response);
@@ -50,11 +48,9 @@ export class TransactionController {
   ) {
     try {
       const id = res.locals.decoded.id as number;
-      const body = req.body as TransactionCheckout;
 
       const response = await TransactionService.getPaymentStatusSuccess(
         id,
-        body,
       );
 
       return res.status(200).send(response);
@@ -69,12 +65,9 @@ export class TransactionController {
   ) {
     try {
       const id = res.locals.decoded.id as number;
-      const body = req.body as TransactionCheckout;
 
-      const response = await TransactionService.getPaymentStatusSuccessByDate(
-        id,
-        body,
-      );
+      const response =
+        await TransactionService.getPaymentStatusSuccessByDate(id);
 
       return res.status(200).send(response);
     } catch (error) {
