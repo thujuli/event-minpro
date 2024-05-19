@@ -11,11 +11,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import TransactionDialogBody from "./transaction-dialog-body";
-import Cookie from "js-cookie";
-import axios from "axios";
-import { toast } from "sonner";
-import { updateTransactionStatus } from "@/data/admin";
-import { useRouter } from "next/navigation";
 import { useUpdateTransactionStatus } from "@/services/admin/mutations";
 
 type Props = {
@@ -24,7 +19,6 @@ type Props = {
 
 const TransactionDialogContent: React.FC<Props> = (props) => {
   const { transactionId } = props;
-
   const updateTransactionStatus = useUpdateTransactionStatus();
 
   const handlePaymentStatus = async (
@@ -36,50 +30,6 @@ const TransactionDialogContent: React.FC<Props> = (props) => {
       data,
     });
   };
-  // const token = Cookie.get("admin-tkn");
-  // const router = useRouter();
-
-  // if (!token) return null;
-
-  // const handlePaymentSuccess = async () => {
-  //   try {
-  //     const promise = updateTransactionStatus(token, transactionId, "success");
-
-  //     toast.promise(promise, {
-  //       loading: "Verifying payment...",
-  //       success: (data) => {
-  //         return data.message;
-  //       },
-  //     });
-
-  //     await promise;
-  //     router.push("/dashboard/transactions");
-  //   } catch (error) {
-  //     if (axios.isAxiosError(error)) {
-  //       toast.error(error.response?.data.message);
-  //     }
-  //   }
-  // };
-
-  // const handlePaymentFailed = async () => {
-  //   try {
-  //     const promise = updateTransactionStatus(token, transactionId, "failed");
-
-  //     toast.promise(promise, {
-  //       loading: "Verifying payment...",
-  //       success: (data) => {
-  //         return data.message;
-  //       },
-  //     });
-
-  //     await promise;
-  //     router.push("/dashboard/transactions");
-  //   } catch (error) {
-  //     if (axios.isAxiosError(error)) {
-  //       toast.error(error.response?.data.message);
-  //     }
-  //   }
-  // };
 
   return (
     <DialogContent className="sm:max-w-[425px] md:max-w-xl">
@@ -87,7 +37,7 @@ const TransactionDialogContent: React.FC<Props> = (props) => {
         <DialogTitle>Payment Proof</DialogTitle>
         <DialogDescription>Here&apos;s the payment proof</DialogDescription>
       </DialogHeader>
-      <TransactionDialogBody />
+      <TransactionDialogBody transactionId={transactionId} />
       <DialogFooter>
         <div className="flex items-center justify-end gap-2">
           <DialogClose asChild>

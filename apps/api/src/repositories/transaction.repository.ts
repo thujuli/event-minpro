@@ -4,9 +4,8 @@ import {
   PaymentStatus,
   StatusResponse,
   TotalSaleResponse,
-  TransactionCheckout,
 } from '@/types/transaction.type';
-import { Prisma, Transaction } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 
 export class TransactionRepository {
   static async getEventWaiting(id: number) {

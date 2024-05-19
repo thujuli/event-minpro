@@ -31,9 +31,7 @@ export class TransactionController {
     try {
       const id = res.locals.decoded.id as number;
 
-      const response = await TransactionService.getPaymentStatusWaiting(
-        id,
-      );
+      const response = await TransactionService.getPaymentStatusWaiting(id);
 
       return res.status(200).send(response);
     } catch (error) {
@@ -49,9 +47,7 @@ export class TransactionController {
     try {
       const id = res.locals.decoded.id as number;
 
-      const response = await TransactionService.getPaymentStatusSuccess(
-        id,
-      );
+      const response = await TransactionService.getPaymentStatusSuccess(id);
 
       return res.status(200).send(response);
     } catch (error) {

@@ -7,8 +7,10 @@ import {
 import {
   Pagination,
   ResponseDataPagination,
+  ResponseWithData,
   ResponseWithoutData,
 } from "@/types/global";
+import { TransactionResponse } from "@/types/transaction";
 import axios from "axios";
 
 export const getAdminEventTransactions = async (
@@ -66,6 +68,15 @@ export const getEventParticipation = async (
   >(
     NEXT_PUBLIC_BASE_API_URL +
       `/admin/events/${eventId}/participations?page=${page}&limit=${limit}&sort_by=${sort_by}&order_by=${order_by}`,
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+
+  return res.data;
+};
+
+export const getTransaction = async (token: string, transactionId: number) => {
+  const res = await axios.get<ResponseWithData<TransactionResponse>>(
+    NEXT_PUBLIC_BASE_API_URL + `/admin/transactions/${transactionId}`,
     { headers: { Authorization: `Bearer ${token}` } },
   );
 

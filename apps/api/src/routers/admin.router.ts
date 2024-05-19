@@ -54,6 +54,13 @@ export class AdminRouter {
       adminGuard,
       this.adminController.updateTransactionStatus,
     );
+
+    this.router.get(
+      '/transactions/:transactionId',
+      verifyToken,
+      adminGuard,
+      this.adminController.getTransaction,
+    );
   }
 
   public getRoutes(): Router {
