@@ -48,14 +48,14 @@ const CategoryMusikSection: React.FunctionComponent<
         <div className=" flex flex-col justify-between">
           <h1 className=" text-[14px] font-semibold md:text-[24px]">Concert</h1>
           <h1 className=" mt-[4px] text-[12px] md:mt-[14px] md:text-[14px] ">
-            Bergoyanglah bersama musisi favorit Anda dalam konser paling heboh
-            tahun ini🎸
+            Rock out with your favorite musicians at the hottest concert of the
+            year🎸
           </h1>
         </div>
         <div className=" flex items-center justify-between">
           <div className="mt-[10px] hidden space-x-4 md:block">
             <Button
-              className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "All" ? "border-blue-500" : "border-gray-400"} hover:bg-[#53b253] hover:text-white rounded-md text-black`}
+              className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "All" ? "border-blue-500" : "border-gray-400"} rounded-md text-black hover:bg-[#53b253] hover:text-white`}
               type="button"
               onClick={(element: any) => {
                 const newData = {
@@ -69,7 +69,7 @@ const CategoryMusikSection: React.FunctionComponent<
               All
             </Button>
             <Button
-              className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Jakarta" ? "border-blue-500" : "border-gray-400"} hover:bg-[#53b253] hover:text-white rounded-md text-black`}
+              className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Jakarta" ? "border-blue-500" : "border-gray-400"} rounded-md text-black hover:bg-[#53b253] hover:text-white`}
               type="button"
               onClick={(element: any) => {
                 const newData = {
@@ -83,7 +83,7 @@ const CategoryMusikSection: React.FunctionComponent<
               Jakarta
             </Button>
             <Button
-              className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Denpasar" ? "border-blue-500" : "border-gray-400"} hover:bg-[#53b253] hover:text-white rounded-md text-black`}
+              className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Denpasar" ? "border-blue-500" : "border-gray-400"} rounded-md text-black hover:bg-[#53b253] hover:text-white`}
               type="button"
               onClick={(element: any) => {
                 const newData = {
@@ -99,10 +99,10 @@ const CategoryMusikSection: React.FunctionComponent<
           </div>
           <Link href={`/explore`}>
             <Button
-              className={`hidden h-fit w-fit rounded-md border  bg-white px-4 text-black md:block hover:bg-[#53b253] hover:text-white`}
+              className={`hidden h-fit w-fit rounded-md border  bg-white px-4 text-black hover:bg-[#53b253] hover:text-white md:block`}
               type="button"
             >
-              Explore Lebih Banyak
+              Explore More
             </Button>
           </Link>
         </div>

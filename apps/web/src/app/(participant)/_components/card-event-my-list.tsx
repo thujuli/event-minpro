@@ -16,7 +16,7 @@ const CardEventMyList: React.FunctionComponent<ICardEventMyListProps> = (
   props,
 ) => {
   return (
-    <Link href={`/review/${props.id}`}>
+    <Link href={`/detail/${props.id}`}>
       <div
         className="h-[278px] min-w-[178px] max-w-[178px] cursor-pointer overflow-hidden  rounded-lg border border-gray-400 bg-white md:h-[288px] md:min-w-[236px] md:max-w-[236px]"
         // onClick={() => router.push(`/detail/${props.id}`)}
@@ -36,12 +36,10 @@ const CardEventMyList: React.FunctionComponent<ICardEventMyListProps> = (
           <h1 className="  mt-[10px]  text-[10px]">{props.lokasi}</h1>
           <h1 className="  mt-[4px]  text-[10px]">{formatDate(props.waktu)}</h1>
           <h1 className="  mt-[4px]  text-[10px]">
-            {props.harga === 0
-              ? "Free"
-              : `${formatPrice(props.harga)}`}
+            {props.harga === 0 ? "Free" : `${formatPrice(props.harga)}`}
           </h1>
           <h1 className=" mt-[20px] text-[10px]  font-semibold text-green-700 md:text-[12px]   ">
-            Sudah Bayar
+            Payment Successful
           </h1>
         </div>
       </div>

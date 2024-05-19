@@ -9,8 +9,8 @@ import {
 import { Prisma, Transaction } from '@prisma/client';
 
 export class TransactionRepository {
-  static async getEventWaiting(id: number, data: TransactionCheckout) {
-    const response = await prisma.transaction.findMany({
+  static async getEventWaiting(id: number) {
+    return await prisma.transaction.findMany({
       where: {
         paymentStatus: PaymentStatus.WAITING,
         userId: id,
@@ -24,24 +24,11 @@ export class TransactionRepository {
         },
       },
     });
-    // Group events by userId
-    const groupedEvents: Record<number, Transaction[]> = {};
-    response.forEach((transaction) => {
-      if (!groupedEvents[transaction.userId]) {
-        groupedEvents[transaction.userId] = [];
-      }
-      groupedEvents[transaction.userId].push(transaction);
-    });
-    // Rename the key "1" to "eventsWaiting"
-    const result = {
-      eventsWaiting: groupedEvents['1'],
-    };
-    return result;
   }
 
-  static async getEventSuccess(id: number, data: TransactionCheckout) {
+  static async getEventSuccess(id: number) {
     const today = new Date().toISOString();
-    const response = await prisma.transaction.findMany({
+    return await prisma.transaction.findMany({
       where: {
         paymentStatus: PaymentStatus.SUCCESS,
         userId: id,
@@ -60,57 +47,33 @@ export class TransactionRepository {
         },
       },
     });
-    // Group events by userId
-    const groupedEvents: Record<number, Transaction[]> = {};
-    response.forEach((transaction) => {
-      if (!groupedEvents[transaction.userId]) {
-        groupedEvents[transaction.userId] = [];
-      }
-      groupedEvents[transaction.userId].push(transaction);
-    });
-    // Rename the key "1" to "eventsWaiting"
-    const result = {
-      eventsSuccess: groupedEvents['1'],
-    };
-    return result;
   }
 
   static async getEventSuccessByDate(id: number) {
     const today = new Date().toISOString();
-    const response = await prisma.transaction.findMany({
+    return await prisma.transaction.findMany({
       where: {
-        paymentStatus: PaymentStatus.SUCCESS,
+        paymentStatus: 'success',
         userId: id,
         event: {
-          endDate: {
-            lt: today,
+          endDate: { lt: today },
+          feedbacks: {
+            none: {
+              userId: id,
+            },
           },
         },
       },
       include: {
         event: {
           include: {
+            feedbacks: true,
             category: true,
             location: true,
-            feedbacks: true,
           },
         },
       },
     });
-
-    // Group events by userId
-    const groupedEvents: Record<number, Transaction[]> = {};
-    response.forEach((transaction) => {
-      if (!groupedEvents[transaction.userId]) {
-        groupedEvents[transaction.userId] = [];
-      }
-      groupedEvents[transaction.userId].push(transaction);
-    });
-    // Rename the key "1" to "eventsWaiting"
-    const result = {
-      eventsSuccess: groupedEvents['1'],
-    };
-    return result;
   }
 
   static async getEventTransactions(
@@ -217,7 +180,7 @@ export class TransactionRepository {
       },
     });
   }
-  
+
   static async getDataCheckout(transactionId: number) {
     return await prisma.transaction.findUnique({
       where: { id: Number(transactionId) },

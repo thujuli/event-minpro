@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
 import Cookies from "js-cookie";
 import axios from "axios";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -15,11 +15,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import DashboardTemplate from "@/app/(admin)/_components/template";
+import { toast } from "sonner";
+
 interface ICreatePromoSectionProps {}
 
 const CreatePromoSection: React.FunctionComponent<ICreatePromoSectionProps> = (
   props,
 ) => {
+  const router = useRouter();
+
   const [dataDiscount, setDataDiscount] = React.useState<any>({
     name: "",
     maxUsage: 0,
@@ -46,7 +50,10 @@ const CreatePromoSection: React.FunctionComponent<ICreatePromoSectionProps> = (
         },
         config,
       );
-    } catch (error) {
+      toast.success("Successful create a promo!");
+      router.push(`/dashboard/events/${id.eventId}/promo`);
+    } catch (error: any) {
+      toast.error(error.response?.data.message);
       console.log(error);
     }
   };

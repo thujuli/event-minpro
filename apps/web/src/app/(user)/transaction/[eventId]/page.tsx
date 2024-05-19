@@ -18,8 +18,15 @@ import Cookies from "js-cookie";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import Image from "next/image";
-import { useParams } from "next/navigation";
-import { formatDate, formatDateTime, formatNumber, formatPrice, numberShortener } from "@/lib/formatter";
+import { useParams, useRouter } from "next/navigation";
+import {
+  formatDate,
+  formatDateTime,
+  formatNumber,
+  formatPrice,
+  numberShortener,
+} from "@/lib/formatter";
+import { toast } from "sonner";
 
 interface IBayarPageProps {
   points: {
@@ -37,7 +44,9 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
   const [point, setPoint] = React.useState<number>(0);
   const [switchOn, setSwitchOn] = React.useState<boolean>(false);
   const [creatorVoucher, setCreatorVoucher] = React.useState<any>([]);
-  const seatReq = localStorage.getItem("seat");
+  const seatReq = localStorage.getItem(`seat_${id.eventId}`);
+  const [selectedVoucherDetails, setSelectedVoucherDetails] =
+    React.useState<any>(0);
   const [dataTransaction, setDataTransaction] = React.useState<any>({
     seatRequests: Number(seatReq),
     redeemedPoints: 0,
@@ -53,7 +62,7 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
       };
 
       if (selectedVoucher !== null) {
-        updatedTransaction.voucherId = Number(selectedVoucher);
+        updatedTransaction.voucherId = selectedVoucherDetails.id;
       } else {
         delete updatedTransaction.voucherId;
       }
@@ -62,7 +71,6 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
     });
   }, [selectedVoucher, switchOn, point]);
 
-  console.log("cek data yang mau dikirim :", dataTransaction);
 
   // Handle getAPi user (data voucher, data point, voucher EO)
   const getApiDetail = async () => {
@@ -79,7 +87,10 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
           voucherAfterFilter.push(UserProfile.result.vouchers[i]);
         }
       }
-      setEvent(response.data.result[0]);
+      setEvent({
+        ...response.data.result[0],
+        startDate: formatDateTime(response.data.result[0].startDate),
+      });
       setTotalPayment(
         response.data.result[0].price * dataTransaction.seatRequests,
       );
@@ -114,16 +125,26 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
   };
 
   //Handle Voucher Select
-  const handleSelectVoucher = (voucher: any) => {
-    setSelectedVoucher(voucher ? Number(voucher) : null);
+  const handleSelectVoucher = (voucherId: any) => {
+    const selected = [...creatorVoucher, ...voucher].find(
+      (value) => value.id === Number(voucherId),
+    );
+    setSelectedVoucher(selected ? Number(voucherId) : null);
+    setSelectedVoucherDetails(selected || null);
   };
   // Handle Switch Change
   const handleSwitchChange = () => {
-    setSwitchOn(!switchOn);
+    if (point > 0) {
+      setSwitchOn(!switchOn);
+    } else {
+      toast.error("Sorry, you don't have any point")
+    }
   };
 
   // Handle total Front End
-  let discount = (totalPayment * selectedVoucher) / 100;
+  let discount = selectedVoucherDetails
+    ? (totalPayment * selectedVoucherDetails.discount) / 100
+    : 0;
   let points =
     point > totalPayment - discount ? totalPayment - discount : point;
   let handlePoint = switchOn ? points : 0;
@@ -134,6 +155,7 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
   }, []);
 
   // handle Post Transaction
+  const router = useRouter();
   const ticketBuy = async () => {
     try {
       let url = NEXT_PUBLIC_BASE_API_URL + `/transactions`;
@@ -143,8 +165,10 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
       };
       const response = await axios.post(url, dataTransaction, config);
       localStorage.removeItem("seat");
-    } catch (error) {
-      console.log(error);
+      toast.success("Successful purchase of tickets");
+      router.push("/");
+    } catch (error: any) {
+      toast.error(error.response?.data.message);
     }
   };
 
@@ -162,7 +186,7 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
                     <div className=" flex space-x-4">
                       <FaTicketAlt className="h-[20px] w-[20px] text-[#aeb2be] md:h-[24px] md:w-[24px]" />
                       <p className=" text-[12px] text-gray-500">
-                        Pakai Voucher
+                        Use vouchers to save more 👍
                       </p>
                     </div>
                     <SelectValue />
@@ -203,7 +227,7 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
           <PaymentSection />
         </div>
         {/* <DetailOrder /> */}
-        <div className=" relative mx-[10px] flex flex-col md:mx-0 pb-[11vh] md:pb-0">
+        <div className=" relative mx-[10px] flex flex-col pb-[11vh] md:mx-0 md:pb-0">
           <div className="ml-0 mt-[24px] h-auto w-full rounded-lg bg-white  p-[20px] shadow md:fixed md:ml-[48px]  md:h-auto md:w-[392px]">
             <div className=" flex">
               <Image
@@ -221,33 +245,31 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
             <div className="my-[24px] space-y-3  text-[12px] text-gray-800">
               <h1>REGULAR</h1>
               <h1 className="text-[14px] text-black">
-                {dataTransaction.seatRequests} Tiket
+                {dataTransaction.seatRequests} Ticket
               </h1>
             </div>
             <div id="stroke" className=" border "></div>
             <div className="my-[24px] space-y-3  text-[12px] text-gray-800">
-              <h1>Tanggal dipilih</h1>
-              <h1 className="text-[14px] text-black">
-                {event.startDate}
-              </h1>
+              <h1>Event date</h1>
+              <h1 className="text-[14px] text-black">{event.startDate}</h1>
             </div>
             <div id="stroke" className=" border "></div>
             <div className="my-[24px] space-y-3  text-[12px] text-gray-800">
-              <h1>Total Diskon</h1>
+              <h1>Total Discount</h1>
               <h1 className="text-[14px] text-black">
                 {formatPrice(discount)}
               </h1>
             </div>
             <div id="stroke" className=" border "></div>
             <div className="my-[24px] space-y-3  text-[12px] text-gray-800">
-              <h1>Total Point dipakai</h1>
+              <h1>Total Points used</h1>
               <h1 className="text-[14px] text-black">
                 {formatPrice(handlePoint)}{" "}
               </h1>
             </div>
             <div id="stroke" className=" mb-10 border "></div>
             <div className=" my-[16px] flex justify-between  text-[12px] text-gray-800">
-              <p className=" font-semibold">Total Pembayaran</p>
+              <p className=" font-semibold">Total payment</p>
               <p className=" text-[16px] font-semibold">
                 {formatPrice(totalPayment - discount - handlePoint)}
               </p>
@@ -258,7 +280,7 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
                 type="button"
                 onClick={ticketBuy}
               >
-                Beli Tiket
+                Buy ticket
               </Button>
             </div>
           </div>
@@ -266,14 +288,14 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
         {/* <DetailOrder /> */}
         <div className=" fixed  bottom-0  h-[10vh] w-full bg-gradient-to-r from-white to-lime-500  md:hidden ">
           <h1 className=" text-center text-[12px]  font-semibold text-[#007cff]">
-            Pake promo dan point biar lebih murah!
+            Use vouchers to save more 👍
           </h1>
           <Button
             className=" h-[8vh] w-full  bg-[#53B253]  text-white md:hidden"
             type="button"
             onClick={ticketBuy}
           >
-            Beli Tiket
+            Buy ticket
           </Button>
         </div>
       </div>

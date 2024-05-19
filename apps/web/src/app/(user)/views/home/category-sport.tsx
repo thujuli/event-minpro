@@ -42,7 +42,7 @@ const CategorySportsSection: React.FunctionComponent<
         <div className=" flex flex-col justify-between">
           <h1 className=" text-[14px] font-semibold md:text-[24px]">Sports</h1>
           <h1 className=" mt-[4px] text-[12px] md:mt-[14px] md:text-[14px] ">
-            Ayo, Dukung Tim Favoritmu di Pertandingan Seru! 🏅
+          Come on, support your favorite team in an exciting match! 🏅
           </h1>
         </div>
         <div className="my-[18px] flex gap-4 overflow-hidden overflow-x-auto md:grid md:grid-cols-5">

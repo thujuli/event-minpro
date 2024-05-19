@@ -22,7 +22,7 @@ const PaymentSection: React.FunctionComponent<IPaymentSectionProps> = (
             <SelectTrigger className="w-full md:w-[1000px]">
               <div className=" flex space-x-4">
                 <FaTicketAlt className="h-[20px] w-[20px] text-[#aeb2be] md:h-[24px] md:w-[24px]" />
-                <p className="text-[12px] text-gray-500">Metode Pembayaran</p>
+                <p className="text-[12px] text-gray-500">Payment method</p>
               </div>
               <SelectValue />
             </SelectTrigger>
