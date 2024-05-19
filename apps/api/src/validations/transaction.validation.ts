@@ -11,8 +11,6 @@ const ACCEPTED_IMAGE_TYPES = [
 ];
 
 export class TransactionValidation {
-  static GET = z.object({});
-
   static CREATE = z.object({
     eventId: z
       .number({ required_error: 'EventId is required!' })
@@ -21,7 +19,7 @@ export class TransactionValidation {
     seatRequests: z
       .number({ required_error: 'Seat Requests is required!' })
       .int({ message: 'Seat Requests must be an integer!' })
-      .positive({ message: 'Seat Requests must be a positive number!' }),
+      .positive({ message: 'You cannot book 0 seats' }),
     voucherId: z
       .number({ message: 'VoucherId must be a number' })
       .int({ message: 'VoucherId must be an integer' })
