@@ -117,4 +117,23 @@ export class AdminController {
       next(error);
     }
   }
+
+  public async getTransactionDetails(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      const id = res.locals.decoded.id as number;
+      const transactionId = req.params.transactionId;
+
+      const response = await AdminService.getTransactionDetails(
+        id,
+        transactionId,
+      );
+      return res.status(200).send(response);
+    } catch (error) {
+      next(error);
+    }
+  }
 }

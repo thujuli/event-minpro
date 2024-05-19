@@ -1,3 +1,4 @@
+import prisma from '@/prisma';
 import { EventRepository } from '@/repositories/event.repository';
 import { TransactionRepository } from '@/repositories/transaction.repository';
 import { UserRepository } from '@/repositories/user.repository';
@@ -215,6 +216,7 @@ export class AdminService {
 
     const transactions = event.transactions.map((transaction) => {
       return {
+        transactionId: transaction.id,
         username: transaction.user.username,
         email: transaction.user.email,
         quantity: transaction.quantity,
@@ -259,6 +261,32 @@ export class AdminService {
       true,
       'Success get transaction',
       newTransaction,
+    );
+  }
+
+  static async getTransactionDetails(id: number, transactionId: string) {
+    const newTransactionId = Validation.validate(
+      TransactionValidation.TRANSACTION_ID,
+      transactionId,
+    );
+
+    const transaction = await prisma.transaction.findUnique({
+      where: { id: Number(newTransactionId) },
+      include: { details: true, event: { include: { user: true } } },
+    });
+
+    if (!transaction) throw new ErrorResponse(404, 'Transaction not found!');
+
+    if (transaction.event.user.id !== id) {
+      throw new ErrorResponse(401, 'This transaction is not yours!');
+    }
+
+    const { details } = transaction;
+    return responseWithData(
+      200,
+      true,
+      'Success get transaction details',
+      details,
     );
   }
 }

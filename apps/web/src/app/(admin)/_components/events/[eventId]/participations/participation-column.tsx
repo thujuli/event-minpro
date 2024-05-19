@@ -9,6 +9,7 @@ import StatusBadge from "../../../status-badge";
 import { PaymentStatus } from "@/types/transaction";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
+import ParticipationDialogContent from "./participation-dialog-content";
 
 export const participationColumns: ColumnDef<AdminTotalParticipationResponse>[] =
   [
@@ -123,6 +124,7 @@ export const participationColumns: ColumnDef<AdminTotalParticipationResponse>[] 
                 Show
               </Button>
             </DialogTrigger>
+            <ParticipationDialogContent transactionId={item.transactionId} />
           </Dialog>
         );
       },

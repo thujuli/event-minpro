@@ -53,6 +53,7 @@ export type AdminTransactionStatusResponse = {
 };
 
 export type AdminTotalParticipationResponse = {
+  transactionId: number;
   username: string;
   email: string;
   quantity: number;

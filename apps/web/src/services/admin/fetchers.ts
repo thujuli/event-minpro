@@ -10,7 +10,10 @@ import {
   ResponseWithData,
   ResponseWithoutData,
 } from "@/types/global";
-import { TransactionResponse } from "@/types/transaction";
+import {
+  transactionDetailResponse,
+  TransactionResponse,
+} from "@/types/transaction";
 import axios from "axios";
 
 export const getAdminEventTransactions = async (
@@ -77,6 +80,18 @@ export const getEventParticipation = async (
 export const getTransaction = async (token: string, transactionId: number) => {
   const res = await axios.get<ResponseWithData<TransactionResponse>>(
     NEXT_PUBLIC_BASE_API_URL + `/admin/transactions/${transactionId}`,
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+
+  return res.data;
+};
+
+export const getTransactionDetails = async (
+  token: string,
+  transactionId: number,
+) => {
+  const res = await axios.get<ResponseWithData<transactionDetailResponse[]>>(
+    NEXT_PUBLIC_BASE_API_URL + `/admin/transactions/${transactionId}/details`,
     { headers: { Authorization: `Bearer ${token}` } },
   );
 

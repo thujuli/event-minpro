@@ -181,7 +181,7 @@ export const eventColumns: ColumnDef<AdminEventResponse>[] = [
             </DropdownMenuItem>
             <DropdownMenuItem asChild className="cursor-pointer">
               <Link href={`/dashboard/events/${event.id}/participations`}>
-                Participations
+                Participation
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />

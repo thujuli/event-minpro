@@ -15,3 +15,9 @@ export type TransactionResponse = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type transactionDetailResponse = {
+  id: number;
+  ticketCode: string;
+  transactionId: number;
+};
