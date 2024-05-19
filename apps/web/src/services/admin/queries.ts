@@ -4,6 +4,7 @@ import {
   getAdminEvents,
   getAdminEventTransactions,
   getEventParticipation,
+  getTransaction,
 } from "./fetchers";
 import { Pagination } from "@/types/global";
 
@@ -41,5 +42,18 @@ export const useEventParticipation = ({
   return useQuery({
     queryKey: ["eventParticipation", { token, eventId, pagination }],
     queryFn: () => getEventParticipation(token!, eventId, pagination),
+  });
+};
+
+export const useTransaction = ({
+  transactionId,
+}: {
+  transactionId: number;
+}) => {
+  const token = Cookie.get("admin-tkn");
+
+  return useQuery({
+    queryKey: ["transaction", { token, transactionId }],
+    queryFn: () => getTransaction(token!, transactionId),
   });
 };

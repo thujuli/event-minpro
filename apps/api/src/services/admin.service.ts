@@ -1,4 +1,3 @@
-import prisma from '@/prisma';
 import { EventRepository } from '@/repositories/event.repository';
 import { TransactionRepository } from '@/repositories/transaction.repository';
 import { UserRepository } from '@/repositories/user.repository';
@@ -235,6 +234,31 @@ export class AdminService {
       Number(adminEventQuery.page),
       Number(adminEventQuery.limit),
       allEventTransactions?._count.transactions || 0,
+    );
+  }
+
+  static async getTransaction(id: number, transactionId: string) {
+    const newTransactionId = Validation.validate(
+      TransactionValidation.TRANSACTION_ID,
+      transactionId,
+    );
+
+    const transaction = await TransactionRepository.getTransactionHasUser(
+      Number(newTransactionId),
+    );
+
+    if (!transaction) throw new ErrorResponse(404, 'Transaction not found!');
+
+    if (transaction.event.user.id !== id) {
+      throw new ErrorResponse(401, 'This transaction is not yours!');
+    }
+
+    const { event, ...newTransaction } = transaction;
+    return responseWithData(
+      200,
+      true,
+      'Success get transaction',
+      newTransaction,
     );
   }
 }
