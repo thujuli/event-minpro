@@ -14,7 +14,7 @@ import { TransactionRouter } from './routers/transaction.router';
 import { AdminRouter } from './routers/admin.router';
 
 export default class App {
-  private app: Express;
+  readonly app: Express;
 
   constructor() {
     this.app = express();
