@@ -4,30 +4,33 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import InputSearch from "../_components/search-bar";
-import { MenuIcon, UserIcon } from "lucide-react";
+import { CircleUser, MenuIcon, UserIcon } from "lucide-react";
 import Cookies from "js-cookie";
 import { MdManageAccounts } from "react-icons/md";
 import { useRouter } from "next/navigation";
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import ProfileOptions from "@/components/shared/profile-options";
 interface INavbarDesktopProps {}
 
 const NavbarDesktop: React.FunctionComponent<INavbarDesktopProps> = (props) => {
   const router = useRouter();
+  const [token, setToken] = React.useState<string | undefined>();
 
   React.useEffect(() => {
-    const userName = Cookies.get("user-tkn"); // Misalnya, nama pengguna disimpan di cookie 'userName'
-    if (userName) {
-      setUser(userName);
-    }
-    console.log("ini username", userName);
+    const temp = Cookies.get("user-tkn") ?? Cookies.get("admin-tkn");
+    setToken(temp);
   }, []);
 
-  const [user, setUser] = React.useState<string | null>(null);
   const handleSignOut = () => {
     Cookies.remove("user-tkn"); // Hapus cookie saat sign out
-    setUser(null); // Reset state user
+    Cookies.remove("admin-tkn"); // Hapus cookie saat sign out
     router.push("/sign-in");
   };
+
   const [isOpen, setIsOpen] = React.useState(false);
 
   const toggleMenu = () => {
@@ -51,28 +54,23 @@ const NavbarDesktop: React.FunctionComponent<INavbarDesktopProps> = (props) => {
             <InputSearch />
           </div>
           <div className="relative flex items-center space-x-2">
-            {user ? (
+            {token ? (
               <div className="group relative">
-                <UserIcon
-                  className="h-6 w-6 cursor-pointer text-black"
-                  aria-hidden="true"
-                />
-                <div className="absolute right-0 mt-2 hidden w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 group-hover:block">
-                  <div className="py-1">
-                    <Link
-                      href={`/my-event`}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="secondary"
+                      size="icon"
+                      className="rounded-full"
                     >
-                      My Event
-                    </Link>
-                    <button
-                      onClick={handleSignOut}
-                      className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      Sign Out
-                    </button>
-                  </div>
-                </div>
+                      <CircleUser className="h-5 w-5" />
+                      <span className="sr-only">Toggle user menu</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <ProfileOptions />
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             ) : (
               <>
@@ -120,14 +118,11 @@ const NavbarDesktop: React.FunctionComponent<INavbarDesktopProps> = (props) => {
           </button>
 
           {isOpen && (
-            <div className="absolute right-0 mt-2 w-48 origin-top-right rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
+            <div className="absolute right-0 z-50 mt-2 w-48 origin-top-right rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
               <div className="bg-white py-1">
-                {user ? (
+                {token ? (
                   <>
-                    <Link
-                      href={`/my-event`}
-                      className=""
-                    >
+                    <Link href={`/my-event`} className="">
                       <span className="block px-4 py-2 text-sm text-gray-700">
                         My Event
                       </span>

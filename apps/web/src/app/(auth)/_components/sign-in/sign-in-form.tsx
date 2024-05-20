@@ -49,7 +49,7 @@ const SignInForm: React.FC = () => {
       if (user.result.isAdmin) {
         Cookie.remove("user-tkn");
         Cookie.set("admin-tkn", user.result.token);
-        router.refresh();
+        router.refresh()
 
       } else {
         Cookie.remove("admin-tkn");

@@ -1,19 +1,40 @@
 "use client";
 
+import Link from "next/link";
 import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import React from "react";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 const ProfileOptions: React.FC = () => {
+  const router = useRouter()
+  const userToken = Cookies.get("user-tkn");
+  const adminToken = Cookies.get("admin-tkn");
+
+  
+  const handleSignOut = () => {
+    Cookies.remove("user-tkn"); // Hapus cookie saat sign out
+    Cookies.remove("admin-tkn"); // Hapus cookie saat sign out
+    router.push("/sign-in");
+  };
   return (
     <>
-      <DropdownMenuLabel>My Account</DropdownMenuLabel>
-      <DropdownMenuSeparator />
-      <DropdownMenuItem className="cursor-pointer">Settings</DropdownMenuItem>
-      <DropdownMenuItem className="cursor-pointer text-red-400 focus:text-red-500">
+      {userToken && (
+        <DropdownMenuItem asChild className="cursor-pointer">
+          <Link href={"/my-event"}>My Event</Link>
+        </DropdownMenuItem>
+      )}
+      {adminToken && (
+        <DropdownMenuItem asChild className="cursor-pointer">
+          <Link href={"/dashboard"}>Dashboard</Link>
+        </DropdownMenuItem>
+      )}
+
+      <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-red-400 focus:text-red-500">
         Logout
       </DropdownMenuItem>
     </>
