@@ -10,3 +10,21 @@ export type EventRequest = {
   limitCheckout: number;
   image: File;
 };
+
+export type EventResponse = {
+  id: number;
+  name: string;
+  price: number;
+  description: string;
+  availableSeats: number;
+  maxCapacity: number;
+  imageURL: string;
+  limitCheckout: number;
+  startDate: string;
+  endDate: string;
+  createdAt: string;
+  updatedAt: string;
+  userId: number;
+  locationId: number;
+  categoryId: number;
+};

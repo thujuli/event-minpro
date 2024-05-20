@@ -15,6 +15,8 @@ export type AdminEventResponse = {
   endDate: string;
   createdAt: string;
   updatedAt: string;
+  categoryId?: number;
+  locationId?: number;
   category: CategoryResponse;
   location: LocationResponse;
 };

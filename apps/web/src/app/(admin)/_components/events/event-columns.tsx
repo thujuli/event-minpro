@@ -15,6 +15,8 @@ import { AdminEventResponse } from "@/types/admin";
 import Link from "next/link";
 import { formatDate, formatNumber, formatPrice } from "@/lib/formatter";
 import { Badge } from "@/components/ui/badge";
+import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import EventDeleteAlert from "./event-delete-alert";
 
 export const eventColumns: ColumnDef<AdminEventResponse>[] = [
   {
@@ -177,10 +179,13 @@ export const eventColumns: ColumnDef<AdminEventResponse>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem asChild className="cursor-pointer">
+              <Link href={`/dashboard/events/${event.id}`}>Detail</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild className="cursor-pointer">
               <Link href={`/dashboard/events/${event.id}/promo`}>Promo</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild className="cursor-pointer">
-              <Link href={`/dashboard/events/${event.id}/participations`}>
+              <Link href={`/dashboard/events/${event.id}/participation`}>
                 Participation
               </Link>
             </DropdownMenuItem>
@@ -191,11 +196,15 @@ export const eventColumns: ColumnDef<AdminEventResponse>[] = [
             >
               <Link href={`/dashboard/events/${event.id}/edit`}>Edit</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem
-              asChild
-              className="cursor-pointer text-red-500 focus:text-red-600"
-            >
-              <Link href="#">Delete</Link>
+            <DropdownMenuItem asChild>
+              <AlertDialog>
+                <AlertDialogTrigger>
+                  <span className="cursor-pointer p-2 text-red-500">
+                    Delete
+                  </span>
+                </AlertDialogTrigger>
+                <EventDeleteAlert id={event.id} />
+              </AlertDialog>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -12,18 +12,3 @@ export const getEventById = async (id: number) => {
     console.log("Error fetching event data:", err);
   }
 };
-
-export const createEvent = async (token: string, data: EventRequest) => {
-  const res = await axios.post<ResponseWithoutData>(
-    NEXT_PUBLIC_BASE_API_URL + "/events",
-    data,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
-
-  return res.data;
-};

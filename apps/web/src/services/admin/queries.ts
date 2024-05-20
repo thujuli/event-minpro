@@ -3,6 +3,7 @@ import Cookie from "js-cookie";
 import {
   getAdminEvents,
   getAdminEventTransactions,
+  getEvent,
   getEventParticipation,
   getTransaction,
   getTransactionDetails,
@@ -69,5 +70,14 @@ export const useTransactionDetails = ({
   return useQuery({
     queryKey: ["transactionDetails", { token, transactionId }],
     queryFn: () => getTransactionDetails(token!, transactionId),
+  });
+};
+
+export const useEvent = ({ eventId }: { eventId: string }) => {
+  const token = Cookie.get("admin-tkn");
+
+  return useQuery({
+    queryKey: ["event", { token, eventId }],
+    queryFn: () => getEvent(token!, eventId),
   });
 };

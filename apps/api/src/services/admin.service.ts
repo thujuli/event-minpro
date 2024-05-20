@@ -208,7 +208,9 @@ export class AdminService {
         },
       );
 
-    if (!event) throw new ErrorResponse(404, 'Event not found!');
+    if (!event) {
+      return responseWithData(200, true, "Event don't have participations", []);
+    }
 
     if (event.userId !== id) {
       throw new ErrorResponse(401, 'This event is not yours!');
@@ -288,5 +290,21 @@ export class AdminService {
       'Success get transaction details',
       details,
     );
+  }
+
+  static async getEvent(id: number, eventId: string) {
+    const newEventId = Validation.validate(EventValidation.EVENT_ID, eventId);
+
+    const event = await EventRepository.getEventIncludeCategoryLocation(
+      Number(newEventId),
+    );
+
+    if (!event) throw new ErrorResponse(404, 'Event not found!');
+
+    if (event.userId !== id) {
+      throw new ErrorResponse(401, 'This event is not yours!');
+    }
+
+    return responseWithData(200, true, 'Success get event', event);
   }
 }

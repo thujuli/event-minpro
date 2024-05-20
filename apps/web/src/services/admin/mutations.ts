@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Cookie from "js-cookie";
 import { updateTransactionStatus } from "./fetchers";
 import { toast } from "sonner";
+import axios from "axios";
 
 export const useUpdateTransactionStatus = () => {
   const queryClient = useQueryClient();
@@ -19,6 +20,12 @@ export const useUpdateTransactionStatus = () => {
       toast.success(data.message);
       queryClient.invalidateQueries({ queryKey: ["adminEventTransactions"] });
     },
-    onError: (data) => toast.error(data.message),
+    onError: (data) => {
+      if (axios.isAxiosError(data)) {
+        toast.error(data.response?.data.message);
+        return;
+      }
+      toast.error(data.message);
+    },
   });
 };

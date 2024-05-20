@@ -136,4 +136,16 @@ export class AdminController {
       next(error);
     }
   }
+
+  public async getEvent(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = res.locals.decoded.id as number;
+      const eventId = req.params.eventId;
+
+      const response = await AdminService.getEvent(id, eventId);
+      return res.status(200).send(response);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
