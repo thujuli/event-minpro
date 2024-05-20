@@ -26,14 +26,14 @@ const TransactionDialogBody: React.FC<Props> = (props) => {
   }
 
   return (
-    <div className="flex h-96 items-center justify-center">
+    <div className="flex h-96 items-center justify-center ">
       {data?.result.paymentProof ? (
         <Image
           src={NEXT_PUBLIC_BASE_API_URL + data?.result.paymentProof}
           alt="Payment Proof"
           width={576}
           height={384}
-          className="bg-contain bg-center bg-no-repeat"
+          className="max-h-96 max-w-96 bg-contain bg-center bg-no-repeat"
         />
       ) : (
         <h2 className="text-2xl font-medium tracking-tight">

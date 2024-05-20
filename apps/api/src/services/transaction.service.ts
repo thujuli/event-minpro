@@ -284,7 +284,7 @@ export class TransactionService {
     const transactions = await TransactionRepository.getEventWaiting(id);
 
     const response = transactions.map((transaction) => {
-      return { transactionId: transaction.id, ...transaction.event };
+      return { transactionId: transaction.id, originalAmount:transaction.originalAmount, discountedAmount:transaction.discountedAmount, ...transaction.event };
     });
 
     return responseWithData(
@@ -299,7 +299,7 @@ export class TransactionService {
     const transactions = await TransactionRepository.getEventSuccess(id);
 
     const response = transactions.map((transaction) => {
-      return { ...transaction.event };
+      return { ...transaction.event, originalAmount:transaction.originalAmount, discountedAmount:transaction.discountedAmount};
     });
 
     return responseWithData(
@@ -314,7 +314,7 @@ export class TransactionService {
     const transactions = await TransactionRepository.getEventSuccessByDate(id);
 
     const response = transactions.map((transaction) => {
-      return { ...transaction.event };
+      return { ...transaction.event, originalAmount:transaction.originalAmount, discountedAmount:transaction.discountedAmount };
     });
 
     return responseWithData(

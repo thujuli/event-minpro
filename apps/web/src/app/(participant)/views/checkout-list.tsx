@@ -38,7 +38,7 @@ const MyChecoutList: React.FunctionComponent<IMyChecoutListProps> = (props) => {
               judul={event.name}
               lokasi={event.location.name}
               waktu={event.createdAt}
-              harga={event.price}
+              harga={event.discountedAmount ?? event.originalAmount}
               urlImage={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
             />
           </div>

@@ -39,8 +39,10 @@ import axios from "axios";
 import { toast } from "sonner";
 import { createEvent } from "@/data/event";
 import Cookie from "js-cookie";
+import { useRouter } from "next/navigation";
 
 const EventForm: React.FC = () => {
+  const router = useRouter();
   const form = useForm<EventSchema>({
     resolver: zodResolver(eventSchema),
     defaultValues: {
@@ -87,8 +89,8 @@ const EventForm: React.FC = () => {
       });
 
       await promise;
-
       form.reset();
+      router.push("/dashboard/events");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(error.response?.data.message);
