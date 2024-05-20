@@ -1,21 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import {
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import React from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 
 const ProfileOptions: React.FC = () => {
-  const router = useRouter()
+  const router = useRouter();
   const userToken = Cookies.get("user-tkn");
   const adminToken = Cookies.get("admin-tkn");
 
-  
   const handleSignOut = () => {
     Cookies.remove("user-tkn"); // Hapus cookie saat sign out
     Cookies.remove("admin-tkn"); // Hapus cookie saat sign out
@@ -34,7 +29,10 @@ const ProfileOptions: React.FC = () => {
         </DropdownMenuItem>
       )}
 
-      <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-red-400 focus:text-red-500">
+      <DropdownMenuItem
+        onClick={handleSignOut}
+        className="cursor-pointer text-red-400 focus:text-red-500"
+      >
         Logout
       </DropdownMenuItem>
     </>
