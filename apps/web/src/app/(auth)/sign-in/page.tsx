@@ -1,5 +1,5 @@
 import placeholder from "@/public/images/sign-in/placeholder-768x864.png";
-import SIGN_IN from "@/public/images/landscape-login.webp"
+import SIGN_IN from "@/public/images/Subjudul (3).png";
 import SignInForm from "../_components/sign-in/sign-in-form";
 import AuthPoster from "../_components/auth-poster";
 import React from "react";

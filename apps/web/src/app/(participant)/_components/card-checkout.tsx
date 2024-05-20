@@ -87,7 +87,7 @@ const CardCheckout: React.FunctionComponent<ICardCheckoutProps> = (props) => {
       {showConfirmationModal && (
         <div className="fixed inset-0 z-50 mx-[10px] flex w-fit items-center justify-center  md:w-full">
           <div className="rounded-lg bg-white p-8 shadow-xl">
-            <p>Apakah Anda yakin sudah melakukan pembayaran?</p>
+            <p className=" text-center">Are you sure you have made the payment?</p>
             <div className="mt-4  space-x-4">
               <Input
                 placeholder="0"

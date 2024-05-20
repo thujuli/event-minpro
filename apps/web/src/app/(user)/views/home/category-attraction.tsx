@@ -74,7 +74,7 @@ const CategoryAttractionSection: React.FunctionComponent<
                 setActiveButton("Online");
               }}
             >
-              Online
+              All
             </Button>
             <Button
               className={`h-[30px] w-auto border bg-white px-4 ${activeButton === "Surabaya" ? "border-blue-500" : "border-gray-400"} rounded-md text-black hover:bg-[#53b253] hover:text-white`}
@@ -110,7 +110,7 @@ const CategoryAttractionSection: React.FunctionComponent<
               className={`hidden h-fit w-fit rounded-md border  bg-white px-4 text-black hover:bg-[#53b253] hover:text-white md:block`}
               type="button"
             >
-              Explore More 
+              Explore More
             </Button>
           </Link>
         </div>
