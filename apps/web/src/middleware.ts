@@ -3,6 +3,14 @@ import { NextRequest, NextResponse } from "next/server";
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
+  if (pathname.startsWith("/sign-in") && !req.cookies.has("user-tkn")) {
+    return NextResponse.redirect(new URL("/my-event", req.url));
+  }
+
+  if (pathname.startsWith("/sign-in") && !req.cookies.has("admin-tkn")) {
+    return NextResponse.redirect(new URL("/dashboard", req.url));
+  }
+
   if (pathname.startsWith("/dashboard") && !req.cookies.has("admin-tkn")) {
     return NextResponse.rewrite(new URL("/sign-in", req.url));
   }

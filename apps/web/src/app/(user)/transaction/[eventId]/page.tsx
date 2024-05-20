@@ -71,7 +71,6 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
     });
   }, [selectedVoucher, switchOn, point]);
 
-
   // Handle getAPi user (data voucher, data point, voucher EO)
   const getApiDetail = async () => {
     try {
@@ -96,6 +95,7 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
       );
       setVoucher(voucherAfterFilter);
       setPoint(UserProfile.result.point.balance);
+      console.log("TESTING", response.data.result[0]);
     } catch (err) {
       console.log("Error fetching profile:", err);
     }
@@ -137,7 +137,7 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
     if (point > 0) {
       setSwitchOn(!switchOn);
     } else {
-      toast.error("Sorry, you don't have any point")
+      toast.error("Sorry, you don't have any point");
     }
   };
 
@@ -166,7 +166,7 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
       const response = await axios.post(url, dataTransaction, config);
       localStorage.removeItem("seat");
       toast.success("Successful purchase of tickets");
-      router.push("/");
+      router.push("/checkout");
     } catch (error: any) {
       toast.error(error.response?.data.message);
     }
@@ -224,19 +224,21 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
               </div>
             </div>
           </div>
-          <PaymentSection />
+          <PaymentSection />\
         </div>
         {/* <DetailOrder /> */}
         <div className=" relative mx-[10px] flex flex-col pb-[11vh] md:mx-0 md:pb-0">
           <div className="ml-0 mt-[24px] h-auto w-full rounded-lg bg-white  p-[20px] shadow md:fixed md:ml-[48px]  md:h-auto md:w-[392px]">
             <div className=" flex">
-              <Image
-                className="h-[40px] w-[40px] rounded-md "
-                src={event.imageURL}
-                width={236}
-                height={148}
-                alt=""
-              />
+              {event.imageURL && (
+                <Image
+                  className="h-[40px] w-[40px] rounded-md "
+                  src={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
+                  width={236}
+                  height={148}
+                  alt=""
+                />
+              )}
               <div className="flex items-center overflow-hidden  overflow-ellipsis whitespace-nowrap px-2">
                 <p className=" text-[14px] font-semibold">{event.name}</p>
               </div>

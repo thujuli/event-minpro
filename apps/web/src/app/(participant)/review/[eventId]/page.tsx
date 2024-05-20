@@ -64,13 +64,15 @@ const Review: React.FunctionComponent<IReviewProps> = (props) => {
   return (
     <section className="mx-auto w-fit rounded-lg bg-white p-10">
       <div className=" flex  flex-col space-y-4">
-        <Image
-          className="h-[400px] w-[400px] rounded-md  bg-center"
-          src={event.imageURL}
-          width={1000}
-          height={1000}
-          alt=""
-        />
+        {event.imageURL && (
+          <Image
+            className="h-[400px] w-[400px] rounded-md  bg-center"
+            src={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
+            width={1000}
+            height={1000}
+            alt=""
+          />
+        )}
         <h1>{event.name}</h1>
         <div className="flex space-x-2">
           {[1, 2, 3, 4, 5].map((index) => (

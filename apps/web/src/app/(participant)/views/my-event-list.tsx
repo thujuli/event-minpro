@@ -75,7 +75,7 @@ const MyEventList: React.FunctionComponent<IMyEventListProps> = (props) => {
                   judul={eventItem.name}
                   lokasi={eventItem.location.name}
                   waktu={eventItem.endDate}
-                  harga={eventItem.price}
+                  harga={eventItem.discountedAmount ?? eventItem.originalAmount}
                   urlImage={NEXT_PUBLIC_BASE_API_URL + eventItem.imageURL}
                 />
               </div>
@@ -87,7 +87,10 @@ const MyEventList: React.FunctionComponent<IMyEventListProps> = (props) => {
                   judul={eventFinishItem.name}
                   lokasi={eventFinishItem.location.name}
                   waktu={eventFinishItem.endDate}
-                  harga={eventFinishItem.price}
+                  harga={
+                    eventFinishItem.discountedAmount ??
+                    eventFinishItem.originalAmount
+                  }
                   urlImage={NEXT_PUBLIC_BASE_API_URL + eventFinishItem.imageURL}
                 />
               </div>

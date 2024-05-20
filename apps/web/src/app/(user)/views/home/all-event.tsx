@@ -109,7 +109,7 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
         onClick={() => handlePageChange(i)}
         className={`h-[30px] w-auto border bg-white px-4 ${
           currentPage === i ? "border-blue-500" : "border-gray-400"
-        } rounded-md text-black`}
+        } rounded-md text-black hover:bg-[#53b253] hover:text-white`}
       >
         {i}
       </Button>,
