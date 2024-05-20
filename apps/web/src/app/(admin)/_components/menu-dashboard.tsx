@@ -6,9 +6,9 @@ import MenuLinkDashboard from "./menu-link-dashboard";
 export const MobileMenuDashboard: React.FC = () => {
   return (
     <nav className="grid gap-2 text-lg font-medium">
-      <Link href="#" className="flex items-center gap-2 text-lg font-semibold">
+      <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
         <Package2 className="h-6 w-6" />
-        <span className="sr-only">Acme Inc</span>
+        <span className="sr-only">Ngivent</span>
       </Link>
       <MenuLinkDashboard />
     </nav>

@@ -20,14 +20,14 @@ interface ICardEventProps {
 const CardEvent: React.FunctionComponent<ICardEventProps> = (props) => {
   return (
     <Link href={`/detail/${props.id}`}>
-      <div className="md:min-w-[100px] h-[278px] min-w-[178px] max-w-[178px] cursor-pointer overflow-hidden rounded-lg border border-[#f3f3f6] bg-white shadow-md md:h-[288px]  md:max-w-[236px]">
+      <div className="h-[278px] min-w-[178px] max-w-[178px] cursor-pointer overflow-hidden rounded-lg border border-[#f3f3f6] bg-white shadow-md md:h-[288px] md:min-w-[100px]  md:max-w-[236px]">
         <div className="relative h-[144px] w-full md:h-[148px]">
           <Image
-            className="rounded-t-lg"
+            className="flex rounded-t-lg object-top"
             src={props.urlImage}
             alt={props.judul}
             layout="fill"
-            objectFit="full"
+            objectFit="cover"
           />
         </div>
 
