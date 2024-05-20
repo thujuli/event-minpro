@@ -7,10 +7,13 @@ import InputSearch from "../_components/search-bar";
 import { MenuIcon, UserIcon } from "lucide-react";
 import Cookies from "js-cookie";
 import { MdManageAccounts } from "react-icons/md";
+import { useRouter } from "next/navigation";
 
 interface INavbarDesktopProps {}
 
 const NavbarDesktop: React.FunctionComponent<INavbarDesktopProps> = (props) => {
+  const router = useRouter();
+
   React.useEffect(() => {
     const userName = Cookies.get("user-tkn"); // Misalnya, nama pengguna disimpan di cookie 'userName'
     if (userName) {
@@ -23,6 +26,7 @@ const NavbarDesktop: React.FunctionComponent<INavbarDesktopProps> = (props) => {
   const handleSignOut = () => {
     Cookies.remove("user-tkn"); // Hapus cookie saat sign out
     setUser(null); // Reset state user
+    router.push("/sign-in");
   };
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -48,9 +52,12 @@ const NavbarDesktop: React.FunctionComponent<INavbarDesktopProps> = (props) => {
           </div>
           <div className="relative flex items-center space-x-2">
             {user ? (
-              <div className="relative group">
-                <UserIcon className="h-6 w-6 text-black cursor-pointer" aria-hidden="true" />
-                <div className="absolute right-0 mt-2 hidden w-48 origin-top-right rounded-md shadow-lg ring-1 ring-black ring-opacity-5 group-hover:block bg-white">
+              <div className="group relative">
+                <UserIcon
+                  className="h-6 w-6 cursor-pointer text-black"
+                  aria-hidden="true"
+                />
+                <div className="absolute right-0 mt-2 hidden w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 group-hover:block">
                   <div className="py-1">
                     <Link
                       href={`/my-event`}
@@ -60,7 +67,7 @@ const NavbarDesktop: React.FunctionComponent<INavbarDesktopProps> = (props) => {
                     </Link>
                     <button
                       onClick={handleSignOut}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Sign Out
                     </button>
@@ -92,7 +99,7 @@ const NavbarDesktop: React.FunctionComponent<INavbarDesktopProps> = (props) => {
       </section>
 
       {/* Mobile Navbar */}
-      <section className="flex h-[80px] w-full items-center justify-between px-4 md:hidden">
+      <section className="flex h-[80px] w-full items-center justify-between px-4 md:hidden ">
         <Link href={`/`}>
           <Image
             className="h-fit w-full"
@@ -113,13 +120,18 @@ const NavbarDesktop: React.FunctionComponent<INavbarDesktopProps> = (props) => {
           </button>
 
           {isOpen && (
-            <div className="absolute right-0 mt-2 w-48 origin-top-right rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+            <div className="absolute right-0 mt-2 w-48 origin-top-right rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
               <div className="bg-white py-1">
                 {user ? (
                   <>
-                    <span className="block px-4 py-2 text-sm text-gray-700">
-                      {user}
-                    </span>
+                    <Link
+                      href={`/my-event`}
+                      className=""
+                    >
+                      <span className="block px-4 py-2 text-sm text-gray-700">
+                        My Event
+                      </span>
+                    </Link>
                     <button
                       onClick={handleSignOut}
                       className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"

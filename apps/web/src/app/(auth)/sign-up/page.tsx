@@ -1,12 +1,12 @@
-import placeholder from "@/public/images/sign-up/placeholder-768x864.png";
+import placeholder from "@/public/images/aesthetic-lakeside-beauty-background-hd-wallpaper-sr10012409-1704894284394-cover.webp";
 import SignUpForm from "../_components/sign-up/sign-up-form";
-import AuthPoster from "../_components/auth-poster";
 import React from "react";
+import AuthPosterRegis from "../_components/auth-poster-regis";
 
 const SignUpPage: React.FC = () => {
   return (
     <section id="sign-up" className="flex items-center justify-center">
-      <AuthPoster image={placeholder} name="Sign Up Poster" />
+      <AuthPosterRegis image={placeholder} name="Sign Up Poster" />
       <SignUpForm />
     </section>
   );

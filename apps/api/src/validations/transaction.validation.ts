@@ -49,7 +49,7 @@ export class TransactionValidation {
       deleteFile('../../public/assets/transactions', file.filename);
       throw new ErrorResponse(
         400,
-        '.jpg, .jpeg, .png and .webp files are accepted.',
+        '.jpg, .jpeg, .png and .webp files are only accepted.',
       );
     }
 

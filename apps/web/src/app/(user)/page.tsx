@@ -15,17 +15,16 @@ import Footer from "./views/footer";
 
 const HomePage: React.FC = () => {
   return (
-    <section>
+    <section className="">
       <NavbarDesktop />
       <Hero />
       <CategorySection />
-      {/* <TopNews /> */}
-      <CategoryFestivalSection />
+      <CategoryDramaSection />
       <CategoryMusikSection />
+      <CategoryFestivalSection />
+      <CategoryAttractionSection />
       <CategorySportsSection />
       <CategorySeminarSection />
-      <CategoryDramaSection />
-      <CategoryAttractionSection />
       {/* <Footer /> */}
     </section>
   );

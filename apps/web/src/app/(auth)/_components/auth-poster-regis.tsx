@@ -6,7 +6,7 @@ type Props = {
   name: string;
 };
 
-const AuthPoster: React.FC<Props> = (props) => {
+const AuthPosterRegis: React.FC<Props> = (props) => {
   const { image, name } = props;
 
   return (
@@ -20,15 +20,14 @@ const AuthPoster: React.FC<Props> = (props) => {
         sizes="100vw"
         className="bg-cover"
       />
-      <div className="absolute inset-0 z-50 mt-48 flex justify-center p-4">
+      <div className="absolute inset-0 z-50 mt-48 flex justify-center p-10">
         <div>
-          <h1 className="text-center text-[38px] font-semibold text-white">
-            Log in to enjoy all the benefits!
+          <h1 className="text-center text-[38px] font-semibold   text-white">
+            You can attend events as you wish, but your wallet remains safe!
           </h1>
-          <h1 className=" text-center text-white">
-            You only need to enter your cellphone number or email. Easy and
-            fast, immediately feel the various conveniences and benefits of our
-            services!
+          <h1 className=" text-center  text-white">
+            Create an account to get cheaper prices, extra discounts, & free
+            insurance.
           </h1>
         </div>
       </div>
@@ -36,4 +35,4 @@ const AuthPoster: React.FC<Props> = (props) => {
   );
 };
 
-export default AuthPoster;
+export default AuthPosterRegis;
