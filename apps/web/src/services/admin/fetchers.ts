@@ -97,3 +97,12 @@ export const getTransactionDetails = async (
 
   return res.data;
 };
+
+export const getEvent = async (token: string, eventId: string) => {
+  const res = await axios.get<ResponseWithData<AdminEventResponse>>(
+    NEXT_PUBLIC_BASE_API_URL + `/admin/events/${eventId}`,
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+
+  return res.data;
+};

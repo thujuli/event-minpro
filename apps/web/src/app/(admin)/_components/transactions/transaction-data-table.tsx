@@ -183,9 +183,9 @@ export function TransactionDataTable<TData, TValue>({
 
       {/* pagination */}
       <div className="flex items-center justify-center gap-2">
-        {canPrevPage && (
+        {totalPages > 1 && (
           <>
-            <Button asChild size="sm">
+            <Button size="sm" disabled={!canPrevPage}>
               <Link
                 href="/dashboard/transactions?page=1"
                 scroll={false}
@@ -195,7 +195,7 @@ export function TransactionDataTable<TData, TValue>({
                 First
               </Link>
             </Button>
-            <Button asChild size="sm">
+            <Button size="sm" disabled={!canPrevPage}>
               <Link
                 href={`/dashboard/transactions?page=${page - 1}`}
                 scroll={false}
@@ -205,26 +205,24 @@ export function TransactionDataTable<TData, TValue>({
                 Prev
               </Link>
             </Button>
-          </>
-        )}
-        <span>
-          Page {page} of {totalPages}
-        </span>
-        {canNextPage && (
-          <>
-            <Button asChild size="sm" className="flex gap-[2px]">
+            <span>
+              Page {page} of {totalPages}
+            </span>
+            <Button size="sm" disabled={!canNextPage}>
               <Link
                 href={`/dashboard/transactions?page=${page + 1}`}
                 scroll={false}
+                className="flex gap-[2px]"
               >
                 Next
                 <ChevronRight className="h-5 w-5" />
               </Link>
             </Button>
-            <Button asChild size="sm" className="flex gap-[2px]">
+            <Button size="sm" disabled={!canNextPage}>
               <Link
                 href={`/dashboard/transactions?page=${totalPages}`}
                 scroll={false}
+                className="flex gap-[2px]"
               >
                 Last
                 <ChevronsRight className="h-5 w-5" />

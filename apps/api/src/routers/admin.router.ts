@@ -28,6 +28,13 @@ export class AdminRouter {
     );
 
     this.router.get(
+      '/events/:eventId',
+      verifyToken,
+      adminGuard,
+      this.adminController.getEvent,
+    );
+
+    this.router.get(
       '/events/:eventId/participations',
       verifyToken,
       adminGuard,

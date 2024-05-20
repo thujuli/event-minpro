@@ -15,6 +15,7 @@ export class EventRouter {
 
   private initializeRoutes(): void {
     this.router.get('/', this.eventController.getEvents);
+
     this.router.post(
       '/',
       verifyToken,
@@ -22,7 +23,24 @@ export class EventRouter {
       uploader('/events', 'EVENT').single('image'),
       this.eventController.createEvent,
     );
+
     this.router.get('/search', this.eventController.getEventsBySearch);
+
+    this.router.patch(
+      '/:eventId',
+      verifyToken,
+      adminGuard,
+      uploader('/events', 'EVENT').single('image'),
+      this.eventController.updateEvent,
+    );
+
+    this.router.delete(
+      '/:eventId',
+      verifyToken,
+      adminGuard,
+      this.eventController.deleteEvent,
+    );
+
     this.router.get('/:id', this.eventController.getEventById);
   }
 

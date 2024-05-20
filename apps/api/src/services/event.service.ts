@@ -1,5 +1,6 @@
 import { EventRepository } from '@/repositories/event.repository';
 import { EventQuery, EventRequest } from '@/types/event.type';
+import { ErrorResponse } from '@/utils/error';
 import {
   responseDataWithPagination,
   responseWithData,
@@ -13,7 +14,7 @@ export class EventService {
     console.log('INI SERVICE', query);
 
     const eventQuery = Validation.validate(EventValidation.QUERY, query);
-    console.log("sudah validasi",eventQuery);
+    console.log('sudah validasi', eventQuery);
 
     if (!eventQuery.page) eventQuery.page = 1;
     if (!eventQuery.limit) eventQuery.limit = 10;
@@ -70,7 +71,6 @@ export class EventService {
   }
 
   static async getEventByUser(id: number) {
-
     const response = await EventRepository.getEventByUser(id);
     return responseWithData(
       200,
@@ -80,4 +80,50 @@ export class EventService {
     );
   }
 
+  static async updateEvent(
+    id: number,
+    eventId: string,
+    request: EventRequest,
+    file: Express.Multer.File,
+  ) {
+    const eventRequest = Validation.validate(EventValidation.UPDATE, request);
+    const validateFile = EventValidation.fileValidationWithOptional(file);
+    const newEventId = Validation.validate(EventValidation.EVENT_ID, eventId);
+
+    const event = await EventRepository.getEventById(Number(newEventId));
+
+    if (!event) throw new ErrorResponse(404, 'Event not found!');
+
+    if (event.userId !== id) {
+      throw new ErrorResponse(401, 'This event is not yours!');
+    }
+
+    const response = await EventRepository.updateEvent(
+      id,
+      Number(newEventId),
+      eventRequest,
+      validateFile,
+    );
+
+    return responseWithData(200, true, 'Update event successfully', response);
+  }
+
+  static async deleteEvent(id: number, eventId: string) {
+    const newEventId = Validation.validate(EventValidation.EVENT_ID, eventId);
+
+    const event = await EventRepository.getEventById(Number(newEventId));
+
+    if (!event) throw new ErrorResponse(404, 'Event not found!');
+
+    if (event.userId !== id) {
+      throw new ErrorResponse(401, 'This event is not yours!');
+    }
+
+    if (event.availableSeats !== event.maxCapacity) {
+      throw new ErrorResponse(400, 'Event is not empty!');
+    }
+
+    await EventRepository.deleteEvent(Number(newEventId));
+    return responseWithoutData(200, true, 'Delete event successfully');
+  }
 }

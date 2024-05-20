@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import React from "react";
+import React, { useEffect } from "react";
 import CategoryItems from "./category-items";
 import { EventSchema, eventSchema } from "@/schemas/event";
 import { useForm } from "react-hook-form";
@@ -35,18 +35,34 @@ import { Calendar } from "@/components/ui/calendar";
 import { Card, CardHeader } from "@/components/ui/card";
 import { TimePicker } from "@/components/shared/time-picker";
 import { AutosizeTextarea } from "@/components/shared/autosize-textarea";
-import axios from "axios";
-import { toast } from "sonner";
-import { createEvent } from "@/data/event";
-import Cookie from "js-cookie";
 import { useRouter } from "next/navigation";
+import { AdminEventResponse } from "@/types/admin";
+import Image from "next/image";
+import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
+import { useCreateEvent, useUpdateEvent } from "@/services/event/mutations";
 
-const EventForm: React.FC = () => {
+type Props = {
+  type?: "create" | "readonly" | "update";
+  event?: AdminEventResponse;
+};
+
+const EventForm: React.FC<Props> = ({ type = "create", event }) => {
   const router = useRouter();
+  const createEventMutation = useCreateEvent();
+  const updateEventMutation = useUpdateEvent();
   const form = useForm<EventSchema>({
     resolver: zodResolver(eventSchema),
     defaultValues: {
-      name: "",
+      name: event?.name || "",
+      price: event && event.price >= 0 ? event.price : undefined,
+      startDate: event?.startDate ? new Date(event?.startDate) : undefined,
+      endDate: event?.endDate ? new Date(event?.endDate) : undefined,
+      location: event?.locationId || undefined,
+      category: event?.categoryId || undefined,
+      description: event?.description || "",
+      maxCapacity: event?.maxCapacity || undefined,
+      limitCheckout: event?.limitCheckout || undefined,
+      image: event?.imageURL || undefined,
     },
   });
 
@@ -57,6 +73,12 @@ const EventForm: React.FC = () => {
     LocationResponse | undefined
   >();
 
+  useEffect(() => {
+    if (event?.location.id) {
+      setSelected({ id: event.location.id, name: event.location.name });
+    }
+  }, [event?.location]);
+
   const handleSetActive = React.useCallback((item: LocationResponse) => {
     setSelected(item);
     setOpen(false);
@@ -65,37 +87,28 @@ const EventForm: React.FC = () => {
   const displayName = selected ? selected.name : "Select location";
 
   const onSubmit = async (data: EventSchema) => {
-    try {
-      const token = Cookie.get("admin-tkn");
-
-      const promise = createEvent(token!, {
-        name: data.name,
-        price: data.price,
-        startDate: data.startDate,
-        endDate: data.endDate,
-        categoryId: data.category,
-        locationId: data.location,
-        description: data.description,
-        maxCapacity: data.maxCapacity,
-        limitCheckout: data.limitCheckout,
-        image: data.image[0],
-      });
-
-      toast.promise(promise, {
-        loading: "Loading...",
-        success: (data) => {
-          return data.message;
+    if (type === "update" && event) {
+      updateEventMutation.mutate({
+        eventId: `${event.id}`,
+        data: {
+          ...data,
+          locationId: data.location,
+          categoryId: data.category,
+          image: data.image[0],
         },
       });
 
-      await promise;
-      form.reset();
-      router.push("/dashboard/events");
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data.message);
-      }
+      return router.push("/dashboard/events");
     }
+
+    createEventMutation.mutate({
+      ...data,
+      locationId: data.location,
+      categoryId: data.category,
+      image: data.image[0],
+    });
+
+    router.push("/dashboard/events");
   };
 
   return (
@@ -114,7 +127,11 @@ const EventForm: React.FC = () => {
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Event Name" {...field} />
+                      <Input
+                        placeholder="Event Name"
+                        {...field}
+                        disabled={type === "readonly"}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -128,7 +145,11 @@ const EventForm: React.FC = () => {
                   <FormItem>
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <AutosizeTextarea {...field} className="resize-none" />
+                      <AutosizeTextarea
+                        {...field}
+                        className="resize-none"
+                        disabled={type === "readonly"}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -145,6 +166,7 @@ const EventForm: React.FC = () => {
                       onValueChange={field.onChange}
                       value={field.value ? `${field.value}` : ""}
                       defaultValue={`${field.value}`}
+                      disabled={type === "readonly"}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -173,6 +195,7 @@ const EventForm: React.FC = () => {
                             variant="outline"
                             role="combobox"
                             aria-expanded={open}
+                            disabled={type === "readonly"}
                             className={cn(
                               "w-full justify-between",
                               !selected && "text-muted-foreground",
@@ -210,6 +233,7 @@ const EventForm: React.FC = () => {
                           <PopoverTrigger asChild>
                             <Button
                               variant="outline"
+                              disabled={type === "readonly"}
                               className={cn(
                                 "w-[280px] justify-start text-left font-normal",
                                 !field.value && "text-muted-foreground",
@@ -255,6 +279,7 @@ const EventForm: React.FC = () => {
                           <PopoverTrigger asChild>
                             <Button
                               variant="outline"
+                              disabled={type === "readonly"}
                               className={cn(
                                 "w-[280px] justify-start text-left font-normal",
                                 !field.value && "text-muted-foreground",
@@ -309,6 +334,7 @@ const EventForm: React.FC = () => {
                         type="number"
                         min={0}
                         value={field.value ?? ""}
+                        disabled={type === "readonly"}
                       />
                     </FormControl>
                     <FormMessage />
@@ -329,6 +355,7 @@ const EventForm: React.FC = () => {
                         type="number"
                         min={0}
                         value={field.value ?? ""}
+                        disabled={type === "readonly"}
                       />
                     </FormControl>
                     <FormMessage />
@@ -348,6 +375,7 @@ const EventForm: React.FC = () => {
                         type="number"
                         min={0}
                         value={field.value ?? ""}
+                        disabled={type === "readonly"}
                       />
                     </FormControl>
                     <FormMessage />
@@ -361,9 +389,25 @@ const EventForm: React.FC = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Image</FormLabel>
-                    <FormControl>
-                      <Input placeholder="0" {...fileRef} type="file" />
+                    <FormControl
+                      className={cn(type === "readonly" && "hidden")}
+                    >
+                      <Input
+                        placeholder="0"
+                        {...fileRef}
+                        type="file"
+                        disabled={type === "readonly"}
+                      />
                     </FormControl>
+                    {event?.imageURL && (
+                      <Image
+                        src={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
+                        width={300}
+                        height={180}
+                        className="max-h-[180px] w-full rounded-lg object-cover object-top"
+                        alt={event.name}
+                      />
+                    )}
                     <FormMessage />
                   </FormItem>
                 )}
@@ -371,13 +415,16 @@ const EventForm: React.FC = () => {
             </CardHeader>
           </Card>
 
-          <Button
-            type="submit"
-            disabled={form.formState.isSubmitting}
-            className="w-full"
-          >
-            Create Event
-          </Button>
+          {type !== "readonly" && (
+            <Button
+              type="submit"
+              disabled={form.formState.isSubmitting}
+              className="w-full"
+            >
+              {type === "create" && "Create Event"}
+              {type === "update" && "Update Event"}
+            </Button>
+          )}
         </div>
       </form>
     </Form>
