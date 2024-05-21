@@ -22,6 +22,17 @@ describe('register', () => {
     await prisma.user.create({ data: newUser });
   });
 
+  afterEach(async () => {
+    const user1 = await prisma.user.findUnique({
+      where: { username: 'user1' },
+    });
+    await prisma.user.delete({ where: { id: user1?.id } });
+  });
+
+  afterAll(async () => {
+    await prisma.$disconnect();
+  });
+
   it('should return error if user input is invalid', async () => {
     const response = await request(app).post('/auth/register').send({
       username: 'hi',
@@ -130,7 +141,7 @@ describe('register', () => {
       message: 'Registration was successful',
     });
 
-    const user = await prisma.user.findFirst({ where: { username: 'user2' } });
+    const user = await prisma.user.findUnique({ where: { username: 'user2' } });
     expect(user?.isAdmin).toBe(false);
     expect(user?.email).toBe('user2@example.com');
     expect(user?.username).toBe('user2');
@@ -143,8 +154,8 @@ describe('register', () => {
 
   it('should successfully register a new user with referral code', async () => {
     const response = await request(app).post('/auth/register').send({
-      username: 'user2',
-      email: 'user2@example.com',
+      username: 'user3',
+      email: 'user3@example.com',
       password: '1234',
       isAdmin: false,
       referralCode: 'UNIQUE',
@@ -160,11 +171,11 @@ describe('register', () => {
     const expiryDate = new Date();
     expiryDate.setMonth(expiryDate.getMonth() + 3);
 
-    // user2 should has voucher
-    const user = await prisma.user.findFirst({ where: { username: 'user2' } });
+    // user3 should has voucher
+    const user = await prisma.user.findUnique({ where: { username: 'user3' } });
     expect(user?.isAdmin).toBe(false);
-    expect(user?.email).toBe('user2@example.com');
-    expect(user?.username).toBe('user2');
+    expect(user?.email).toBe('user3@example.com');
+    expect(user?.username).toBe('user3');
     expect(user?.referralCode).not.toBe(null);
     expect(user?.password).not.toBe('1234');
 
@@ -189,14 +200,14 @@ describe('register', () => {
       expiryDate.getDate(),
     );
 
-    // delete user2
+    // delete user3
     await prisma.user.delete({ where: { id: user?.id } });
   });
 
   it('should user who have referral code will increase point by 10000', async () => {
     await request(app).post('/auth/register').send({
-      username: 'user2',
-      email: 'user2@example.com',
+      username: 'user4',
+      email: 'user4@example.com',
       password: '1234',
       isAdmin: false,
       referralCode: 'UNIQUE',
@@ -206,11 +217,12 @@ describe('register', () => {
       where: { referralCode: 'UNIQUE' },
       include: { point: true },
     });
+
     expect(userByReferralCode1?.point?.balance).toBe(10000);
 
     await request(app).post('/auth/register').send({
-      username: 'user3',
-      email: 'user3@example.com',
+      username: 'user5',
+      email: 'user5@example.com',
       password: '1234',
       isAdmin: false,
       referralCode: 'UNIQUE',
@@ -224,16 +236,7 @@ describe('register', () => {
 
     // delete the user
     await prisma.user.deleteMany({
-      where: { username: { in: ['user2', 'user3'] } },
+      where: { username: { in: ['user4', 'user5'] } },
     });
-  });
-
-  afterEach(async () => {
-    const lastUser = await prisma.user.findFirst({ orderBy: { id: 'desc' } });
-    await prisma.user.delete({ where: { id: lastUser?.id } });
-  });
-
-  afterAll(async () => {
-    await prisma.$disconnect();
   });
 });
