@@ -4,7 +4,8 @@ import axios from "axios";
 import { NEXT_PUBLIC_BASE_API_URL } from "@/lib/env";
 import CardCheckout from "../_components/card-checkout";
 import Cookies from "js-cookie";
-
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 interface IMyChecoutListProps {}
 
 const MyChecoutList: React.FunctionComponent<IMyChecoutListProps> = (props) => {
@@ -31,18 +32,31 @@ const MyChecoutList: React.FunctionComponent<IMyChecoutListProps> = (props) => {
   return (
     <section>
       <div className="my-[18px] grid grid-cols-2 gap-4 md:mx-10 md:grid-cols-4 md:p-6">
-        {event?.map((event: any, index: number) => (
-          <div key={index}>
-            <CardCheckout
-              id={event.transactionId}
-              judul={event.name}
-              lokasi={event.location.name}
-              waktu={event.createdAt}
-              harga={event.discountedAmount ?? event.originalAmount}
-              urlImage={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
-            />
+        {event.length === 0 ? (
+          <div className="col-span-2 flex h-[500px] flex-col items-center justify-center space-y-5 rounded-md bg-gray-200 italic md:col-span-5">
+            <p>Transaction Not Found</p>
+            <div className=" text-center ">
+              <Link href="/explore">
+                <Button className=" w-fit hover:bg-[#53b253] md:px-8">
+                  Let`s Explore
+                </Button>
+              </Link>
+            </div>
           </div>
-        ))}
+        ) : (
+          event?.map((event: any, index: number) => (
+            <div key={index}>
+              <CardCheckout
+                id={event.transactionId}
+                judul={event.name}
+                lokasi={event.location.name}
+                waktu={event.createdAt}
+                harga={event.discountedAmount ?? event.originalAmount}
+                urlImage={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
+              />
+            </div>
+          ))
+        )}
       </div>
     </section>
   );

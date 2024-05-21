@@ -192,16 +192,24 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {creatorVoucher.map((voucher: any, index: number) => (
-                      <SelectItem key={index} value={voucher.id}>
-                        {voucher.name}
-                      </SelectItem>
-                    ))}
-                    {voucher.map((voucher: any, index: number) => (
-                      <SelectItem key={index} value={voucher.id}>
-                        {voucher.name}
-                      </SelectItem>
-                    ))}
+                    {creatorVoucher.length === 0 && voucher.length === 0 ? (
+                      <div className="p-4 text-center text-gray-500">
+                        You have no vouchers available.
+                      </div>
+                    ) : (
+                      <>
+                        {creatorVoucher.map((voucher: any, index: number) => (
+                          <SelectItem key={index} value={voucher.id}>
+                            {voucher.name}
+                          </SelectItem>
+                        ))}
+                        {voucher.map((voucher: any, index: number) => (
+                          <SelectItem key={index} value={voucher.id}>
+                            {voucher.name}
+                          </SelectItem>
+                        ))}
+                      </>
+                    )}
                   </SelectContent>
                 </Select>
               </div>
@@ -224,7 +232,7 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
               </div>
             </div>
           </div>
-          <PaymentSection />\
+          <PaymentSection />
         </div>
         {/* <DetailOrder /> */}
         <div className=" relative mx-[10px] flex flex-col pb-[11vh] md:mx-0 md:pb-0">

@@ -304,8 +304,8 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
               </div>
             ))
           ) : events.length === 0 ? (
-            <div className="col-span-2 flex  items-center justify-center md:col-span-5">
-              Event not found
+            <div className="col-span-2 flex h-[500px] items-center justify-center rounded-md bg-gray-200 italic md:col-span-5">
+              Event not found 🙇‍♀️🙇‍♀️
             </div>
           ) : (
             events.map((event: any, index: number) => (
@@ -322,7 +322,9 @@ const AllEventSection: React.FunctionComponent<IAllEventSectionProps> = (
             ))
           )}
         </div>
-        <div className=" space-x-4 ">{paginationButtons}</div>
+        <div className=" space-x-4 ">
+          {events.length > 0 && paginationButtons}
+        </div>
       </div>
     </section>
   );

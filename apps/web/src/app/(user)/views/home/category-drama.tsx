@@ -40,11 +40,11 @@ const CategoryDramaSection: React.FunctionComponent<
         <div className=" flex flex-col justify-between">
           <h1 className=" text-[14px] font-semibold md:text-[24px]">Drama</h1>
           <h1 className=" mt-[4px] text-[12px] md:mt-[14px] md:text-[14px] ">
-            Enjoy captivating stories that will bring the stage to life with
-            stunning action🎭
+            Get ready for the biggest hits and most popular movies that everyone
+            is talking about 🎬
           </h1>
         </div>
-        <div className="my-[18px] gap-4 flex overflow-hidden overflow-x-auto md:grid md:grid-cols-5">
+        <div className="my-[18px] flex gap-4 overflow-hidden overflow-x-auto md:grid md:grid-cols-5">
           {loading
             ? Array.from({ length: 5 }).map((_, index) => (
                 <div key={index} className="col-span-1">
@@ -54,7 +54,10 @@ const CategoryDramaSection: React.FunctionComponent<
             : filterEventDrama
                 .slice(0, displayedEvents)
                 .map((event: any, index: number) => (
-                  <div key={index} className="w-[178px] flex-shrink-0 md:w-auto">
+                  <div
+                    key={index}
+                    className="w-[178px] flex-shrink-0 md:w-auto"
+                  >
                     <CardFilm
                       id={event.id}
                       judul={event.name}

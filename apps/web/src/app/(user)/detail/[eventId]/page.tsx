@@ -89,7 +89,7 @@ const DetailEvent: React.FunctionComponent<IDetailEventProps> = (props) => {
           <Skeleton height={555} width="100%" />
         ) : (
           <Image
-            className="mx-auto flex h-[250px] w-full flex-col bg-cover bg-center md:h-[555px]  md:w-fit"
+            className="mx-auto flex h-[250px]  flex-col object-cover bg-center md:h-[555px]  md:w-fit"
             src={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
             width={555}
             height={1400}
