@@ -56,17 +56,21 @@ export class TransactionRepository {
         userId: id,
         event: {
           endDate: { lt: today },
-          feedbacks: {
-            none: {
-              userId: id,
-            },
-          },
+          // feedbacks: {
+          //   none: {
+          //     userId: id,
+          //   },
+          // },
         },
       },
       include: {
         event: {
           include: {
-            feedbacks: true,
+            feedbacks: {
+              where: {
+                userId: id,
+              },
+            },
             category: true,
             location: true,
           },
