@@ -106,7 +106,7 @@ export const transactionColumns: ColumnDef<AdminEventTransactionResponse>[] = [
           {!voucher ? (
             "No voucher provided"
           ) : (
-            <Badge className="text-nowrap">{voucher}</Badge>
+            <Badge className="text-nowrap">{voucher.toUpperCase()}</Badge>
           )}
         </div>
       );

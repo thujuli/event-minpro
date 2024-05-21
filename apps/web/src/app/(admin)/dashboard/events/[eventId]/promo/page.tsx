@@ -21,7 +21,6 @@ interface IPromoSectionProps {}
 
 const PromoSection: React.FunctionComponent<IPromoSectionProps> = (props) => {
   const id = useParams();
-  console.log("eventId :", id.eventId);
   const [getData, setGetData] = React.useState([]);
 
   React.useEffect(() => {
@@ -31,14 +30,12 @@ const PromoSection: React.FunctionComponent<IPromoSectionProps> = (props) => {
   const handleGetData = async () => {
     try {
       let url = NEXT_PUBLIC_BASE_API_URL + `/vouchers/${id.eventId}`;
-      console.log(url);
 
       const response = await axios.get(url, {
         headers: { Authorization: `Bearer ${Cookies.get("admin-tkn")}` },
       });
 
       setGetData(response.data.result);
-      console.log(response.data.result);
     } catch (error) {
       console.log(error);
     }
@@ -49,7 +46,9 @@ const PromoSection: React.FunctionComponent<IPromoSectionProps> = (props) => {
       return (
         <TableRow className="text-left" key={index}>
           <TableCell className="font-medium">{index + 1}</TableCell>
-          <TableCell className="font-medium">{promo.name}</TableCell>
+          <TableCell className="font-medium">
+            {promo.name.toUpperCase()}
+          </TableCell>
           <TableCell className="font-medium">{promo.discount}</TableCell>
           <TableCell className="font-medium">{promo.maxUsage}</TableCell>
           <TableCell className="font-medium">{promo.usage}</TableCell>
