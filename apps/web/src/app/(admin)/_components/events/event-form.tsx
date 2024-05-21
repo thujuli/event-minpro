@@ -111,6 +111,10 @@ const EventForm: React.FC<Props> = ({ type = "create", event }) => {
     router.push("/dashboard/events");
   };
 
+  const onCreate = () => {
+    router.push("/dashboard/events");
+  };
+
   return (
     <Form {...form}>
       <form

@@ -27,7 +27,7 @@ export default function RootLayout({
       >
         <TanstackQueryProvider>
           {children}
-          <Toaster richColors position="top-right" />
+          <Toaster richColors position="top-right" closeButton />
         </TanstackQueryProvider>
       </body>
     </html>

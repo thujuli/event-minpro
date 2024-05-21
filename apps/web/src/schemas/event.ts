@@ -50,17 +50,7 @@ export const eventSchema = z
       })
       .int({ message: "Limit Checkout must be an integer!" })
       .min(0, { message: "Limit Checkout must be at least 0!" }),
-    image: z
-      .any()
-      .refine((files) => files?.length == 1, "Image is required!")
-      .refine(
-        (files) => files?.[0]?.size < MAX_FILE_SIZE,
-        "Image must be less than 2MB!",
-      )
-      .refine(
-        (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-        ".jpg, .jpeg, .png and .webp files are accepted.",
-      ),
+    image: z.any().optional(),
   })
   .refine((data) => data.startDate <= data.endDate, {
     message: "Start date cannot be after end date!",
