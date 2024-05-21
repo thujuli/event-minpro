@@ -66,7 +66,7 @@ const Review: React.FunctionComponent<IReviewProps> = (props) => {
       <div className=" flex  flex-col space-y-4">
         {event.imageURL && (
           <Image
-            className="h-[400px] w-[400px] rounded-md  bg-center"
+            className=" w-[400px] rounded-md  bg-center object-cover"
             src={NEXT_PUBLIC_BASE_API_URL + event.imageURL}
             width={1000}
             height={1000}
