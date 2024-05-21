@@ -19,11 +19,12 @@ interface INavbarDesktopProps {}
 const NavbarDesktop: React.FunctionComponent<INavbarDesktopProps> = (props) => {
   const router = useRouter();
   const [token, setToken] = React.useState<string | undefined>();
+  const adminToken = Cookies.get("admin-tkn");
+  const userToken = Cookies.get("user-tkn");
 
   React.useEffect(() => {
-    const temp = Cookies.get("user-tkn") ?? Cookies.get("admin-tkn");
-    setToken(temp);
-  }, []);
+    setToken(adminToken ?? userToken);
+  }, [adminToken, userToken]);
 
   const handleSignOut = () => {
     Cookies.remove("user-tkn"); // Hapus cookie saat sign out
@@ -122,11 +123,20 @@ const NavbarDesktop: React.FunctionComponent<INavbarDesktopProps> = (props) => {
               <div className="bg-white py-1">
                 {token ? (
                   <>
-                    <Link href={`/my-event`} className="">
-                      <span className="block px-4 py-2 text-sm text-gray-700">
-                        My Event
-                      </span>
-                    </Link>
+                    {adminToken && (
+                      <Link href={`/dashboard`} className="">
+                        <span className="block px-4 py-2 text-sm text-gray-700">
+                          Dashboard
+                        </span>
+                      </Link>
+                    )}
+                    {userToken && (
+                      <Link href={`/my-event`} className="">
+                        <span className="block px-4 py-2 text-sm text-gray-700">
+                          Dashboard
+                        </span>
+                      </Link>
+                    )}
                     <button
                       onClick={handleSignOut}
                       className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"

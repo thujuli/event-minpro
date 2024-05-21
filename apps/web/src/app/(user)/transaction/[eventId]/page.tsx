@@ -200,12 +200,12 @@ const BayarPage: React.FunctionComponent<IBayarPageProps> = () => {
                       <>
                         {creatorVoucher.map((voucher: any, index: number) => (
                           <SelectItem key={index} value={voucher.id}>
-                            {voucher.name}
+                            {voucher.name.toUpperCase()}
                           </SelectItem>
                         ))}
                         {voucher.map((voucher: any, index: number) => (
                           <SelectItem key={index} value={voucher.id}>
-                            {voucher.name}
+                            {voucher.name.toUpperCase()}
                           </SelectItem>
                         ))}
                       </>

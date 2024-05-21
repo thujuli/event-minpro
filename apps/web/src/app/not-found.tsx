@@ -19,6 +19,13 @@ const NotFound: React.FC = () => {
         Please return to the main page or use the search feature to find the
         information you need.
       </p>
+      <div className=" text-center">
+        <Link href="/">
+          <Button className=" w-fit hover:bg-[#53b253] md:px-8">
+            Back to Home Page
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 };
